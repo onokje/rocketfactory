@@ -1,28 +1,72 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+import Header from "./Components/Header";
+import storageAvailable from "./helpers/detectLocalstorage";
+import PropTypes from "prop-types";
+import connect from "react-redux/es/connect/connect";
+import {loadPlayer} from "./actions/player";
+import NewPlayer from "./Components/NewPlayer";
+import SideBar from "./Components/Sidebar";
+import ResourceProduction from "./Components/ResourceProduction";
+import PowerProduction from "./Components/PowerProduction";
+
+const mapStateToProps = state => ({
+    player: state.player
+});
+
+const mapDispatchToProps = dispatch => ({
+    loadPlayer: (playerData) => {
+        dispatch(loadPlayer(playerData));
+    }
+});
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+
+    constructor(props){
+        super(props);
+        this.state = {
+            localStorageLoaded: false
+        }
+    }
+
+    componentDidMount(){
+
+        if (storageAvailable) {
+            const localStoragePlayer = localStorage.getItem('spaceClickerPlayerSession');
+            if (localStoragePlayer) {
+                this.props.loadPlayer(JSON.parse(localStoragePlayer));
+            }
+
+            this.setState({ localStorageLoaded: true });
+        }
+
+    }
+
+    render() {
+
+        if (!this.state.localStorageLoaded) {
+            return (<div>Local storage is not enabled in your browser.</div>);
+        }
+
+        return (
+            <div className="App">
+                <Header/>
+                <SideBar/>
+                <NewPlayer/>
+                <ResourceProduction/>
+                <PowerProduction/>
+
+            </div>
+        );
+    }
 }
 
-export default App;
+App.propTypes = {
+    player: PropTypes.object.isRequired,
+    loadPlayer: PropTypes.func.isRequired
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App)

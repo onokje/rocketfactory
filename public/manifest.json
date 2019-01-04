@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Space Clicker",
+  "name": "Space Clicker game",
   "icons": [
     {
       "src": "favicon.ico",
