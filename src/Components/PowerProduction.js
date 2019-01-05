@@ -4,11 +4,12 @@ import connect from "react-redux/es/connect/connect";
 import {buildPowerPlant} from "../actions/power";
 import {canAfford} from "../helpers/InventoryHelper";
 import {coalPowerPlantPrice} from "../helpers/gameData";
+import ProductionCost from "./ProductionCost";
 
 
 const mapStateToProps = state => ({
     player: state.player,
-    resources: state.resources,
+    inventory: state.inventory,
     power: state.power
 });
 
@@ -19,20 +20,22 @@ const mapDispatchToProps = dispatch => ({
 
 });
 
-class ResourceProduction extends Component {
+class PowerProduction extends Component {
 
     buildCoalPowerPlant = () => {
-        const {resources, buildPowerPlant} = this.props;
+        const {inventory, buildPowerPlant} = this.props;
 
-        if (canAfford(coalPowerPlantPrice, resources)) {
+        if (canAfford(inventory, coalPowerPlantPrice)) {
             buildPowerPlant('coal');
+        } else {
+            console.log('you cannot afford a power plant!');
         }
 
 
     };
 
     render() {
-        const {player, resources, power} = this.props;
+        const {player, power} = this.props;
 
         if (player.initialized && player.tab === 'power') {
             return (
@@ -40,7 +43,7 @@ class ResourceProduction extends Component {
                     <h1>Power production</h1>
                     <div className="simpleDivider">
                         <h2>Construct new coal Power plant</h2>
-                        <div>Current Iron: <b>{resources.iron}</b></div>
+                        <ProductionCost priceObject={coalPowerPlantPrice}/>
                         <div>Current number of coal power plants: <b>{power.coalPowerPlants}</b></div>
                         <button onClick={this.buildCoalPowerPlant} >Build coal power plant!</button>
                     </div>
@@ -54,9 +57,9 @@ class ResourceProduction extends Component {
     }
 }
 
-ResourceProduction.propTypes = {
+PowerProduction.propTypes = {
     player: PropTypes.object.isRequired,
-    resources: PropTypes.object.isRequired,
+    inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
     buildPowerPlant: PropTypes.func.isRequired
 };
@@ -64,4 +67,4 @@ ResourceProduction.propTypes = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ResourceProduction)
+)(PowerProduction)

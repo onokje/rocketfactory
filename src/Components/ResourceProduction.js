@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {mineResource} from "../actions/resources";
+import {mineResource} from "../actions/inventory";
 
 const mapStateToProps = state => ({
-    player: state.player,
-    resources: state.resources
+    player: state.player
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -18,25 +17,19 @@ const mapDispatchToProps = dispatch => ({
 class ResourceProduction extends Component {
 
     render() {
-        const {player, resources, mineResource} = this.props;
+        const {player, mineResource} = this.props;
 
         if (player.initialized && player.tab === 'resourceProduction') {
             return (
                 <div className="defaultContainer">
                     <h1>Resource production</h1>
                     <div className="simpleDivider">
-                        <h2>Mine iron by hand</h2>
-                        <div>Current Iron: <b>{resources.iron}</b></div>
-                        <div>Maximum Iron storage: <b>{resources.resourceStorage}</b></div>
-                        <button onClick={() => mineResource('iron')} >Mine!</button>
+                        <h2>Mine by hand</h2>
+                        <button onClick={() => mineResource('iron')} >Mine iron!</button>
+                        <button onClick={() => mineResource('coal')} >Mine coal!</button>
+                        <button onClick={() => mineResource('stone')} >Mine stone!</button>
                     </div>
 
-                    <div className="simpleDivider">
-                        <h2>Mine coal by hand</h2>
-                        <div>Current Coal: <b>{resources.coal}</b></div>
-                        <div>Maximum Coal storage: <b>{resources.resourceStorage}</b></div>
-                        <button onClick={() => mineResource('coal')} >Mine!</button>
-                    </div>
                 </div>
             );
         }
@@ -48,7 +41,6 @@ class ResourceProduction extends Component {
 
 ResourceProduction.propTypes = {
     player: PropTypes.object.isRequired,
-    resources: PropTypes.object.isRequired,
     mineResource: PropTypes.func.isRequired
 };
 

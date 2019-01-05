@@ -1,10 +1,12 @@
 import {combineReducers} from 'redux';
 import player from "./player";
-import resources from "./resources";
+import inventory from "./inventory";
 import power from "./power";
+import smelting from "./smelting";
 
 export default combineReducers({
     player,
-    resources,
-    power
+    inventory,
+    power,
+    smelting
 });

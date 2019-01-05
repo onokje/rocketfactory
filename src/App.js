@@ -9,16 +9,16 @@ import NewPlayer from "./Components/NewPlayer";
 import SideBar from "./Components/Sidebar";
 import ResourceProduction from "./Components/ResourceProduction";
 import PowerProduction from "./Components/PowerProduction";
+import mainGameTick from "./helpers/GameTicker";
+import Smelting from "./Components/Smelting";
 
 const mapStateToProps = state => ({
-    player: state.player
+    player: state.player,
+    inventory: state.inventory,
+    power: state.power,
+    smelting: state.smelting
 });
 
-const mapDispatchToProps = dispatch => ({
-    loadPlayer: (playerData) => {
-        dispatch(loadPlayer(playerData));
-    }
-});
 
 class App extends Component {
 
@@ -26,7 +26,8 @@ class App extends Component {
         super(props);
         this.state = {
             localStorageLoaded: false
-        }
+        };
+        this.mainTimer = 0;
     }
 
     componentDidMount(){
@@ -34,12 +35,22 @@ class App extends Component {
         if (storageAvailable) {
             const localStoragePlayer = localStorage.getItem('spaceClickerPlayerSession');
             if (localStoragePlayer) {
-                this.props.loadPlayer(JSON.parse(localStoragePlayer));
+                this.props.dispatch(loadPlayer(JSON.parse(localStoragePlayer)));
             }
 
             this.setState({ localStorageLoaded: true });
+            this.startTimer();
         }
 
+    }
+
+    mainTick = () => {
+        const {dispatch, inventory, power, smelting} = this.props;
+        mainGameTick(dispatch, inventory, power, smelting);
+    };
+
+    startTimer() {
+        this.mainTimer = setInterval(this.mainTick, 1000);
     }
 
     render() {
@@ -55,6 +66,7 @@ class App extends Component {
                 <NewPlayer/>
                 <ResourceProduction/>
                 <PowerProduction/>
+                <Smelting/>
 
             </div>
         );
@@ -63,10 +75,12 @@ class App extends Component {
 
 App.propTypes = {
     player: PropTypes.object.isRequired,
-    loadPlayer: PropTypes.func.isRequired
+    inventory: PropTypes.array.isRequired,
+    power: PropTypes.object.isRequired,
+    smelting: PropTypes.object.isRequired
 };
 
+
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps, null
 )(App)

@@ -28,3 +28,9 @@ div.simpleDivider{
     padding: 10px;
     margin-bottom: 10px;
 }
+
+div.furnace{
+    background-color: #333;
+    padding: 10px;
+    margin-bottom: 5px;
+}

@@ -1,5 +1,6 @@
 const initialResourcesState = {
-    coalPowerPlants: 0
+    coalPowerPlants: 0,
+    powerProducedLastTick: 0
 };
 
 const power = (state = initialResourcesState, action) => {
@@ -14,7 +15,8 @@ const power = (state = initialResourcesState, action) => {
                 default:
                     return state;
             }
-
+        case 'POWER_PRODUCTION_TICK':
+            return {...state, powerProducedLastTick: action.powerProduced};
         default:
             return state;
     }

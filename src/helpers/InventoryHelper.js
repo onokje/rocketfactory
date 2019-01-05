@@ -1,42 +1,63 @@
-export const canAfford = (priceObject, resources, items) => {
+export const inventoryHasItem = (inventory, itemName, amount) => {
+    return inventory.find((item) => {
+        return item.name === itemName && item.amount >= amount;
+    });
+};
 
-    for(let requiredResource in priceObject.resources) {
-        if(priceObject.resources.hasOwnProperty(requiredResource)) {
-            const requiredValue = priceObject.resources[requiredResource];
-            if (!resources || !resources[requiredResource] || resources[requiredResource] < requiredValue) {
-                return false;
-            }
-
+export const canAfford = (inventory, priceItemsArray) => {
+    for (let item of priceItemsArray) {
+        if (!inventoryHasItem(inventory, item.name, item.amount)) {
+            return false;
         }
     }
-
-    for(let requiredItem in priceObject.items) {
-        if(priceObject.items.hasOwnProperty(requiredItem)) {
-            const requiredValue = priceObject.items[requiredItem];
-            if (!items || !items[requiredItem] || items[requiredItem] < requiredValue) {
-                return false;
-            }
-
-        }
-    }
-
     return true;
 };
 
-export const payResources = (priceObject, resources) => {
+export const findItemInPriceItemsArray = (priceItemsArray, itemName) => {
+    return priceItemsArray.find((item) => {
+        return item.name === itemName;
+    });
+};
 
-    const newResourcesObj = {
-        resourceStorage: resources.resourceStorage
-    };
+export const removeItemsFromInventoryByPriceObject = (inventory, priceItemsArray) => {
 
-    for(let requiredResource in priceObject.resources) {
-        if(priceObject.resources.hasOwnProperty(requiredResource)) {
-            const requiredValue = priceObject.resources[requiredResource];
-
-            newResourcesObj[requiredResource] = resources[requiredResource] - requiredValue;
-
+    return inventory.map(inventoryItem => {
+        let priceObjectItem = findItemInPriceItemsArray(priceItemsArray, inventoryItem.name);
+        if (priceObjectItem) {
+            return {name: inventoryItem.name, amount: inventoryItem.amount - priceObjectItem.amount}
+        } else {
+            return inventoryItem;
         }
-    }
+    });
 
-    return newResourcesObj;
+};
+
+export const addItemToInventory = (inventory, itemName, itemAmount) => {
+    let found = false;
+    const newInventory = inventory.map(inventoryItem => {
+        if (inventoryItem.name === itemName) {
+            found = true;
+            return {name: inventoryItem.name, amount: inventoryItem.amount + itemAmount}
+        } else {
+            return inventoryItem;
+        }
+    });
+    if (!found) {
+        newInventory.push({name: itemName, amount: itemAmount});
+    }
+    return newInventory;
+};
+
+export const addItemsToInventory = (inventory, itemsArray) => {
+    for (let itemObj of itemsArray) {
+        inventory = addItemToInventory(inventory, itemObj.name, itemObj.amount);
+    }
+    return inventory;
+};
+
+export const getItemAmountByName = (inventory, itemName) => {
+    const item = inventory.find((item) => {
+        return item.name === itemName ;
+    });
+    return item ? item.amount : 0;
 };

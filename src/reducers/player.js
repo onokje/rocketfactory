@@ -16,7 +16,7 @@ const player = (state = initialPlayerState, action) => {
         case 'LOAD_PLAYER':
             return {...state, ...action.playerData.player};
         case 'SWITCH_TAB':
-            return {...state, tab: action.tab}
+            return {...state, tab: action.tab};
         default:
             return state;
     }
