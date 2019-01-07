@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {toggleFurnace} from "../actions/smelting";
+import ProgressBar from "./ProgressBar";
 
 
 const mapStateToProps = state => ({
@@ -37,9 +38,10 @@ class Furnace extends Component {
 
     render() {
         const {furnace} = this.props;
+        const completedPercentage = furnace.on ? (furnace.progressTicks * 100 / furnace.ticksCost) : 0;
 
         return (
-            <div key={furnace.name} className="furnace">
+            <div key={furnace.id} className="furnace">
                 <div>name: {furnace.name}</div>
                 <div>{furnace.on ? 'ON' : 'OFF'} <button onClick={this.toggleFurnace}>Turn {furnace.on ? 'OFF' : 'ON'}</button></div>
                 <div>Smelt items:
@@ -47,6 +49,7 @@ class Furnace extends Component {
                         {this.getSmeltingItems().map(option => (<option key={option} value={option}>{option}</option>))}
                     </select>
                 </div>
+                <ProgressBar completedPercentage={completedPercentage}/>
             </div>
         );
 

@@ -20,6 +20,21 @@ export const stoneFurnacePrice = [
     },
 ];
 
+export const coalMine1Price = [
+    {
+        name: 'ironPlate',
+        amount: 10
+    },
+    {
+        name: 'stone',
+        amount: 10
+    },
+    {
+        name: 'coal',
+        amount: 5
+    },
+];
+
 
 export const itemRecipes = {
     ironPlate: {
@@ -44,7 +59,7 @@ export const itemRecipes = {
         resultAmount: 2,
         cost: [
             {
-                name: 'iron',
+                name: 'ironPlate',
                 amount: 5
             },
             {

@@ -17,6 +17,7 @@ const smelting = (state = initialFurnaceState, action) => {
                         id: action.id,
                         name: action.name,
                         on: false,
+                        running: false,
                         item: 'ironPlate',
                         progressTicks: 0,
                         ticksCost: 10
@@ -37,16 +38,34 @@ const smelting = (state = initialFurnaceState, action) => {
             });
 
             return {...state, stoneFurnaces: stoneFurnaces};
-        case 'productionTick':
+        case 'PRODUCTION_TICK':
             stoneFurnaces = state.stoneFurnaces.map(furnace => {
-                return furnace.on ? {
+                return furnace.on && furnace.running ? {
                     ...furnace,
-                    progressTicks: furnace.progressTicks < furnace.ticksCost ? furnace.progressTicks + 1 : 0
+                    progressTicks: furnace.progressTicks + 1
                 } : furnace
             });
 
             return {...state, stoneFurnaces: stoneFurnaces};
+        case 'FURNACE_PRODUCTION_START':
+            stoneFurnaces = state.stoneFurnaces.map(furnace => {
+                return furnace.id === action.furnaceId ? {
+                    ...furnace,
+                    running: true,
+                } : furnace
+            });
 
+            return {...state, stoneFurnaces: stoneFurnaces};
+        case 'FURNACE_PRODUCTION_FINISH':
+            stoneFurnaces = state.stoneFurnaces.map(furnace => {
+                return furnace.id === action.furnaceId ? {
+                    ...furnace,
+                    running: false,
+                    progressTicks: 0
+                } : furnace
+            });
+
+            return {...state, stoneFurnaces: stoneFurnaces};
         default:
             return state;
     }

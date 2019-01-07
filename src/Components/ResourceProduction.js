@@ -28,6 +28,7 @@ class ResourceProduction extends Component {
                         <button onClick={() => mineResource('iron')} >Mine iron!</button>
                         <button onClick={() => mineResource('coal')} >Mine coal!</button>
                         <button onClick={() => mineResource('stone')} >Mine stone!</button>
+                        <button onClick={() => mineResource('copper')} >Mine copper!</button>
                     </div>
 
                 </div>

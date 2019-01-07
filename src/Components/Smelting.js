@@ -54,7 +54,7 @@ class Smelting extends Component {
                     </div>
                     <div className="simpleDivider">
                         <h2>Furnaces:</h2>
-                        {smelting.stoneFurnaces.map(furnace => (<Furnace key={furnace.name} furnace={furnace}/>))}
+                        {smelting.stoneFurnaces.map(furnace => (<Furnace key={furnace.id} furnace={furnace}/>))}
 
                         {!totalFurnaces ? (<div>You do not have any furnaces</div>) : ''}
                     </div>

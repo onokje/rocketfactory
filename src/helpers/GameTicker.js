@@ -1,22 +1,33 @@
-import {canAfford} from "./InventoryHelper";
+import {canAfford, removeItemFromInventory} from "./InventoryHelper";
 import {powerProductionTick} from "../actions/power";
 import {itemRecipes} from "./gameData";
-import {productionFinish, productionStart} from "../actions/inventory";
 import {productionTick} from "../actions/production";
+import {furnaceProductionFinish, furnaceProductionStart} from "../actions/smelting";
 
 
 function runPowerPlants(inventory, power, dispatch) {
     let totalPowerProduced = 0;
 
     //coal
-    const coalRequired = power.coalPowerPlants; // coal power plants use 1 coal per tick
     const itemsRequired = [];
     const itemsUsed = [];
-    itemsRequired.push({name: 'coal', amount: coalRequired});
-    if (canAfford(inventory, itemsRequired)) {
-        totalPowerProduced += (power.coalPowerPlants * 5000);
-        itemsUsed.push({name: 'coal', amount: coalRequired});
+
+    for (let coalPlant of power.coalPowerPlants){
+        if (coalPlant.on) {
+            itemsRequired.push({name: 'coal', amount: 1});
+            if (canAfford(inventory, itemsRequired)) {
+                totalPowerProduced += 5000;
+                itemsUsed.push({name: 'coal', amount: 1});
+
+                inventory = removeItemFromInventory(inventory, 'coal', 1);
+            }
+        }
     }
+
+
+
+
+
     dispatch(powerProductionTick(totalPowerProduced, itemsUsed));
 
     return totalPowerProduced;
@@ -30,10 +41,10 @@ function runStoneFurnaces(inventory, smelting, dispatch) {
 
             //get recipe:
             const recipe = itemRecipes[furnace.item];
-            const items = [];
-            items.push(furnace.item, recipe.resultAmount);
+            const itemsProduced = [];
+            itemsProduced.push({name: furnace.item, amount: recipe.resultAmount});
 
-            dispatch(productionFinish(items));
+            dispatch(furnaceProductionFinish(furnace.id, itemsProduced));
         }
 
         if (furnace.on && furnace.progressTicks === 0) {
@@ -41,10 +52,12 @@ function runStoneFurnaces(inventory, smelting, dispatch) {
 
             //get recipe:
             const recipe = itemRecipes[furnace.item];
-            const itemCost = recipe.cost;
+            const itemCost = recipe.cost.slice(0);
             itemCost.push({name: 'coal', amount: 1}); // added fuel cost for stone furnace
 
-            dispatch(productionStart(itemCost));
+            if (canAfford(inventory, itemCost)) {
+                dispatch(furnaceProductionStart(furnace.id, itemCost));
+            }
         }
     }
 }

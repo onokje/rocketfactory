@@ -19,17 +19,21 @@ export const findItemInPriceItemsArray = (priceItemsArray, itemName) => {
     });
 };
 
-export const removeItemsFromInventoryByPriceObject = (inventory, priceItemsArray) => {
-
+export const removeItemFromInventory = (inventory, itemName, itemAmount) => {
     return inventory.map(inventoryItem => {
-        let priceObjectItem = findItemInPriceItemsArray(priceItemsArray, inventoryItem.name);
-        if (priceObjectItem) {
-            return {name: inventoryItem.name, amount: inventoryItem.amount - priceObjectItem.amount}
+        if (itemName === inventoryItem.name) {
+            return {name: inventoryItem.name, amount: inventoryItem.amount - itemAmount}
         } else {
             return inventoryItem;
         }
     });
+};
 
+export const removeItemsFromInventoryByPriceObject = (inventory, priceItemsArray) => {
+    for (let priceItem of priceItemsArray) {
+        inventory = removeItemFromInventory(inventory, priceItem.name, priceItem.amount);
+    }
+    return inventory;
 };
 
 export const addItemToInventory = (inventory, itemName, itemAmount) => {

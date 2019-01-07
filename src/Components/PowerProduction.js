@@ -5,6 +5,8 @@ import {buildPowerPlant} from "../actions/power";
 import {canAfford} from "../helpers/InventoryHelper";
 import {coalPowerPlantPrice} from "../helpers/gameData";
 import ProductionCost from "./ProductionCost";
+import uuidv4 from "uuid/v4";
+import PowerPlant from "./PowerPlant";
 
 
 const mapStateToProps = state => ({
@@ -14,8 +16,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    buildPowerPlant: (powerType) => {
-        dispatch(buildPowerPlant(powerType));
+    buildPowerPlant: (powerType, name, id) => {
+        dispatch(buildPowerPlant(powerType, name, id));
     },
 
 });
@@ -23,10 +25,12 @@ const mapDispatchToProps = dispatch => ({
 class PowerProduction extends Component {
 
     buildCoalPowerPlant = () => {
-        const {inventory, buildPowerPlant} = this.props;
+        const {inventory, buildPowerPlant, power} = this.props;
 
         if (canAfford(inventory, coalPowerPlantPrice)) {
-            buildPowerPlant('coal');
+            const uuid = uuidv4();
+            const name = 'Coal powerplant ' + (power.coalPowerPlants.length + 1);
+            buildPowerPlant('coal', name, uuid);
         } else {
             console.log('you cannot afford a power plant!');
         }
@@ -37,6 +41,8 @@ class PowerProduction extends Component {
     render() {
         const {player, power} = this.props;
 
+        const totalPowerplants = power.coalPowerPlants.length;
+
         if (player.initialized && player.tab === 'power') {
             return (
                 <div className="defaultContainer">
@@ -44,8 +50,13 @@ class PowerProduction extends Component {
                     <div className="simpleDivider">
                         <h2>Construct new coal Power plant</h2>
                         <ProductionCost priceObject={coalPowerPlantPrice}/>
-                        <div>Current number of coal power plants: <b>{power.coalPowerPlants}</b></div>
                         <button onClick={this.buildCoalPowerPlant} >Build coal power plant!</button>
+                    </div>
+                    <div className="simpleDivider">
+                        <h2>Power plants:</h2>
+                        {power.coalPowerPlants.map(powerplant => (<PowerPlant key={powerplant.id} powerplant={powerplant}/>))}
+
+                        {!totalPowerplants ? (<div>You do not have any power plants</div>) : ''}
                     </div>
 
                 </div>

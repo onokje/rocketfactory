@@ -29,8 +29,19 @@ div.simpleDivider{
     margin-bottom: 10px;
 }
 
-div.furnace{
+div.furnace, div.powerplant{
     background-color: #333;
     padding: 10px;
     margin-bottom: 5px;
+}
+
+div.progressbar{
+    width: 100px;
+    height: 8px;
+    border: solid 1px #666;
+}
+
+div.progressbar div.bar {
+    background-color: #080;
+    height: 8px;
 }
