@@ -1,6 +1,6 @@
-export const newPlayer = (name) => ({
-    type: 'NEW_PLAYER',
-    name
+export const newPlayer = () => ({
+    type: 'NEW_PLAYER'
+
 });
 
 export const loadPlayer = (playerData) => ({

@@ -45,3 +45,11 @@ div.progressbar div.bar {
     background-color: #080;
     height: 8px;
 }
+
+ul.itemcost{
+    list-style: none;
+    border: solid 1px #888;
+    padding: 5px;
+}
+
+ul.itemcost li{padding: 2px;}

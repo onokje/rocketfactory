@@ -16,8 +16,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    buildPowerPlant: (powerType, name, id) => {
-        dispatch(buildPowerPlant(powerType, name, id));
+    buildPowerPlant: (powerType, id) => {
+        dispatch(buildPowerPlant(powerType, id));
     },
 
 });
@@ -25,12 +25,12 @@ const mapDispatchToProps = dispatch => ({
 class PowerProduction extends Component {
 
     buildCoalPowerPlant = () => {
-        const {inventory, buildPowerPlant, power} = this.props;
+        const {inventory, buildPowerPlant} = this.props;
 
         if (canAfford(inventory, coalPowerPlantPrice)) {
             const uuid = uuidv4();
-            const name = 'Coal powerplant ' + (power.coalPowerPlants.length + 1);
-            buildPowerPlant('coal', name, uuid);
+
+            buildPowerPlant('coal', uuid);
         } else {
             console.log('you cannot afford a power plant!');
         }
@@ -49,7 +49,7 @@ class PowerProduction extends Component {
                     <h1>Power production</h1>
                     <div className="simpleDivider">
                         <h2>Construct new coal Power plant</h2>
-                        <ProductionCost priceObject={coalPowerPlantPrice}/>
+                        <ProductionCost items={coalPowerPlantPrice}/>
                         <button onClick={this.buildCoalPowerPlant} >Build coal power plant!</button>
                     </div>
                     <div className="simpleDivider">

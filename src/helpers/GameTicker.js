@@ -40,9 +40,9 @@ function runStoneFurnaces(inventory, smelting, dispatch) {
             // furnace is ready with this recipe, dispatch action to add the result to the inventory
 
             //get recipe:
-            const recipe = itemRecipes[furnace.item];
+            const recipe = itemRecipes[furnace.currentItem];
             const itemsProduced = [];
-            itemsProduced.push({name: furnace.item, amount: recipe.resultAmount});
+            itemsProduced.push({name: furnace.currentItem, amount: recipe.resultAmount});
 
             dispatch(furnaceProductionFinish(furnace.id, itemsProduced));
         }
@@ -51,12 +51,12 @@ function runStoneFurnaces(inventory, smelting, dispatch) {
             // furnace is starting with a new recipe, dispatch action to subtract the item cost from the inventory
 
             //get recipe:
-            const recipe = itemRecipes[furnace.item];
+            const recipe = itemRecipes[furnace.nextItem];
             const itemCost = recipe.cost.slice(0);
             itemCost.push({name: 'coal', amount: 1}); // added fuel cost for stone furnace
 
             if (canAfford(inventory, itemCost)) {
-                dispatch(furnaceProductionStart(furnace.id, itemCost));
+                dispatch(furnaceProductionStart(furnace.id, furnace.nextItem, itemCost));
             }
         }
     }

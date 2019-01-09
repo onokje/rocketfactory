@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import './App.css';
 import Header from "./Components/Header";
-import storageAvailable from "./helpers/detectLocalstorage";
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {loadPlayer} from "./actions/player";
 import NewPlayer from "./Components/NewPlayer";
 import SideBar from "./Components/Sidebar";
 import ResourceProduction from "./Components/ResourceProduction";
@@ -27,21 +25,10 @@ class App extends Component {
         this.state = {
             localStorageLoaded: false
         };
-        this.mainTimer = 0;
     }
 
     componentDidMount(){
-
-        if (storageAvailable) {
-            const localStoragePlayer = localStorage.getItem('spaceClickerPlayerSession');
-            if (localStoragePlayer) {
-                this.props.dispatch(loadPlayer(JSON.parse(localStoragePlayer)));
-            }
-
-            this.setState({ localStorageLoaded: true });
-            this.startTimer();
-        }
-
+        this.startTimer();
     }
 
     mainTick = () => {
@@ -55,21 +42,26 @@ class App extends Component {
 
     render() {
 
-        if (!this.state.localStorageLoaded) {
-            return (<div>Local storage is not enabled in your browser.</div>);
+        if (!this.props.player.initialized) {
+            return (
+                <div className="App">
+                    <NewPlayer/>
+                </div>
+            );
+        } else {
+            return (
+                <div className="App">
+                    <Header/>
+                    <SideBar/>
+                    <NewPlayer/>
+                    <ResourceProduction/>
+                    <PowerProduction/>
+                    <Smelting/>
+
+                </div>
+            );
         }
 
-        return (
-            <div className="App">
-                <Header/>
-                <SideBar/>
-                <NewPlayer/>
-                <ResourceProduction/>
-                <PowerProduction/>
-                <Smelting/>
-
-            </div>
-        );
     }
 }
 

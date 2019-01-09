@@ -29,7 +29,7 @@ export const removeItemFromInventory = (inventory, itemName, itemAmount) => {
     });
 };
 
-export const removeItemsFromInventoryByPriceObject = (inventory, priceItemsArray) => {
+export const removeItemsFromInventory = (inventory, priceItemsArray) => {
     for (let priceItem of priceItemsArray) {
         inventory = removeItemFromInventory(inventory, priceItem.name, priceItem.amount);
     }

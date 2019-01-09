@@ -1,38 +1,59 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {newPlayer} from "./../actions/player";
+import {loadPlayer, newPlayer} from "./../actions/player";
+import storageAvailable from "../helpers/detectLocalstorage";
 
 const mapStateToProps = state => ({
     player: state.player
 });
 
 const mapDispatchToProps = dispatch => ({
-    newPlayer: (name) => {
-        dispatch(newPlayer(name));
+    newPlayer: () => {
+        dispatch(newPlayer());
+    },
+    loadPlayer: (playerData) => {
+        dispatch(loadPlayer(playerData));
     }
 });
 
 class NewPlayer extends Component {
 
-
-    onSubmit = (e) => {
-        e.preventDefault();
-        this.props.newPlayer(e.target.elements.namedItem('new_player_name').value);
+    startNewGame = () => {
+        this.props.newPlayer();
     };
+
+    loadGame = () => {
+        const localStoragePlayer = localStorage.getItem('spaceClickerPlayerSession');
+        console.log(localStoragePlayer);
+        this.props.loadPlayer(JSON.parse(localStoragePlayer));
+    };
+
+    renderLoadGameButton() {
+        if (storageAvailable) {
+            const localStoragePlayer = localStorage.getItem('spaceClickerPlayerSession');
+            console.log(localStoragePlayer);
+            if (localStoragePlayer) {
+                return <div><button onClick={this.loadGame}>Resume game</button></div>
+            }
+
+            return false;
+        } else {
+            return <div>
+                Warning: Local browser storage is not available on your device.
+                Game progress can not be saved.
+                If you close your browser, all game progress will be lost.</div>
+        }
+    }
 
     render() {
         if (!this.props.player.initialized) {
+
             return (
                 <div className="defaultContainer newPlayer">
-                    <h1>Welcome, new player!</h1>
-
-                    <form onSubmit={this.onSubmit}>
-                        <label htmlFor="new_player_name">What is your name?</label>
-                        <input required="required" name="player_name" id="new_player_name" type="text" />
-                        <button type="submit">Ok, lets play!</button>
-                    </form>
-
+                    <h1>Welcome to Rocket factory!</h1>
+                    <div><button onClick={this.startNewGame}>Start new Game</button></div>
+                    {this.renderLoadGameButton()}
                 </div>
             );
         }

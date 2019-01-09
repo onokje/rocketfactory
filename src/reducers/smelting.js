@@ -7,7 +7,7 @@ const smelting = (state = initialFurnaceState, action) => {
     let stoneFurnaces;
     switch (action.type) {
         case 'LOAD_PLAYER':
-            return {...state, ...action.playerData.smelting};
+            return action.playerData.smelting;
         case 'BUILD_FURNACE':
             switch (action.furnaceType) {
                 case 'stone':
@@ -15,10 +15,10 @@ const smelting = (state = initialFurnaceState, action) => {
                     const stoneFurnaces = JSON.parse(JSON.stringify(state.stoneFurnaces));
                     stoneFurnaces.push({
                         id: action.id,
-                        name: action.name,
                         on: false,
                         running: false,
-                        item: 'ironPlate',
+                        nextItem: 'ironPlate',
+                        currentItem: null,
                         progressTicks: 0,
                         ticksCost: 10
                     });
@@ -32,8 +32,9 @@ const smelting = (state = initialFurnaceState, action) => {
                 return furnace.id === action.furnaceId ? {
                     ...furnace,
                     on: action.on,
-                    item: action.item,
-                    progressTicks: 0
+                    nextItem: action.nextItem,
+                    currentItem: action.on ? furnace.currentItem : null,
+                    progressTicks: action.on ? furnace.progressTicks : 0
                 } : furnace
             });
 
@@ -51,6 +52,7 @@ const smelting = (state = initialFurnaceState, action) => {
             stoneFurnaces = state.stoneFurnaces.map(furnace => {
                 return furnace.id === action.furnaceId ? {
                     ...furnace,
+                    currentItem: action.currentItem,
                     running: true,
                 } : furnace
             });
@@ -61,6 +63,7 @@ const smelting = (state = initialFurnaceState, action) => {
                 return furnace.id === action.furnaceId ? {
                     ...furnace,
                     running: false,
+                    currentItem: null,
                     progressTicks: 0
                 } : furnace
             });

@@ -2,21 +2,28 @@ import React from 'react';
 import PropTypes from "prop-types";
 
 function costItem(item) {
-    return (<div key={item.name}>{item.name} : {item.amount}</div>);
+    return (<li key={item.name}>{item.name} : {item.amount}</li>);
 }
 
 export default function ProductionCost(props) {
 
-    const {priceObject} = props;
+    const {items, label} = props;
 
     return (
-        <div className="productionCost">
-            <span>Cost to build:</span>
-            {priceObject.map(item => costItem(item))}
+        <div>
+            <span>{label}</span>
+            <ul className="itemcost">
+                {items.map(item => costItem(item))}
+            </ul>
         </div>
     );
 }
 
 ProductionCost.propTypes = {
-    priceObject: PropTypes.array.isRequired
+    items: PropTypes.array.isRequired,
+    label: PropTypes.string
+};
+
+ProductionCost.defaultProps = {
+    label: 'Cost to build:'
 };

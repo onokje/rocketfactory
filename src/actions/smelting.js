@@ -1,20 +1,20 @@
 export const buildFurnace = (furnaceType, name, id) => ({
     type: 'BUILD_FURNACE',
     furnaceType,
-    name,
     id
 });
 
-export const toggleFurnace = (furnaceId, on, item) => ({
+export const toggleFurnace = (furnaceId, on, nextItem) => ({
     type: 'TOGGLE_FURNACE',
     furnaceId,
     on,
-    item
+    nextItem
 });
 
-export const furnaceProductionStart = (furnaceId, itemCost) => ({
+export const furnaceProductionStart = (furnaceId, currentItem, itemCost) => ({
     type: 'FURNACE_PRODUCTION_START',
     furnaceId,
+    currentItem,
     itemCost
 });
 

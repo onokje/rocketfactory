@@ -28,7 +28,7 @@ class PowerPlant extends Component {
 
         return (
             <div key={powerplant.id} className="powerplant">
-                <div>name: {powerplant.name}</div>
+                <div>Coal power plant</div>
                 <div>{powerplant.on ? 'ON' : 'OFF'} <button onClick={this.togglePowerplant}>Turn {powerplant.on ? 'OFF' : 'ON'}</button></div>
             </div>
         );

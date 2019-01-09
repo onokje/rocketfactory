@@ -8,7 +8,7 @@ const power = (state = initialResourcesState, action) => {
 
     switch (action.type) {
         case 'LOAD_PLAYER':
-            return {...state, ...action.playerData.power};
+            return action.playerData.power;
         case 'BUILD_POWER_PLANT':
             switch (action.powerType) {
                 case 'coal':
@@ -16,7 +16,6 @@ const power = (state = initialResourcesState, action) => {
                     powerplants = JSON.parse(JSON.stringify(state.coalPowerPlants));
                     powerplants.push({
                         id: action.id,
-                        name: action.name,
                         on: false
                     });
                     return {...state, coalPowerPlants: powerplants};

@@ -18,8 +18,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    buildFurnace: (furnaceType, name, id) => {
-        dispatch(buildFurnace(furnaceType, name, id));
+    buildFurnace: (furnaceType, id) => {
+        dispatch(buildFurnace(furnaceType, id));
     },
 
 });
@@ -27,12 +27,11 @@ const mapDispatchToProps = dispatch => ({
 class Smelting extends Component {
 
     buildStoneFurnace = () => {
-        const {inventory, buildFurnace, smelting} = this.props;
+        const {inventory, buildFurnace} = this.props;
 
         if (canAfford(inventory, stoneFurnacePrice)) {
             const uuid = uuidv4();
-            const name = 'Stone furnace ' + (smelting.stoneFurnaces.length + 1);
-            buildFurnace('stone', name, uuid);
+            buildFurnace('stone', uuid);
         } else {
             console.log('you cannot afford a stone furnace!');
         }
@@ -49,7 +48,7 @@ class Smelting extends Component {
                     <h1>Smelting</h1>
                     <div className="simpleDivider">
                         <h2>Construct new stone furnace</h2>
-                        <ProductionCost priceObject={stoneFurnacePrice}/>
+                        <ProductionCost items={stoneFurnacePrice}/>
                         <button onClick={this.buildStoneFurnace} >Build stone furnace!</button>
                     </div>
                     <div className="simpleDivider">
@@ -58,7 +57,6 @@ class Smelting extends Component {
 
                         {!totalFurnaces ? (<div>You do not have any furnaces</div>) : ''}
                     </div>
-
                 </div>
             );
         }

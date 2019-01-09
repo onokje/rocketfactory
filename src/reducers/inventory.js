@@ -2,7 +2,7 @@ import {coalPowerPlantPrice, stoneFurnacePrice} from "../helpers/gameData";
 import {
     addItemsToInventory,
     addItemToInventory,
-    removeItemsFromInventoryByPriceObject
+    removeItemsFromInventory
 } from "../helpers/InventoryHelper";
 
 const initialInventoryState = [];
@@ -10,14 +10,14 @@ const initialInventoryState = [];
 const inventory = (state = initialInventoryState, action) => {
     switch (action.type) {
         case 'LOAD_PLAYER':
-            return {...state, ...action.playerData.inventory};
+            return action.playerData.inventory;
         case 'MINE_RESOURCE':
             return addItemToInventory(state, action.resourceType, 1);
         case 'BUILD_POWER_PLANT':
             switch (action.powerType) {
                 case 'coal':
 
-                    return removeItemsFromInventoryByPriceObject(state, coalPowerPlantPrice);
+                    return removeItemsFromInventory(state, coalPowerPlantPrice);
 
                 default:
                     return state;
@@ -26,16 +26,24 @@ const inventory = (state = initialInventoryState, action) => {
             switch (action.furnaceType) {
                 case 'stone':
 
-                    return removeItemsFromInventoryByPriceObject(state, stoneFurnacePrice);
+                    return removeItemsFromInventory(state, stoneFurnacePrice);
 
                 default:
                     return state;
             }
+        case 'BUILD_MINE':
+            switch (action.furnaceType) {
+                case 'stone':
 
+                    return removeItemsFromInventory(state, stoneFurnacePrice);
+
+                default:
+                    return state;
+            }
         case 'POWER_PRODUCTION_TICK':
-            return removeItemsFromInventoryByPriceObject(state, action.itemCost);
+            return removeItemsFromInventory(state, action.itemCost);
         case 'FURNACE_PRODUCTION_START':
-            return removeItemsFromInventoryByPriceObject(state, action.itemCost);
+            return removeItemsFromInventory(state, action.itemCost);
         case 'FURNACE_PRODUCTION_FINISH':
             return addItemsToInventory(state, action.itemsProduced);
         default:

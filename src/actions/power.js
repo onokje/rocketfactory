@@ -1,7 +1,6 @@
 export const buildPowerPlant = (powerType, name, id) => ({
     type: 'BUILD_POWER_PLANT',
     powerType,
-    name,
     id
 });
 
