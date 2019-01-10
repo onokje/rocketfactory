@@ -1,8 +1,9 @@
-import {canAfford, removeItemFromInventory} from "./InventoryHelper";
+import {canAfford, removeItemFromInventory, removeItemsFromInventory} from "./InventoryHelper";
 import {powerProductionTick} from "../actions/power";
 import {itemRecipes} from "./gameData";
 import {productionTick} from "../actions/production";
 import {furnaceProductionFinish, furnaceProductionStart} from "../actions/smelting";
+import {miningProductionFinish, miningProductionStart} from "../actions/mining";
 
 
 function runPowerPlants(inventory, power, dispatch) {
@@ -30,7 +31,7 @@ function runPowerPlants(inventory, power, dispatch) {
 
     dispatch(powerProductionTick(totalPowerProduced, itemsUsed));
 
-    return totalPowerProduced;
+    return {inventory: inventory, totalPowerProduced: totalPowerProduced};
 
 }
 
@@ -57,17 +58,63 @@ function runStoneFurnaces(inventory, smelting, dispatch) {
 
             if (canAfford(inventory, itemCost)) {
                 dispatch(furnaceProductionStart(furnace.id, furnace.nextItem, itemCost));
+
+                inventory = removeItemsFromInventory(inventory, itemCost);
             }
         }
     }
+
+    return inventory;
+}
+
+function runMines(inventory, mining, dispatch) {
+    for (let mine of mining.mines) {
+        if (mine.on) {
+            if (mine.techType === 'coal1') {
+                // doesn't use power
+
+            } else {
+                // check if enough power is available
+
+
+            }
+
+            if (mine.progressTicks === mine.ticksCost) {
+                // mine is ready with this batch, dispatch action to add result to the inventory
+
+                const itemsProduced = [];
+                itemsProduced.push({name: mine.resourceType, amount: 5});
+
+                dispatch(miningProductionFinish(mine.id, itemsProduced));
+            }
+
+            if (mine.progressTicks === 0) {
+                // mine is starting with a new batch, dispach start action.
+
+                const itemCost = [];
+                if (mine.techType === 'coal1') {
+                    itemCost.push({name: 'coal', amount: 1}); // added fuel cost for coal powered mines
+                }
+
+                if (canAfford(inventory, itemCost)) {
+                    dispatch(miningProductionStart(mine.id, itemCost));
+                }
+            }
+        }
+    }
+
+    return inventory;
 }
 
 
-export default function mainGameTick(dispatch, inventory, power, smelting) {
+export default function mainGameTick(dispatch, inventory, power, smelting, mining) {
 
-    const powerProduced = runPowerPlants(inventory, power, dispatch);
+    const ppResult = runPowerPlants(inventory, power, dispatch);
+    inventory = ppResult.inventory;
 
-    runStoneFurnaces(inventory, smelting, dispatch);
+    inventory = runStoneFurnaces(inventory, smelting, dispatch);
+
+    inventory = runMines(inventory, mining, dispatch);
 
 
     dispatch(productionTick());

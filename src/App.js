@@ -14,7 +14,8 @@ const mapStateToProps = state => ({
     player: state.player,
     inventory: state.inventory,
     power: state.power,
-    smelting: state.smelting
+    smelting: state.smelting,
+    mining: state.mining
 });
 
 
@@ -32,8 +33,8 @@ class App extends Component {
     }
 
     mainTick = () => {
-        const {dispatch, inventory, power, smelting} = this.props;
-        mainGameTick(dispatch, inventory, power, smelting);
+        const {dispatch, inventory, power, smelting, mining} = this.props;
+        mainGameTick(dispatch, inventory, power, smelting, mining);
     };
 
     startTimer() {
@@ -69,7 +70,8 @@ App.propTypes = {
     player: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
-    smelting: PropTypes.object.isRequired
+    smelting: PropTypes.object.isRequired,
+    mining:PropTypes.object.isRequired
 };
 
 

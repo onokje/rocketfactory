@@ -25,14 +25,12 @@ class NewPlayer extends Component {
 
     loadGame = () => {
         const localStoragePlayer = localStorage.getItem('spaceClickerPlayerSession');
-        console.log(localStoragePlayer);
         this.props.loadPlayer(JSON.parse(localStoragePlayer));
     };
 
     renderLoadGameButton() {
         if (storageAvailable) {
             const localStoragePlayer = localStorage.getItem('spaceClickerPlayerSession');
-            console.log(localStoragePlayer);
             if (localStoragePlayer) {
                 return <div><button onClick={this.loadGame}>Resume game</button></div>
             }
