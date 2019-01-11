@@ -26,14 +26,32 @@ class Mine extends Component {
         toggleMine(mine.id, !mine.on);
     };
 
+    renderMineState() {
+        const {mine} = this.props;
+        if (mine.on) {
+            if (mine.powered) {
+                return mine.running ? <span className="on">Running</span> : <span className="waiting">Waiting</span>
+            } else {
+                return mine.running ? <span className="nopower">No power</span> : <span className="waiting">Waiting</span>;
+            }
+        } else {
+            return <span className="off">OFF</span>
+        }
+    }
+
+    getMineTypeName() {
+        const {mine} = this.props;
+        return 'Mine ' + mine.techType + ' (' + mine.resourceType + ')';
+    }
+
     render() {
         const {mine} = this.props;
         const completedPercentage = mine.on ? (mine.progressTicks * 100 / mine.ticksCost) : 0;
 
         return (
             <div key={mine.id} className="furnace">
-                <div>Coal mine</div>
-                <div>{mine.on ? 'ON' : 'OFF'} <button onClick={this.toggleMine}>Turn {mine.on ? 'OFF' : 'ON'}</button></div>
+                <div>{this.getMineTypeName()}</div>
+                <div>{this.renderMineState()} <button onClick={this.toggleMine}>Turn {mine.on ? 'OFF' : 'ON'}</button></div>
                 <ProgressBar completedPercentage={completedPercentage}/>
             </div>
         );

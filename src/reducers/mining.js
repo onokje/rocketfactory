@@ -2,6 +2,10 @@ const initialResourcesState = {
     mines: []
 };
 
+const findMineIdInPoweredMinesArray = (poweredMinesArray, mineId) => {
+    return !!poweredMinesArray.find(item => item === mineId);
+};
+
 const mining = (state = initialResourcesState, action) => {
     let mines;
 
@@ -17,6 +21,7 @@ const mining = (state = initialResourcesState, action) => {
                 techType: action.techType,
                 on: false,
                 running: false,
+                powered: false,
                 progressTicks: 0,
                 ticksCost: 5
             });
@@ -52,10 +57,16 @@ const mining = (state = initialResourcesState, action) => {
             return {...state, mines: mines};
         case 'PRODUCTION_TICK':
             mines = state.mines.map(mine => {
-                return mine.on && mine.running ? {
-                    ...mine,
-                    progressTicks: mine.progressTicks + 1
-                } : mine
+                if (mine.on) {
+                    const powered = findMineIdInPoweredMinesArray(action.poweredMineIds, mine.id);
+                    return mine.running && powered ? {
+                        ...mine,
+                        powered: true,
+                        progressTicks: mine.progressTicks + 1
+                    } : {...mine, powered: false}
+                }
+                return mine;
+
             });
 
             return {...state, mines: mines};

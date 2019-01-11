@@ -19,12 +19,13 @@ const player = (state = initialPlayerState, action) => {
         case 'SWITCH_TAB':
             return {...state, tab: action.tab};
         case 'HANDMINING_START':
-            return {...state, handmining: true, handminingResource: action.resource};
+            return {...state, handmining: true, handminingResource: action.resource, handminingTicksCost: 5};
         case 'HANDMINING_FINISH':
             return {...state, handmining: false, handminingResource: null, handminingProgressTicks: 0};
         case 'PRODUCTION_TICK':
             if (state.handmining) {
-                return {...state, handminingProgressTicks: state.handminingProgressTicks + 1};
+                const newTicks = state.handminingProgressTicks >= state.handminingTicksCost ? 0 : state.handminingProgressTicks + 1;
+                return {...state, handminingProgressTicks: newTicks};
             } else {
                 return state;
             }

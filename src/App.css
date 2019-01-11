@@ -13,7 +13,7 @@ header {
 }
 
 div.sidebar{
-    width: 200px;
+    width: 300px;
     position: fixed;
     top: 100px;
     left: 0;
@@ -21,7 +21,7 @@ div.sidebar{
     background-color: #333;
 }
 
-div.defaultContainer {margin-left: 200px; margin-top: 100px;}
+div.defaultContainer {margin-left: 300px; margin-top: 100px;}
 
 div.simpleDivider{
     background-color: #111;
@@ -53,3 +53,32 @@ ul.itemcost{
 }
 
 ul.itemcost li{padding: 2px;}
+
+div.playerCraftingBar{
+    background-color: #111;
+    position: fixed;
+    bottom: 0;
+    left: 300px;
+    width: calc(100% - 300px);
+    height: 100px;
+}
+
+span.off{
+    font-weight: bold;
+    color: #ffd30b;
+}
+
+span.on{
+    font-weight: bold;
+    color: #0ce22e;
+}
+
+span.waiting{
+    font-weight: bold;
+    color: #00a9e2;
+}
+
+span.nopower{
+    font-weight: bold;
+    color: #e22d00;
+}

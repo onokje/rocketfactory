@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {mineResource} from "../actions/inventory";
 import ProductionCost from "./ProductionCost";
-import {coalMine1Price} from "../helpers/gameData";
+import {coalMine1Price, electricMine1Price} from "../helpers/gameData";
 import {canAfford} from "../helpers/InventoryHelper";
 import uuidv4 from "uuid/v4";
 import {buildMine} from "../actions/mining";
 import Mine from "./Mine";
+import {handminingStart} from "../actions/player";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -17,8 +17,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    mineResource: (resourceType) => {
-        dispatch(mineResource(resourceType));
+    handminingStart: (resourceType) => {
+        dispatch(handminingStart(resourceType));
     },
     buildMine: (resourceType, techType, id) => {
         dispatch(buildMine(resourceType, techType, id));
@@ -29,19 +29,36 @@ const mapDispatchToProps = dispatch => ({
 
 class ResourceProduction extends Component {
 
-    buildCoalMine = () => {
+    buildMine(resourceType, techType) {
         const {inventory, buildMine} = this.props;
 
         if (canAfford(inventory, coalMine1Price)) {
             const uuid = uuidv4();
-            buildMine('coal', 'coal1', uuid);
+            buildMine(resourceType, techType, uuid);
         } else {
-            console.log('you cannot afford a coal powered coal mine!');
+            console.log('you cannot afford this mine!');
         }
     };
 
+    renderHandMining() {
+        const {player, handminingStart} = this.props;
+        let buttonsDisabled = false;
+        if (player.handmining) {
+            buttonsDisabled = true;
+        }
+
+        return <div className="simpleDivider">
+            <h2>Mine by hand</h2>
+            <button disabled={buttonsDisabled} onClick={() => handminingStart('iron')} >Mine iron!</button>
+            <button disabled={buttonsDisabled} onClick={() => handminingStart('coal')} >Mine coal!</button>
+            <button disabled={buttonsDisabled} onClick={() => handminingStart('stone')} >Mine stone!</button>
+            <button disabled={buttonsDisabled} onClick={() => handminingStart('copper')} >Mine copper!</button>
+        </div>;
+
+    }
+
     render() {
-        const {player, mineResource, mining} = this.props;
+        const {player, mining} = this.props;
 
         const totalMines = mining.mines.length;
 
@@ -49,18 +66,17 @@ class ResourceProduction extends Component {
             return (
                 <div className="defaultContainer">
                     <h1>Resource production</h1>
-                    <div className="simpleDivider">
-                        <h2>Mine by hand</h2>
-                        <button onClick={() => mineResource('iron')} >Mine iron!</button>
-                        <button onClick={() => mineResource('coal')} >Mine coal!</button>
-                        <button onClick={() => mineResource('stone')} >Mine stone!</button>
-                        <button onClick={() => mineResource('copper')} >Mine copper!</button>
-                    </div>
+                    {this.renderHandMining()}
 
                     <div className="simpleDivider">
                         <h2>Construct coal-powered coal mine</h2>
                         <ProductionCost items={coalMine1Price}/>
-                        <button onClick={this.buildCoalMine} >Build coal-powered coal mine!</button>
+                        <button onClick={() => this.buildMine('coal', 'coal1')} >Build coal-powered coal mine!</button>
+                    </div>
+                    <div className="simpleDivider">
+                        <h2>Construct eletric iron ore mine</h2>
+                        <ProductionCost items={electricMine1Price}/>
+                        <button onClick={() => this.buildMine('iron', 'electric1')} >Build eletric iron ore mine</button>
                     </div>
 
                     <div className="simpleDivider">
@@ -84,7 +100,7 @@ ResourceProduction.propTypes = {
     inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
     mining: PropTypes.object.isRequired,
-    mineResource: PropTypes.func.isRequired,
+    handminingStart: PropTypes.func.isRequired,
     buildMine: PropTypes.func.isRequired
 };
 

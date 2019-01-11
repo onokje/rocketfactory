@@ -35,6 +35,17 @@ export const coalMine1Price = [
     },
 ];
 
+export const electricMine1Price = [
+    {
+        name: 'steelPlate',
+        amount: 10
+    },
+    {
+        name: 'copperPlate',
+        amount: 10
+    }
+];
+
 
 export const itemRecipes = {
     ironPlate: {

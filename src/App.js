@@ -9,6 +9,7 @@ import ResourceProduction from "./Components/ResourceProduction";
 import PowerProduction from "./Components/PowerProduction";
 import mainGameTick from "./helpers/GameTicker";
 import Smelting from "./Components/Smelting";
+import PlayerCraftingBar from "./Components/PlayerCraftingBar";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -33,8 +34,8 @@ class App extends Component {
     }
 
     mainTick = () => {
-        const {dispatch, inventory, power, smelting, mining} = this.props;
-        mainGameTick(dispatch, inventory, power, smelting, mining);
+        const {dispatch, player, inventory, power, smelting, mining} = this.props;
+        mainGameTick(dispatch, player, inventory, power, smelting, mining);
     };
 
     startTimer() {
@@ -58,6 +59,7 @@ class App extends Component {
                     <ResourceProduction/>
                     <PowerProduction/>
                     <Smelting/>
+                    <PlayerCraftingBar/>
 
                 </div>
             );

@@ -4,6 +4,7 @@ import {itemRecipes} from "./gameData";
 import {productionTick} from "../actions/production";
 import {furnaceProductionFinish, furnaceProductionStart} from "../actions/smelting";
 import {miningProductionFinish, miningProductionStart} from "../actions/mining";
+import {handminingFinish} from "../actions/player";
 
 
 function runPowerPlants(inventory, power, dispatch) {
@@ -67,55 +68,80 @@ function runStoneFurnaces(inventory, smelting, dispatch) {
     return inventory;
 }
 
-function runMines(inventory, mining, dispatch) {
+function runMines(inventory, mining, dispatch, powerLeft) {
+    const poweredMineIds = [];
     for (let mine of mining.mines) {
         if (mine.on) {
-            if (mine.techType === 'coal1') {
-                // doesn't use power
-
-            } else {
-                // check if enough power is available
-
-
+            let powered = false;
+            let powerUsage;
+            switch (mine.techType) {
+                case 'coal1' : powerUsage = 0; break;// doesn't use power
+                case 'electric1' : powerUsage = 150; break;
+                default: powerUsage = 0;
             }
 
-            if (mine.progressTicks === mine.ticksCost) {
-                // mine is ready with this batch, dispatch action to add result to the inventory
-
-                const itemsProduced = [];
-                itemsProduced.push({name: mine.resourceType, amount: 5});
-
-                dispatch(miningProductionFinish(mine.id, itemsProduced));
+            // check if enough power is available
+            if (!powerUsage || powerLeft >= powerUsage) {
+                powerLeft = powerLeft - powerUsage;
+                powered = true;
+                poweredMineIds.push(mine.id);
             }
 
-            if (mine.progressTicks === 0) {
-                // mine is starting with a new batch, dispach start action.
+            if (powered) {
 
-                const itemCost = [];
-                if (mine.techType === 'coal1') {
-                    itemCost.push({name: 'coal', amount: 1}); // added fuel cost for coal powered mines
+                if (mine.progressTicks === mine.ticksCost) {
+                    // mine is ready with this batch, dispatch action to add result to the inventory
+
+                    const itemsProduced = [];
+                    itemsProduced.push({name: mine.resourceType, amount: 5});
+
+                    dispatch(miningProductionFinish(mine.id, itemsProduced));
                 }
 
-                if (canAfford(inventory, itemCost)) {
-                    dispatch(miningProductionStart(mine.id, itemCost));
+                if (mine.progressTicks === 0) {
+                    // mine is starting with a new batch, dispach start action.
+
+                    const itemCost = [];
+                    if (mine.techType === 'coal1') {
+                        itemCost.push({name: 'coal', amount: 1}); // added fuel cost for coal powered mines
+                    }
+
+                    if (canAfford(inventory, itemCost)) {
+                        dispatch(miningProductionStart(mine.id, itemCost));
+                    }
                 }
             }
         }
     }
 
-    return inventory;
+    return {inventory: inventory, powerLeft: powerLeft, poweredMineIds: poweredMineIds};
+}
+
+function handmining(dispatch, inventory, player){
+    if (player.handmining && player.handminingProgressTicks === player.handminingTicksCost) {
+        const itemsProduced = [];
+        itemsProduced.push({name: player.handminingResource, amount: 5});
+        dispatch(handminingFinish(itemsProduced));
+    }
 }
 
 
-export default function mainGameTick(dispatch, inventory, power, smelting, mining) {
+export default function mainGameTick(dispatch, player, inventory, power, smelting, mining) {
 
     const ppResult = runPowerPlants(inventory, power, dispatch);
     inventory = ppResult.inventory;
+    let powerLeft = ppResult.totalPowerProduced;
 
     inventory = runStoneFurnaces(inventory, smelting, dispatch);
 
-    inventory = runMines(inventory, mining, dispatch);
+    const minesResult = runMines(inventory, mining, dispatch, powerLeft);
+    inventory = minesResult.inventory;
+    powerLeft = minesResult.powerLeft;
+    const poweredMineIds = minesResult.poweredMineIds;
 
+    // assemblers here
 
-    dispatch(productionTick());
+    handmining(dispatch, inventory, player);
+
+    dispatch(productionTick(poweredMineIds));
 }
