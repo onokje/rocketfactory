@@ -1,13 +1,7 @@
-export const buildPowerPlant = (powerType, name, id) => ({
+export const buildPowerPlant = (techType, id) => ({
     type: 'BUILD_POWER_PLANT',
-    powerType,
+    techType,
     id
-});
-
-export const powerProductionTick = (powerProduced, itemCost) => ({
-    type: 'POWER_PRODUCTION_TICK',
-    powerProduced,
-    itemCost
 });
 
 export const togglePowerplant = (powerPlantId, on) => ({

@@ -1,4 +1,9 @@
-export const productionTick = (poweredMineIds) => ({
+export const productionTick = (poweredMineIds, poweredFurnaceIds, totalPowerProduced, powerLeft, itemsUsed, poweredPowerplants) => ({
     type: 'PRODUCTION_TICK',
-    poweredMineIds
+    poweredMineIds,
+    poweredFurnaceIds,
+    totalPowerProduced,
+    powerLeft,
+    itemsUsed,
+    poweredPowerplants
 });

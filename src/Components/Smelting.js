@@ -40,7 +40,7 @@ class Smelting extends Component {
     render() {
         const {player, smelting} = this.props;
 
-        const totalFurnaces = smelting.stoneFurnaces.length;
+        const totalFurnaces = smelting.furnaces.length;
 
         if (player.initialized && player.tab === 'smelting') {
             return (
@@ -53,7 +53,7 @@ class Smelting extends Component {
                     </div>
                     <div className="simpleDivider">
                         <h2>Furnaces:</h2>
-                        {smelting.stoneFurnaces.map(furnace => (<Furnace key={furnace.id} furnace={furnace}/>))}
+                        {smelting.furnaces.map(furnace => (<Furnace key={furnace.id} furnace={furnace}/>))}
 
                         {!totalFurnaces ? (<div>You do not have any furnaces</div>) : ''}
                     </div>

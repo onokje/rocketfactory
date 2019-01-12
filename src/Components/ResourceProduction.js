@@ -29,10 +29,10 @@ const mapDispatchToProps = dispatch => ({
 
 class ResourceProduction extends Component {
 
-    buildMine(resourceType, techType) {
+    buildMine(resourceType, techType, itemCost) {
         const {inventory, buildMine} = this.props;
 
-        if (canAfford(inventory, coalMine1Price)) {
+        if (canAfford(inventory, itemCost)) {
             const uuid = uuidv4();
             buildMine(resourceType, techType, uuid);
         } else {
@@ -71,12 +71,12 @@ class ResourceProduction extends Component {
                     <div className="simpleDivider">
                         <h2>Construct coal-powered coal mine</h2>
                         <ProductionCost items={coalMine1Price}/>
-                        <button onClick={() => this.buildMine('coal', 'coal1')} >Build coal-powered coal mine!</button>
+                        <button onClick={() => this.buildMine('coal', 'coal1', coalMine1Price)} >Build coal-powered coal mine!</button>
                     </div>
                     <div className="simpleDivider">
                         <h2>Construct eletric iron ore mine</h2>
                         <ProductionCost items={electricMine1Price}/>
-                        <button onClick={() => this.buildMine('iron', 'electric1')} >Build eletric iron ore mine</button>
+                        <button onClick={() => this.buildMine('iron', 'electric1', electricMine1Price)} >Build eletric iron ore mine</button>
                     </div>
 
                     <div className="simpleDivider">

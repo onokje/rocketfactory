@@ -1,12 +1,16 @@
 export const coalPowerPlantPrice = [
     {
-        name: 'iron',
+        name: 'ironPlate',
         amount: 10
     },
     {
-        name: 'coal',
+        name: 'steelPlate',
         amount: 5
     },
+    {
+        name: 'copperPlate',
+        amount: 15
+    },    
 ];
 
 export const stoneFurnacePrice = [

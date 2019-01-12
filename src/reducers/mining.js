@@ -63,7 +63,7 @@ const mining = (state = initialResourcesState, action) => {
                         ...mine,
                         powered: true,
                         progressTicks: mine.progressTicks + 1
-                    } : {...mine, powered: false}
+                    } : {...mine, powered: powered}
                 }
                 return mine;
 

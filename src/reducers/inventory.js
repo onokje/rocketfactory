@@ -40,8 +40,8 @@ const inventory = (state = initialInventoryState, action) => {
                 default:
                     return state;
             }
-        case 'POWER_PRODUCTION_TICK':
-            return removeItemsFromInventory(state, action.itemCost);
+        case 'PRODUCTION_TICK':
+            return removeItemsFromInventory(state, action.itemsUsed);
         case 'FURNACE_PRODUCTION_START':
         case 'MINING_PRODUCTION_START':
             return removeItemsFromInventory(state, action.itemCost);

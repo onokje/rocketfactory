@@ -32,7 +32,7 @@ class Mine extends Component {
             if (mine.powered) {
                 return mine.running ? <span className="on">Running</span> : <span className="waiting">Waiting</span>
             } else {
-                return mine.running ? <span className="nopower">No power</span> : <span className="waiting">Waiting</span>;
+                return <span className="nopower">No power</span>;
             }
         } else {
             return <span className="off">OFF</span>

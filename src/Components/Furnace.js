@@ -36,6 +36,19 @@ class Furnace extends Component {
 
     };
 
+    renderFurnaceState() {
+        const {furnace} = this.props;
+        if (furnace.on) {
+            if (furnace.powered) {
+                return furnace.running ? <span className="on">Running</span> : <span className="waiting">Waiting</span>
+            } else {
+                return furnace.running ? <span className="nopower">No power</span> : <span className="waiting">Waiting</span>;
+            }
+        } else {
+            return <span className="off">OFF</span>
+        }
+    }
+
     render() {
         const {furnace} = this.props;
         const completedPercentage = furnace.on ? (furnace.progressTicks * 100 / furnace.ticksCost) : 0;
@@ -43,7 +56,7 @@ class Furnace extends Component {
         return (
             <div key={furnace.id} className="furnace">
                 <div>Stone furnace</div>
-                <div>{furnace.on ? 'ON' : 'OFF'} <button onClick={this.toggleFurnace}>Turn {furnace.on ? 'OFF' : 'ON'}</button></div>
+                <div>{this.renderFurnaceState()} <button onClick={this.toggleFurnace}>Turn {furnace.on ? 'OFF' : 'ON'}</button></div>
                 <div>Smelt items:
                     <select value={furnace.nextItem} onChange={this.handleSelectChange}>
                         {this.getSmeltingItems().map(option => (<option key={option} value={option}>{option}</option>))}

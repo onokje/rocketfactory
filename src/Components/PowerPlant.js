@@ -23,13 +23,26 @@ class PowerPlant extends Component {
 
     };
 
+    renderPowerplantState() {
+        const {powerplant} = this.props;
+        if (powerplant.on) {
+            if (powerplant.powered) {
+                return <span className="on">Running</span>;
+            } else {
+                return <span className="nopower">No resources</span>;
+            }
+        } else {
+            return <span className="off">OFF</span>
+        }
+    }
+
     render() {
         const {powerplant} = this.props;
 
         return (
             <div key={powerplant.id} className="powerplant">
                 <div>Coal power plant</div>
-                <div>{powerplant.on ? 'ON' : 'OFF'} <button onClick={this.togglePowerplant}>Turn {powerplant.on ? 'OFF' : 'ON'}</button></div>
+                <div>{this.renderPowerplantState()} <button onClick={this.togglePowerplant}>Turn {powerplant.on ? 'OFF' : 'ON'}</button></div>
             </div>
         );
 

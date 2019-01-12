@@ -16,7 +16,9 @@ class SideBarPower extends Component {
             <div className="SideBarPower">
 
                 <h2>Power overview:</h2>
-                Produced last tick: <b>{power.powerProducedLastTick}</b> kW
+                Produced last tick: <b>{power.powerProducedLastTick}</b> kW<br/>
+                Used last tick: <b>{power.powerProducedLastTick - power.powerLeft}</b> kW<br/>
+                Unused last tick: <b>{power.powerLeft}</b> kW<br/>
             </div>
         );
 

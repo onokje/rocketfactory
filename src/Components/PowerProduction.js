@@ -41,7 +41,7 @@ class PowerProduction extends Component {
     render() {
         const {player, power} = this.props;
 
-        const totalPowerplants = power.coalPowerPlants.length;
+        const totalPowerplants = power.powerPlants.length;
 
         if (player.initialized && player.tab === 'power') {
             return (
@@ -54,7 +54,7 @@ class PowerProduction extends Component {
                     </div>
                     <div className="simpleDivider">
                         <h2>Power plants:</h2>
-                        {power.coalPowerPlants.map(powerplant => (<PowerPlant key={powerplant.id} powerplant={powerplant}/>))}
+                        {power.powerPlants.map(powerplant => (<PowerPlant key={powerplant.id} powerplant={powerplant}/>))}
 
                         {!totalPowerplants ? (<div>You do not have any power plants</div>) : ''}
                     </div>

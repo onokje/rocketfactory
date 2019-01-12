@@ -1,6 +1,6 @@
-export const buildFurnace = (furnaceType, name, id) => ({
+export const buildFurnace = (techType, id) => ({
     type: 'BUILD_FURNACE',
-    furnaceType,
+    techType,
     id
 });
 
