@@ -50,9 +50,29 @@ export const electricMine1Price = [
     }
 ];
 
+export const assembler1Price = [
+    {
+        name: 'ironPlate',
+        amount: 5
+    },
+    {
+        name: 'ironGear',
+        amount: 3
+    },
+    {
+        name: 'greenChip',
+        amount: 2
+    },
+    {
+        name: 'belt',
+        amount: 2
+    }
+];
+
 
 export const itemRecipes = {
     ironPlate: {
+        type: 'smelting',
         resultAmount: 5,
         cost: [
             {
@@ -62,6 +82,7 @@ export const itemRecipes = {
         ]
     },
     copperPlate: {
+        type: 'smelting',
         resultAmount: 5,
         cost: [
             {
@@ -71,6 +92,7 @@ export const itemRecipes = {
         ]
     },
     steelPlate: {
+        type: 'smelting',
         resultAmount: 2,
         cost: [
             {
@@ -82,5 +104,77 @@ export const itemRecipes = {
                 amount: 2
             }
         ]
-    }
+    },
+    ironGear: {
+        type: 'crafting',
+        handcrafting: true,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'ironPlate',
+                amount: 1
+            }
+        ]
+    },
+    copperWire: {
+        type: 'crafting',
+        handcrafting: true,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'copperPlate',
+                amount: 1
+            }
+        ]
+    },
+    belt: {
+        type: 'crafting',
+        handcrafting: true,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'ironPlate',
+                amount: 1
+            },
+            {
+                name: 'ironGear',
+                amount: 1
+            }
+        ]
+    },
+    greenChip: {
+        type: 'crafting',
+        handcrafting: true,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'ironGear',
+                amount: 1
+            },
+            {
+                name: 'copperWire',
+                amount: 2
+            }
+        ]
+    },
+    inserter: {
+        type: 'crafting',
+        handcrafting: true,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'ironGear',
+                amount: 1
+            },
+            {
+                name: 'ironPlate',
+                amount: 1
+            },
+            {
+                name: 'greenChip',
+                amount: 1
+            }
+        ]
+    },
+
 };

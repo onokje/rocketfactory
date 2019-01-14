@@ -22,3 +22,14 @@ export const handminingFinish = (itemsProduced) => ({
     type: 'HANDMINING_FINISH',
     itemsProduced
 });
+
+export const handCraftingStart = (item, itemCost) => ({
+    type: 'HANDCRAFTING_START',
+    item,
+    itemCost
+});
+
+export const handCraftingFinish = (itemsProduced) => ({
+    type: 'HANDCRAFTING_FINISH',
+    itemsProduced
+});

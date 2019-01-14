@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {switchTab} from "../actions/player";
 import Inventory from "./Inventory";
 import SideBarPower from "./SideBarPower";
+import PlayerCraftingBar from "./PlayerCraftingBar";
 
 const mapStateToProps = state => ({
 
@@ -32,10 +33,14 @@ class SideBar extends Component {
                     <div onClick={() => switchTab('smelting')}>
                         Smelting
                     </div>
+                    <div onClick={() => switchTab('handcrafting')}>
+                        Handcrafting
+                    </div>
                 </nav>
 
                 <Inventory/>
                 <SideBarPower/>
+                <PlayerCraftingBar/>
             </div>
         );
     }

@@ -3,21 +3,15 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import ProgressBar from "./ProgressBar";
 
-
 const mapStateToProps = state => ({
-    player: state.player,
-    // inventory: state.inventory,
-    // power: state.power,
-    // smelting: state.smelting
+    player: state.player
 });
 
 const mapDispatchToProps = dispatch => ({
 
-
 });
 
 class PlayerCraftingBar extends Component {
-
 
     render() {
         const {player} = this.props;
@@ -31,10 +25,20 @@ class PlayerCraftingBar extends Component {
                     <ProgressBar completedPercentage={completedPercentage}/>
                 </div>
             );
-        } else {
-            return null;
+        }
+        if (player.handcrafting && player.handcraftingItem) {
+            const completedPercentage = player.handcrafting ? (player.handcraftingProgressTicks * 100 / player.handcraftingTicksCost) : 0;
+
+            return (
+                <div className="playerCraftingBar">
+                    <div>Currently Crafting: {player.handcraftingItem}</div>
+                    <ProgressBar completedPercentage={completedPercentage}/>
+                </div>
+            );
         }
 
+
+        return null;
     }
 }
 

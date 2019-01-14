@@ -43,7 +43,7 @@ class ResourceProduction extends Component {
     renderHandMining() {
         const {player, handminingStart} = this.props;
         let buttonsDisabled = false;
-        if (player.handmining) {
+        if (player.handmining || player.handcrafting) {
             buttonsDisabled = true;
         }
 

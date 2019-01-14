@@ -3,7 +3,7 @@ import {itemRecipes} from "./gameData";
 import {productionTick} from "../actions/production";
 import {furnaceProductionFinish, furnaceProductionStart} from "../actions/smelting";
 import {miningProductionFinish, miningProductionStart} from "../actions/mining";
-import {handminingFinish} from "../actions/player";
+import {handCraftingFinish, handminingFinish} from "../actions/player";
 
 
 function runPowerPlants(inventory, power) {
@@ -146,11 +146,18 @@ function runMines(inventory, mining, dispatch, powerLeft) {
     return {inventory: inventory, powerLeft: powerLeft, poweredMineIds: poweredMineIds};
 }
 
-function handmining(dispatch, inventory, player){
+function handmining(dispatch, player){
     if (player.handmining && player.handminingProgressTicks === player.handminingTicksCost) {
         const itemsProduced = [];
         itemsProduced.push({name: player.handminingResource, amount: 5});
         dispatch(handminingFinish(itemsProduced));
+    }
+}
+function handcrafting(dispatch, player){
+    if (player.handcrafting && player.handcraftingProgressTicks === player.handcraftingTicksCost) {
+        const itemsProduced = [];
+        itemsProduced.push({name: player.handcraftingItem, amount: itemRecipes[player.handcraftingItem].resultAmount});
+        dispatch(handCraftingFinish(itemsProduced));
     }
 }
 
@@ -174,7 +181,8 @@ export default function mainGameTick(dispatch, player, inventory, power, smeltin
 
     // assemblers here
 
-    handmining(dispatch, inventory, player);
+    handmining(dispatch, player);
+    handcrafting(dispatch, player);
 
     dispatch(productionTick(
         poweredMineIds,
