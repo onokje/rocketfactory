@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import ProgressBar from "./ProgressBar";
-import {toggleMine} from "../actions/mining";
+import ProgressBar from "../ProgressBar/ProgressBar";
+import {toggleMine} from "../../actions/mining";
 
 
 const mapStateToProps = state => ({

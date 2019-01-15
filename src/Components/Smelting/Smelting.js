@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
-import {canAfford} from "../helpers/InventoryHelper";
+import {canAfford} from "../../helpers/InventoryHelper";
 
-import ProductionCost from "./ProductionCost";
-import {buildFurnace} from "../actions/smelting";
-import {stoneFurnacePrice} from "../helpers/gameData";
-import Furnace from "./Furnace";
+import ProductionCost from "../ProductionCost/ProductionCost";
+import {buildFurnace} from "../../actions/smelting";
+import {stoneFurnacePrice} from "../../helpers/gameData";
+import Furnace from "../Furnace/Furnace";
 import uuidv4 from "uuid/v4";
 
 const mapStateToProps = state => ({

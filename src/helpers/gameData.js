@@ -176,5 +176,20 @@ export const itemRecipes = {
             }
         ]
     },
+    redScience: {
+        type: 'crafting',
+        handcrafting: true,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'ironGear',
+                amount: 1
+            },
+            {
+                name: 'copperPlate',
+                amount: 2
+            }
+        ]
+    },
 
 };

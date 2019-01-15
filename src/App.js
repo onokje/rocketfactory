@@ -1,22 +1,24 @@
 import React, {Component} from 'react';
 import './App.css';
-import Header from "./Components/Header";
+import Header from "./Components/Header/Header";
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import NewPlayer from "./Components/NewPlayer";
-import SideBar from "./Components/Sidebar";
-import ResourceProduction from "./Components/ResourceProduction";
-import PowerProduction from "./Components/PowerProduction";
+import NewPlayer from "./Components/NewPlayer/NewPlayer";
+import SideBar from "./Components/Sidebar/Sidebar";
+import ResourceProduction from "./Components/ResourceProduction/ResourceProduction";
+import PowerProduction from "./Components/PowerProduction/PowerProduction";
 import mainGameTick from "./helpers/GameTicker";
-import Smelting from "./Components/Smelting";
-import HandCrafting from "./Components/HandCrafting";
+import Smelting from "./Components/Smelting/Smelting";
+import HandCrafting from "./Components/HandCrafting/HandCrafting";
+import Crafting from "./Components/Crafting/Crafting";
 
 const mapStateToProps = state => ({
     player: state.player,
     inventory: state.inventory,
     power: state.power,
     smelting: state.smelting,
-    mining: state.mining
+    mining: state.mining,
+    crafting: state.crafting
 });
 
 
@@ -34,8 +36,8 @@ class App extends Component {
     }
 
     mainTick = () => {
-        const {dispatch, player, inventory, power, smelting, mining} = this.props;
-        mainGameTick(dispatch, player, inventory, power, smelting, mining);
+        const {dispatch, player, inventory, power, smelting, mining, crafting} = this.props;
+        mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting);
     };
 
     startTimer() {
@@ -60,6 +62,7 @@ class App extends Component {
                     <PowerProduction/>
                     <Smelting/>
                     <HandCrafting/>
+                    <Crafting/>
 
                 </div>
             );
@@ -73,7 +76,8 @@ App.propTypes = {
     inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
     smelting: PropTypes.object.isRequired,
-    mining:PropTypes.object.isRequired
+    mining:PropTypes.object.isRequired,
+    crafting:PropTypes.object.isRequired
 };
 
 

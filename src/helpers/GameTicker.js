@@ -4,6 +4,7 @@ import {productionTick} from "../actions/production";
 import {furnaceProductionFinish, furnaceProductionStart} from "../actions/smelting";
 import {miningProductionFinish, miningProductionStart} from "../actions/mining";
 import {handCraftingFinish, handminingFinish} from "../actions/player";
+import {assemblerProductionFinish, assemblerProductionStart} from "../actions/crafting";
 
 
 function runPowerPlants(inventory, power) {
@@ -146,6 +147,52 @@ function runMines(inventory, mining, dispatch, powerLeft) {
     return {inventory: inventory, powerLeft: powerLeft, poweredMineIds: poweredMineIds};
 }
 
+function runCrafters(inventory, crafting, dispatch, powerLeft) {
+    const poweredAssemblerIds = [];
+    for (let assembler of crafting.assemblers) {
+        if (assembler.on) {
+            let powered = false;
+            let powerUsage;
+            switch (assembler.techType) {
+                case 'tier1' : powerUsage = 250; break;
+                default: throw Error('Invalid tech type found in run mines switch case');
+            }
+
+            // check if enough power is available
+            if (powerLeft >= powerUsage) {
+                powerLeft = powerLeft - powerUsage;
+                powered = true;
+                poweredAssemblerIds.push(assembler.id);
+            }
+
+            if (powered) {
+
+                if (assembler.progressTicks === assembler.ticksCost) {
+                    // assembler is ready with this batch, dispatch action to add result to the inventory
+
+                    const itemsProduced = [];
+                    itemsProduced.push({name: assembler.currentItem, amount: itemRecipes[assembler.currentItem].resultAmount});
+
+                    dispatch(assemblerProductionFinish(assembler.id, itemsProduced));
+                }
+
+                if (assembler.progressTicks === 0) {
+                    // assembler is starting with a new batch, dispach start action.
+
+                    const itemCost = JSON.parse(JSON.stringify(itemRecipes[assembler.nextItem].cost));
+
+                    if (canAfford(inventory, itemCost)) {
+                        dispatch(assemblerProductionStart(assembler.id, assembler.nextItem, itemCost));
+                        inventory = removeItemsFromInventory(inventory, itemCost);
+                    }
+                }
+            }
+        }
+    }
+
+    return {inventory: inventory, powerLeft: powerLeft, poweredAssemblerIds: poweredAssemblerIds};
+}
+
 function handmining(dispatch, player){
     if (player.handmining && player.handminingProgressTicks === player.handminingTicksCost) {
         const itemsProduced = [];
@@ -162,7 +209,7 @@ function handcrafting(dispatch, player){
 }
 
 
-export default function mainGameTick(dispatch, player, inventory, power, smelting, mining) {
+export default function mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting) {
 
     const ppResult = runPowerPlants(inventory, power);
     inventory = ppResult.inventory;
@@ -178,8 +225,8 @@ export default function mainGameTick(dispatch, player, inventory, power, smeltin
     powerLeft = furnaceResult.powerLeft;
     const poweredFurnaceIds = furnaceResult.poweredFurnaceIds;
 
-
-    // assemblers here
+    const craftingResult = runCrafters(inventory, crafting, dispatch, powerLeft);
+    powerLeft = craftingResult.powerLeft;
 
     handmining(dispatch, player);
     handcrafting(dispatch, player);
@@ -190,5 +237,6 @@ export default function mainGameTick(dispatch, player, inventory, power, smeltin
         ppResult.totalPowerProduced,
         powerLeft,
         ppResult.totalItemsUsed,
-        ppResult.poweredPowerplants));
+        ppResult.poweredPowerplants,
+        craftingResult.poweredAssemblerIds));
 }

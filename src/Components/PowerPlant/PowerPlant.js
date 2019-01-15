@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {togglePowerplant} from "../actions/power";
+import {togglePowerplant} from "../../actions/power";
 
 
 const mapStateToProps = state => ({

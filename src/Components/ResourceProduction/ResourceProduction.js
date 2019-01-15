@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import ProductionCost from "./ProductionCost";
-import {coalMine1Price, electricMine1Price} from "../helpers/gameData";
-import {canAfford} from "../helpers/InventoryHelper";
+import ProductionCost from "../ProductionCost/ProductionCost";
+import {coalMine1Price, electricMine1Price} from "../../helpers/gameData";
+import {canAfford} from "../../helpers/InventoryHelper";
 import uuidv4 from "uuid/v4";
-import {buildMine} from "../actions/mining";
-import Mine from "./Mine";
-import {handminingStart} from "../actions/player";
+import {buildMine} from "../../actions/mining";
+import Mine from "../Mine/Mine";
+import {handminingStart} from "../../actions/player";
 
 const mapStateToProps = state => ({
     player: state.player,

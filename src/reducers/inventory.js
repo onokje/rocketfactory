@@ -48,11 +48,13 @@ const inventory = (state = initialInventoryState, action) => {
         case 'FURNACE_PRODUCTION_START':
         case 'MINING_PRODUCTION_START':
         case 'HANDCRAFTING_START':
+        case 'ASSEMBLER_PRODUCTION_START':
             return removeItemsFromInventory(state, action.itemCost);
         case 'FURNACE_PRODUCTION_FINISH':
         case 'MINING_PRODUCTION_FINISH':
         case 'HANDMINING_FINISH':
         case 'HANDCRAFTING_FINISH':
+        case 'ASSEMBLER_PRODUCTION_FINISH':
             return addItemsToInventory(state, action.itemsProduced);
         default:
             return state;
