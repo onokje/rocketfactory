@@ -23,6 +23,9 @@ class Header extends Component {
             <header>
                 <div className="mainTitle">Rocketfactory!</div>
                 <nav className="tabs">
+                    <div className={player.tab === 'resourceMap' ? 'active' : ''} onClick={() => switchTab('resourceMap')}>
+                        Resource Map
+                    </div>
                     <div className={player.tab === 'resourceProduction' ? 'active' : ''} onClick={() => switchTab('resourceProduction')}>
                         Resource production
                     </div>

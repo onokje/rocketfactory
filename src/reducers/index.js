@@ -5,6 +5,7 @@ import power from "./power";
 import smelting from "./smelting";
 import mining from "./mining";
 import crafting from "./crafting";
+import resourcemap from "./resourcemap";
 
 export default combineReducers({
     player,
@@ -12,5 +13,6 @@ export default combineReducers({
     power,
     smelting,
     mining,
-    crafting
+    crafting,
+    resourcemap
 });

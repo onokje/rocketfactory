@@ -11,6 +11,7 @@ import mainGameTick from "./helpers/GameTicker";
 import Smelting from "./Components/Smelting/Smelting";
 import HandCrafting from "./Components/HandCrafting/HandCrafting";
 import Crafting from "./Components/Crafting/Crafting";
+import ResourceMap from "./Components/ResourceMap/ResourceMap";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -58,6 +59,7 @@ class App extends Component {
                     <Header/>
                     <SideBar/>
                     <NewPlayer/>
+                    <ResourceMap/>
                     <ResourceProduction/>
                     <PowerProduction/>
                     <Smelting/>

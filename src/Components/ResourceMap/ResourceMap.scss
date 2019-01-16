@@ -1,0 +1,44 @@
+div.resourceMapGrid{
+    height: 600px;
+    width: 600px;
+    border: solid 1px #666;
+    position: relative;
+
+    div {
+        height: 38px;
+        width: 38px;
+        border: solid 1px #666;
+        position: absolute;
+        background-color: #000;
+    }
+
+    div.base {
+        background-color: #0ce22e;
+    }
+    div.coal {
+        background-color: #222;
+    }
+    div.iron {
+        background-color: #1f43df;
+    }
+    div.oil {
+        background-color: #a7068b;
+    }
+    div.copper {
+        background-color: #e0514a;
+    }
+    div.stone {
+        background-color: #6e3d0a;
+    }
+    div.none {
+        background-color: #0c9200;
+    }
+
+    div:hover {
+        border: solid 1px #aaa;
+    }
+
+    div.selected {
+        border: solid 1px #00f;
+    }
+}
