@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {toggleFurnace} from "../../actions/smelting";
 import ProgressBar from "../ProgressBar/ProgressBar";
+import MachineState from "../MachineState/MachineState";
 
 
 const mapStateToProps = state => ({
@@ -38,15 +39,7 @@ class Furnace extends Component {
 
     renderFurnaceState() {
         const {furnace} = this.props;
-        if (furnace.on) {
-            if (furnace.powered) {
-                return furnace.running ? <span className="on">Running</span> : <span className="waiting">Waiting</span>
-            } else {
-                return furnace.running ? <span className="nopower">No power</span> : <span className="waiting">Waiting</span>;
-            }
-        } else {
-            return <span className="off">OFF</span>
-        }
+        return <MachineState on={furnace.on} powered={furnace.powered} running={furnace.running}/>
     }
 
     render() {

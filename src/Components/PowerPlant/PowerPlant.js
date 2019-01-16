@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {togglePowerplant} from "../../actions/power";
+import MachineState from "../MachineState/MachineState";
 
 
 const mapStateToProps = state => ({
@@ -25,15 +26,8 @@ class PowerPlant extends Component {
 
     renderPowerplantState() {
         const {powerplant} = this.props;
-        if (powerplant.on) {
-            if (powerplant.powered) {
-                return <span className="on">Running</span>;
-            } else {
-                return <span className="nopower">No resources</span>;
-            }
-        } else {
-            return <span className="off">OFF</span>
-        }
+        return <MachineState on={powerplant.on} powered={powerplant.powered} running={true} isPowerplant={true} />
+
     }
 
     render() {

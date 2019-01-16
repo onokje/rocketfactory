@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
+import "./ProgressBar.scss";
 
 export default function ProgressBar(props) {
 
@@ -7,7 +8,7 @@ export default function ProgressBar(props) {
 
     return (
         <div className="progressbar">
-            <div className="bar" style={{width: completedPercentage + '%'}}></div>
+            <div className="bar" style={{width: completedPercentage + '%'}} />
         </div>
     );
 }

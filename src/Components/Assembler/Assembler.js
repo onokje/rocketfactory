@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import {toggleAssembler} from "../../actions/crafting";
 import {itemRecipes} from "../../helpers/gameData";
+import MachineState from "../MachineState/MachineState";
 
 
 const mapStateToProps = state => ({
@@ -45,15 +46,7 @@ class Assembler extends Component {
 
     renderAssemblerState() {
         const {assembler} = this.props;
-        if (assembler.on) {
-            if (assembler.powered) {
-                return assembler.running ? <span className="on">Running</span> : <span className="waiting">Waiting</span>
-            } else {
-                return <span className="nopower">No power</span>;
-            }
-        } else {
-            return <span className="off">OFF</span>
-        }
+        return <MachineState on={assembler.on} powered={assembler.powered} running={assembler.running}/>
     }
 
     render() {

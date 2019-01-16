@@ -200,6 +200,7 @@ function handmining(dispatch, player){
         dispatch(handminingFinish(itemsProduced));
     }
 }
+
 function handcrafting(dispatch, player){
     if (player.handcrafting && player.handcraftingProgressTicks === player.handcraftingTicksCost) {
         const itemsProduced = [];
@@ -207,7 +208,6 @@ function handcrafting(dispatch, player){
         dispatch(handCraftingFinish(itemsProduced));
     }
 }
-
 
 export default function mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting) {
 

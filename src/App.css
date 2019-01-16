@@ -3,25 +3,8 @@ body{
     color: white;
 }
 
-header {
-    min-height: 100px;
-    width: 100%;
-    font-size: 24px;
-    position: fixed;
-    top: 0;
-    left: 0;
-}
 
-div.sidebar{
-    width: 300px;
-    position: fixed;
-    top: 100px;
-    left: 0;
-    height: calc(100% - 100px);
-    background-color: #333;
-}
-
-div.defaultContainer {margin-left: 300px; margin-top: 100px;}
+div.defaultContainer {margin-left: 300px; margin-top: 70px;}
 
 div.simpleDivider{
     background-color: #111;
@@ -29,56 +12,8 @@ div.simpleDivider{
     margin-bottom: 10px;
 }
 
-div.furnace, div.powerplant{
+div.furnace, div.powerplant, div.assembler{
     background-color: #333;
     padding: 10px;
     margin-bottom: 5px;
-}
-
-div.progressbar{
-    width: 100px;
-    height: 8px;
-    border: solid 1px #666;
-}
-
-div.progressbar div.bar {
-    background-color: #080;
-    height: 8px;
-}
-
-ul.itemcost{
-    list-style: none;
-    border: solid 1px #888;
-    padding: 5px;
-}
-
-ul.itemcost li{padding: 2px;}
-
-div.playerCraftingBar{
-    background-color: #111;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 300px;
-    height: 100px;
-}
-
-span.off{
-    font-weight: bold;
-    color: #ffd30b;
-}
-
-span.on{
-    font-weight: bold;
-    color: #0ce22e;
-}
-
-span.waiting{
-    font-weight: bold;
-    color: #00a9e2;
-}
-
-span.nopower{
-    font-weight: bold;
-    color: #e22d00;
 }

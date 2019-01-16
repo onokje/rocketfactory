@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
+import "./ProductionCost.scss";
 
 function costItem(item) {
     return (<li key={item.name}>{item.name} : {item.amount}</li>);

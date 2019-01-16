@@ -1,0 +1,26 @@
+header {
+    min-height: 50px;
+    width: 100%;
+    font-size: 24px;
+    position: fixed;
+    background-color: #111;
+    top: 0;
+    left: 0;
+
+    nav.tabs{
+        display: flex;
+        margin-left: 300px;
+
+        div {
+            padding: 2px 15px;
+            border: solid 1px #666;
+            cursor: pointer;
+        }
+        div:hover{
+            background-color: #00a;
+        }
+        div.active {
+            background-color: #008;
+        }
+    }
+}

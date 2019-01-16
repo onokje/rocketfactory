@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import {toggleMine} from "../../actions/mining";
+import MachineState from "../MachineState/MachineState";
 
 
 const mapStateToProps = state => ({
@@ -28,15 +29,7 @@ class Mine extends Component {
 
     renderMineState() {
         const {mine} = this.props;
-        if (mine.on) {
-            if (mine.powered) {
-                return mine.running ? <span className="on">Running</span> : <span className="waiting">Waiting</span>
-            } else {
-                return <span className="nopower">No power</span>;
-            }
-        } else {
-            return <span className="off">OFF</span>
-        }
+        return <MachineState on={mine.on} powered={mine.powered} running={mine.running}/>
     }
 
     getMineTypeName() {
