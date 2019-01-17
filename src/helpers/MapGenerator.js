@@ -33,6 +33,21 @@ export default function createGrid() {
 
             if (x === 7 && y === 7) {
                 grid.push(createCell(x, y, 'base'));
+            } else if (x === 6 && y === 7){
+                grid.push(createCell(x, y, 'coal'));
+            } else if (x === 7 && y === 6){
+                grid.push(createCell(x, y, 'iron'));
+            } else if (x === 8 && y === 7){
+                grid.push(createCell(x, y, 'copper'));
+            } else if (x === 7 && y === 8){
+                grid.push(createCell(x, y, 'stone'));
+            } else if (
+                (x === 6 && y === 6) ||
+                (x === 8 && y === 6) ||
+                (x === 6 && y === 8) ||
+                (x === 8 && y === 8)
+            ){
+                grid.push(createCell(x, y, 'none'));
             } else {
                 grid.push(createCell(x, y, getRandomResource()));
             }

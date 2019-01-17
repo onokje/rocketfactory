@@ -51,6 +51,7 @@ class Grid extends Component {
 Grid.propTypes = {
     mining: PropTypes.object.isRequired,
     resourcemap: PropTypes.object.isRequired,
+    selectCell: PropTypes.func.isRequired
 };
 
 export default connect(

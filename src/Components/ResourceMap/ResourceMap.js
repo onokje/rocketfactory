@@ -8,6 +8,7 @@ import {handminingStart} from "../../actions/player";
 import {createMap} from "../../actions/resourcemap";
 import Grid from "./Grid";
 import "./ResourceMap.scss";
+import MapSelectionPanel from "./MapSelectionPanel";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -60,8 +61,10 @@ class ResourceMap extends Component {
             return (
                 <div className="defaultContainer">
                     <h1>Resource map</h1>
-                    <Grid/>
-
+                    <div className="mapcontainer">
+                        <Grid/>
+                        <MapSelectionPanel/>
+                    </div>
                 </div>
             );
         }
