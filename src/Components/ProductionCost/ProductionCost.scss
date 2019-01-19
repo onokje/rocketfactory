@@ -1,9 +1,4 @@
-ul.itemcost{
-    list-style: none;
+div.itemcost{
     border: solid 1px #888;
-    padding: 5px;
-
-    li {
-        padding: 2px;
-    }
+    display: flex;
 }

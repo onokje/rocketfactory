@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {findSectorByCoords} from "../../helpers/ResourceMapHelpers";
+import {findMineByCoords, findSectorByCoords} from "../../helpers/ResourceMapHelpers";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import {exploreStart} from "../../actions/resourcemap";
 import {handminingStart} from "../../actions/player";
 import {buildMine} from "../../actions/mining";
+import Mine from "../Mine/Mine";
+import ProductionCost from "../ProductionCost/ProductionCost";
+import {minePrices} from "../../helpers/gameData";
+import {canAfford} from "../../helpers/InventoryHelper";
+import uuidv4 from "uuid/v4";
 
 
 const mapStateToProps = state => ({
@@ -23,8 +28,8 @@ const mapDispatchToProps = dispatch => ({
     handminingStart: (resourceType) => {
         dispatch(handminingStart(resourceType));
     },
-    buildMine: (resourceType, techType, id) => {
-        dispatch(buildMine(resourceType, techType, id));
+    buildMine: (resourceType, techType, id, x, y) => {
+        dispatch(buildMine(resourceType, techType, id, x, y));
     },
 });
 
@@ -62,6 +67,18 @@ class MapSelectionPanel extends Component {
         return null;
     }
 
+    buildMine(resourceType, techType, selectedCell) {
+        const {inventory, buildMine} = this.props;
+
+        const itemCost = minePrices[techType].slice(0);
+        if (canAfford(inventory, itemCost)) {
+            const uuid = uuidv4();
+            buildMine(resourceType, techType, uuid, selectedCell.x, selectedCell.y);
+        } else {
+            console.log('you cannot afford this mine!');
+        }
+    };
+
     renderHandminingOptions(resource) {
         if (resource === 'none' || resource === 'base') {
             return null;
@@ -82,19 +99,48 @@ class MapSelectionPanel extends Component {
         </div>;
     }
 
+    renderMines(selectedCell){
+        if (selectedCell.resource === 'none' || selectedCell.resource === 'base') {
+            return null;
+        }
+
+        const {mining} = this.props;
+        const mine = findMineByCoords(mining.mines, selectedCell.x, selectedCell.y);
+        if (mine) {
+            return <Mine key={mine.id} mine={mine}/>
+        } else {
+            if (selectedCell.resource === 'oil') {
+
+            } else {
+                return <div>
+                    <div className="simpleDivider">
+                        <h2>Construct coal-powered {selectedCell.resource} mine</h2>
+                        <ProductionCost items={minePrices['coal1']}/>
+                        <button onClick={() => this.buildMine(selectedCell.resource, 'coal1', selectedCell)} >Build</button>
+                    </div>
+                    <div className="simpleDivider">
+                        <h2>Construct electric {selectedCell.resource} mine</h2>
+                        <ProductionCost items={minePrices['electric1']}/>
+                        <button onClick={() => this.buildMine(selectedCell.resource, 'electric1', selectedCell)} >Build</button>
+                    </div>
+                </div>
+            }
+
+        }
+
+    }
+
     renderMiningOptions() {
         const {resourcemap} = this.props;
         if (resourcemap.mapSelected) {
             const selectedCell = findSectorByCoords(resourcemap.map, resourcemap.mapSelected.x, resourcemap.mapSelected.y);
 
             if (selectedCell.explored) {
-                return this.renderHandminingOptions(selectedCell.resource)
-                // find mine
 
-                // if mine, display
-
-                // else show build options
-
+                return <div>
+                    {this.renderHandminingOptions(selectedCell.resource)}
+                    {this.renderMines(selectedCell)}
+                </div>
 
             }
         }

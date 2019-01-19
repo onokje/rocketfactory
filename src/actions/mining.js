@@ -1,8 +1,10 @@
-export const buildMine = (resourceType, techType, id) => ({
+export const buildMine = (resourceType, techType, id, x, y) => ({
     type: 'BUILD_MINE',
     resourceType,
     techType,
-    id
+    id,
+    x,
+    y
 });
 
 export const toggleMine = (mineId, on) => ({

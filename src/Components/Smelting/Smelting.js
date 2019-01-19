@@ -6,7 +6,7 @@ import {canAfford} from "../../helpers/InventoryHelper";
 
 import ProductionCost from "../ProductionCost/ProductionCost";
 import {buildFurnace} from "../../actions/smelting";
-import {stoneFurnacePrice} from "../../helpers/gameData";
+import {furnacePrices} from "../../helpers/gameData";
 import Furnace from "../Furnace/Furnace";
 import uuidv4 from "uuid/v4";
 
@@ -26,12 +26,14 @@ const mapDispatchToProps = dispatch => ({
 
 class Smelting extends Component {
 
-    buildStoneFurnace = () => {
+    buildFurnace(techType) {
         const {inventory, buildFurnace} = this.props;
 
-        if (canAfford(inventory, stoneFurnacePrice)) {
+        const itemCost = furnacePrices[techType].slice(0);
+
+        if (canAfford(inventory, itemCost)) {
             const uuid = uuidv4();
-            buildFurnace('stone', uuid);
+            buildFurnace(techType, uuid);
         } else {
             console.log('you cannot afford a stone furnace!');
         }
@@ -48,8 +50,8 @@ class Smelting extends Component {
                     <h1>Smelting</h1>
                     <div className="simpleDivider">
                         <h2>Construct new stone furnace</h2>
-                        <ProductionCost items={stoneFurnacePrice}/>
-                        <button onClick={this.buildStoneFurnace} >Build stone furnace!</button>
+                        <ProductionCost items={furnacePrices['stone']}/>
+                        <button onClick={() => this.buildFurnace('stone')} >Build stone furnace!</button>
                     </div>
                     <div className="simpleDivider">
                         <h2>Furnaces:</h2>

@@ -4,7 +4,8 @@ import connect from "react-redux/es/connect/connect";
 import {itemRecipes} from "../../helpers/gameData";
 import {canAfford} from "../../helpers/InventoryHelper";
 import {handCraftingStart} from "../../actions/player";
-
+import ItemIcon from "../ItemIcon/ItemIcon";
+import "./Handcrafting.scss";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -24,17 +25,18 @@ class HandCrafting extends Component {
         if (entry[1].handcrafting) {
             const itemKey =  entry[0];
             const {player, handCraftingStart, inventory} = this.props;
-            let buttonDisabled = false;
-            if (player.handmining || player.handcrafting) {
-                buttonDisabled = true;
-            }
-            if (!canAfford(inventory, entry[1].cost)) {
-                buttonDisabled = true;
+            let onClick = null;
 
+            if (!player.handmining && !player.handcrafting && canAfford(inventory, entry[1].cost)) {
+                onClick = () => handCraftingStart(itemKey, entry[1].cost);
             }
 
-            return <button key={itemKey} disabled={buttonDisabled}
-                           onClick={() => handCraftingStart(itemKey, entry[1].cost)}>{itemKey}</button>;
+            return <ItemIcon
+                item={itemKey}
+                amount={entry[1].resultAmount}
+                onClick={onClick}
+            />
+
         }
         return null;
     }
@@ -46,8 +48,9 @@ class HandCrafting extends Component {
             return (
                 <div className="defaultContainer">
                     <h1>Handcrafting</h1>
-                    {Object.entries(itemRecipes).map(entry => this.renderHandCraftingButton(entry))}
-
+                    <div className="handcraftingButtons">
+                        {Object.entries(itemRecipes).map(entry => this.renderHandCraftingButton(entry))}
+                    </div>
                 </div>
             );
         }

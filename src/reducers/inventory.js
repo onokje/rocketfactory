@@ -1,4 +1,8 @@
-import {coalMine1Price, coalPowerPlantPrice, electricMine1Price, stoneFurnacePrice} from "../helpers/gameData";
+import {
+    coalPowerPlantPrice,
+    furnacePrices,
+    minePrices,
+} from "../helpers/gameData";
 import {
     addItemsToInventory,
     addItemToInventory,
@@ -6,6 +10,7 @@ import {
 } from "../helpers/InventoryHelper";
 
 const initialInventoryState = [];
+let itemCost;
 
 const inventory = (state = initialInventoryState, action) => {
     switch (action.type) {
@@ -23,26 +28,14 @@ const inventory = (state = initialInventoryState, action) => {
                     return state;
             }
         case 'BUILD_FURNACE':
-            switch (action.techType) {
-                case 'stone':
+            itemCost = furnacePrices[action.techType].slice(0);
+            return removeItemsFromInventory(state, itemCost);
 
-                    return removeItemsFromInventory(state, stoneFurnacePrice);
-
-                default:
-                    return state;
-            }
         case 'BUILD_MINE':
-            switch (action.techType) {
-                case 'coal1':
 
-                    return removeItemsFromInventory(state, coalMine1Price);
+            itemCost = minePrices[action.techType].slice(0);
+            return removeItemsFromInventory(state, itemCost);
 
-                case 'electric1':
-                    return removeItemsFromInventory(state, electricMine1Price);
-
-                default:
-                    return state;
-            }
         case 'PRODUCTION_TICK':
             return removeItemsFromInventory(state, action.itemsUsed);
         case 'FURNACE_PRODUCTION_START':

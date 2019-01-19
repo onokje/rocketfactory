@@ -23,7 +23,9 @@ const mining = (state = initialResourcesState, action) => {
                 running: false,
                 powered: false,
                 progressTicks: 0,
-                ticksCost: 5
+                ticksCost: 5,
+                x: action.x,
+                y: action.y
             });
             return {...state, mines: mines};
 

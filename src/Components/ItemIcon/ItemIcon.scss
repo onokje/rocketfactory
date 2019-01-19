@@ -1,0 +1,24 @@
+div.icon {
+    height: 40px;
+    width: 40px;
+    box-sizing: border-box;
+    text-align: right;
+    padding-top: 18px;
+    padding-right: 3px;
+    margin: 2px;
+    border: 1px solid #ccc;
+    border-right: 2px #2a2a2a;
+    border-bottom: 2px #2a2a2a;
+    font-weight: bold;
+
+    text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
+}
+
+div.itemToolTipIconAndName{
+    display: flex;
+    align-items: center;
+    div.itemName{
+        padding-left: 10px;
+        font-weight: bold;
+    }
+}

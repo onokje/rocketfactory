@@ -1,0 +1,8 @@
+div.inventory {
+    border: solid 1px #888;
+    width: 280px;
+    height: 500px;
+    display: flex;
+    flex-wrap:wrap;
+    align-content: flex-start;
+}

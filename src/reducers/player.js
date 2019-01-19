@@ -1,6 +1,6 @@
 const initialPlayerState = {
     initialized: false,
-    tab: 'resourceProduction',
+    tab: 'resourceMap',
     handmining: false,
     handminingResource: null,
     handminingProgressTicks: 0,

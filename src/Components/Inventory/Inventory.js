@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
+import ItemIcon from "../ItemIcon/ItemIcon";
+import "./Inventory.scss";
 
 const mapStateToProps = state => ({
     inventory: state.inventory
@@ -13,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 class Inventory extends Component {
 
     renderInventoryItem(item) {
-        return (<li key={item.name}>{item.name} : <b>{item.amount}</b></li>);
+        return <ItemIcon item={item.name} amount={item.amount} />;
     }
 
     render() {
@@ -23,10 +25,11 @@ class Inventory extends Component {
             <div className="InventoryContainer">
 
                 <h2>Inventory:</h2>
-                <ul className="inventory">
+                <div className="inventory">
                     {inventory.map(item => this.renderInventoryItem(item))}
-                </ul>
-                {!inventory.length ? (<div>Your inventory is empty</div>) : ''}
+                    {!inventory.length ? (<div>Your inventory is empty</div>) : ''}
+                </div>
+
             </div>
         );
 

@@ -5,7 +5,6 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import NewPlayer from "./Components/NewPlayer/NewPlayer";
 import SideBar from "./Components/Sidebar/Sidebar";
-import ResourceProduction from "./Components/ResourceProduction/ResourceProduction";
 import PowerProduction from "./Components/PowerProduction/PowerProduction";
 import mainGameTick from "./helpers/GameTicker";
 import Smelting from "./Components/Smelting/Smelting";
@@ -60,7 +59,6 @@ class App extends Component {
                     <SideBar/>
                     <NewPlayer/>
                     <ResourceMap/>
-                    <ResourceProduction/>
                     <PowerProduction/>
                     <Smelting/>
                     <HandCrafting/>
