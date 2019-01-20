@@ -19,6 +19,12 @@ export const findItemInPriceItemsArray = (priceItemsArray, itemName) => {
     });
 };
 
+export const multiplyItemsInItemsArray = (items, muliplier) => {
+    return items.map(item => {
+        return {name: item.name, amount: (item.amount * muliplier)}
+    });
+};
+
 export const removeItemFromInventory = (inventory, itemName, itemAmount) => {
     return inventory.map(inventoryItem => {
         if (itemName === inventoryItem.name) {

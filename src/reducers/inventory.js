@@ -1,4 +1,5 @@
 import {
+    assemblerPrices,
     coalPowerPlantPrice,
     furnacePrices,
     minePrices,
@@ -30,7 +31,9 @@ const inventory = (state = initialInventoryState, action) => {
         case 'BUILD_FURNACE':
             itemCost = furnacePrices[action.techType].slice(0);
             return removeItemsFromInventory(state, itemCost);
-
+        case 'BUILD_ASSEMBLER':
+            itemCost = assemblerPrices[action.techType].slice(0);
+            return removeItemsFromInventory(state, itemCost);
         case 'BUILD_MINE':
 
             itemCost = minePrices[action.techType].slice(0);

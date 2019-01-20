@@ -96,25 +96,26 @@ export const minePrices = {
     ]
 };
 
-export const assembler1Price = [
-    {
-        name: 'ironPlate',
-        amount: 6
-    },
-    {
-        name: 'ironGear',
-        amount: 6
-    },
-    {
-        name: 'greenChip',
-        amount: 2
-    },
-    {
-        name: 'belt',
-        amount: 2
-    }
-];
-
+export const assemblerPrices = {
+    assembler1: [
+        {
+            name: 'ironPlate',
+            amount: 6
+        },
+        {
+            name: 'ironGear',
+            amount: 6
+        },
+        {
+            name: 'greenChip',
+            amount: 2
+        },
+        {
+            name: 'belt',
+            amount: 2
+        }
+    ]
+};
 
 export const itemRecipes = {
     ironPlate: {
@@ -143,7 +144,7 @@ export const itemRecipes = {
         cost: [
             {
                 name: 'ironPlate',
-                amount: 5
+                amount: 4
             },
             {
                 name: 'coal',

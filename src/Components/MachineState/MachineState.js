@@ -10,7 +10,12 @@ export default function MachineState(props) {
         if (powered) {
             return running ? <span className="on">Running</span> : <span className="waiting">Waiting</span>
         } else {
-            return <span className="nopower">{isPowerplant ? "No resources" : "No power"}</span>;
+            if (isPowerplant){
+                return <span className="waiting">Waiting</span>
+            } else {
+                return <span className="nopower">No power</span>;
+            }
+
         }
     } else {
         return <span className="off">OFF</span>

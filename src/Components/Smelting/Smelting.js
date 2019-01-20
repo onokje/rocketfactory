@@ -54,6 +54,16 @@ class Smelting extends Component {
                         <button onClick={() => this.buildFurnace('stone')} >Build stone furnace!</button>
                     </div>
                     <div className="simpleDivider">
+                        <h2>Construct new steel furnace</h2>
+                        <ProductionCost items={furnacePrices['steel']}/>
+                        <button onClick={() => this.buildFurnace('steel')} >Build steel furnace!</button>
+                    </div>
+                    <div className="simpleDivider">
+                        <h2>Construct new electric furnace</h2>
+                        <ProductionCost items={furnacePrices['electric']}/>
+                        <button onClick={() => this.buildFurnace('electric')} >Build electric furnace!</button>
+                    </div>
+                    <div className="simpleDivider">
                         <h2>Furnaces:</h2>
                         {smelting.furnaces.map(furnace => (<Furnace key={furnace.id} furnace={furnace}/>))}
 

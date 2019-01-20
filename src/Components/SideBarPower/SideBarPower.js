@@ -17,8 +17,8 @@ class SideBarPower extends Component {
 
                 <h2>Power overview:</h2>
                 Produced last tick: <b>{power.powerProducedLastTick}</b> kW<br/>
-                Used last tick: <b>{power.powerProducedLastTick - power.powerLeft}</b> kW<br/>
-                Unused last tick: <b>{power.powerLeft}</b> kW<br/>
+                Used last tick: <b>{power.powerUsedLastTick}</b> kW<br/>
+                Buffer (size/max: <b>{power.bufferCurrent} / {power.bufferMax}</b> kW<br/>
             </div>
         );
 

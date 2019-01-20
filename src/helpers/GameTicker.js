@@ -1,4 +1,9 @@
-import {canAfford, removeItemFromInventory, removeItemsFromInventory} from "./InventoryHelper";
+import {
+    canAfford,
+    multiplyItemsInItemsArray,
+    removeItemFromInventory,
+    removeItemsFromInventory
+} from "./InventoryHelper";
 import {itemRecipes} from "./gameData";
 import {productionTick} from "../actions/production";
 import {furnaceProductionFinish, furnaceProductionStart} from "../actions/smelting";
@@ -12,18 +17,25 @@ function runPowerPlants(inventory, power) {
     const poweredPowerplants = [];
     const itemsRequired = [];
     const totalItemsUsed = [];
+    let buffer = power.bufferCurrent;
 
     for (let powerPlant of power.powerPlants){
         if (powerPlant.on) {
+
+
             switch (powerPlant.techType) {
                 case 'coal':
                     itemsRequired.push({name: 'coal', amount: 1});
-                    if (canAfford(inventory, itemsRequired)) {
-                        totalPowerProduced += 5000;
-                        totalItemsUsed.push({name: 'coal', amount: 1});
+                    if (canAfford(inventory, itemsRequired)) { // can we afford a run for this pp?
+                        // do we need it?
+                        if (buffer + 5000 <= power.bufferMax) {
+                            totalPowerProduced += 5000;
+                            buffer += 5000;
+                            totalItemsUsed.push({name: 'coal', amount: 1});
+                            inventory = removeItemFromInventory(inventory, 'coal', 1);
+                            poweredPowerplants.push(powerPlant.id);
+                        }
 
-                        inventory = removeItemFromInventory(inventory, 'coal', 1);
-                        poweredPowerplants.push(powerPlant.id);
                     }
 
                     break;
@@ -34,11 +46,11 @@ function runPowerPlants(inventory, power) {
         }
     }
 
-    return {inventory: inventory, totalPowerProduced: totalPowerProduced, totalItemsUsed: totalItemsUsed, poweredPowerplants: poweredPowerplants};
+    return {inventory: inventory, totalPowerProduced: totalPowerProduced, totalItemsUsed: totalItemsUsed, poweredPowerplants: poweredPowerplants, newBufferSize: buffer};
 
 }
 
-function runFurnaces(inventory, smelting, dispatch, powerLeft) {
+function runFurnaces(inventory, smelting, dispatch, powerBuffer) {
     const poweredFurnaceIds = [];
 
     for (let furnace of smelting.furnaces) {
@@ -47,13 +59,14 @@ function runFurnaces(inventory, smelting, dispatch, powerLeft) {
             let powerUsage;
             switch (furnace.techType) {
                 case 'stone' : powerUsage = 0; break;// doesn't use power
-                case 'electric1' : powerUsage = 400; break;
+                case 'steel': powerUsage = 0; break;// doesn't use power
+                case 'electric' : powerUsage = 600; break;
                 default: throw Error('Invalid tech type found in run furnaces switch case');
             }
 
             // check if enough power is available
-            if (!powerUsage || powerLeft >= powerUsage) {
-                powerLeft = powerLeft - powerUsage;
+            if (!powerUsage || powerBuffer >= powerUsage) {
+                powerBuffer = powerBuffer - powerUsage;
                 powered = true;
                 poweredFurnaceIds.push(furnace.id);
             }
@@ -65,8 +78,14 @@ function runFurnaces(inventory, smelting, dispatch, powerLeft) {
 
                     //get recipe:
                     const recipe = itemRecipes[furnace.currentItem];
-                    const itemsProduced = [];
+                    let itemsProduced = [];
                     itemsProduced.push({name: furnace.currentItem, amount: recipe.resultAmount});
+
+                    switch (furnace.techType) {
+                        case 'steel': itemsProduced = multiplyItemsInItemsArray(itemsProduced, 2); break;// doesn't use power
+                        case 'electric' : itemsProduced = multiplyItemsInItemsArray(itemsProduced, 4); break;
+                        default:
+                    }
 
                     dispatch(furnaceProductionFinish(furnace.id, itemsProduced));
                 }
@@ -76,10 +95,16 @@ function runFurnaces(inventory, smelting, dispatch, powerLeft) {
 
                     //get recipe:
                     const recipe = itemRecipes[furnace.nextItem];
-                    const itemCost = recipe.cost.slice(0);
+                    let itemCost = recipe.cost.slice(0);
 
-                    if (furnace.techType === 'stone') {
-                        itemCost.push({name: 'coal', amount: 1}); // added fuel cost for stone furnace
+                    switch (furnace.techType) {
+                        case 'steel': itemCost = multiplyItemsInItemsArray(itemCost, 2); break;// doesn't use power
+                        case 'electric' : itemCost = multiplyItemsInItemsArray(itemCost, 4); break;
+                        default:
+                    }
+
+                    if (furnace.techType === 'stone' || furnace.techType === 'steel') {
+                        itemCost.push({name: 'coal', amount: 1}); // added fuel cost for stone or steel furnace
                     }
 
                     if (canAfford(inventory, itemCost)) {
@@ -94,10 +119,10 @@ function runFurnaces(inventory, smelting, dispatch, powerLeft) {
 
     }
 
-    return {inventory: inventory, powerLeft: powerLeft, poweredFurnaceIds: poweredFurnaceIds};
+    return {inventory: inventory, powerBuffer: powerBuffer, poweredFurnaceIds: poweredFurnaceIds};
 }
 
-function runMines(inventory, mining, dispatch, powerLeft) {
+function runMines(inventory, mining, dispatch, powerBuffer) {
     const poweredMineIds = [];
     for (let mine of mining.mines) {
         if (mine.on) {
@@ -105,13 +130,13 @@ function runMines(inventory, mining, dispatch, powerLeft) {
             let powerUsage;
             switch (mine.techType) {
                 case 'coal1' : powerUsage = 0; break;// doesn't use power
-                case 'electric1' : powerUsage = 350; break;
+                case 'electric1' : powerUsage = 400; break;
                 default: throw Error('Invalid tech type found in run mines switch case');
             }
 
             // check if enough power is available
-            if (!powerUsage || powerLeft >= powerUsage) {
-                powerLeft = powerLeft - powerUsage;
+            if (!powerUsage || powerBuffer >= powerUsage) {
+                powerBuffer = powerBuffer - powerUsage;
                 powered = true;
                 poweredMineIds.push(mine.id);
             }
@@ -144,23 +169,23 @@ function runMines(inventory, mining, dispatch, powerLeft) {
         }
     }
 
-    return {inventory: inventory, powerLeft: powerLeft, poweredMineIds: poweredMineIds};
+    return {inventory: inventory, powerBuffer: powerBuffer, poweredMineIds: poweredMineIds};
 }
 
-function runCrafters(inventory, crafting, dispatch, powerLeft) {
+function runCrafters(inventory, crafting, dispatch, powerBuffer) {
     const poweredAssemblerIds = [];
     for (let assembler of crafting.assemblers) {
         if (assembler.on) {
             let powered = false;
             let powerUsage;
             switch (assembler.techType) {
-                case 'tier1' : powerUsage = 250; break;
-                default: throw Error('Invalid tech type found in run mines switch case');
+                case 'assembler1' : powerUsage = 300; break;
+                default: throw Error('Invalid tech type found in run assemblers switch case');
             }
 
             // check if enough power is available
-            if (powerLeft >= powerUsage) {
-                powerLeft = powerLeft - powerUsage;
+            if (powerBuffer >= powerUsage) {
+                powerBuffer = powerBuffer - powerUsage;
                 powered = true;
                 poweredAssemblerIds.push(assembler.id);
             }
@@ -190,13 +215,13 @@ function runCrafters(inventory, crafting, dispatch, powerLeft) {
         }
     }
 
-    return {inventory: inventory, powerLeft: powerLeft, poweredAssemblerIds: poweredAssemblerIds};
+    return {inventory: inventory, powerBuffer: powerBuffer, poweredAssemblerIds: poweredAssemblerIds};
 }
 
 function handmining(dispatch, player){
     if (player.handmining && player.handminingProgressTicks === player.handminingTicksCost) {
         const itemsProduced = [];
-        itemsProduced.push({name: player.handminingResource, amount: 5});
+        itemsProduced.push({name: player.handminingResource, amount: 3});
         dispatch(handminingFinish(itemsProduced));
     }
 }
@@ -213,20 +238,20 @@ export default function mainGameTick(dispatch, player, inventory, power, smeltin
 
     const ppResult = runPowerPlants(inventory, power);
     inventory = ppResult.inventory;
-    let powerLeft = ppResult.totalPowerProduced;
+    let powerBuffer = ppResult.newBufferSize;
 
-    const minesResult = runMines(inventory, mining, dispatch, powerLeft);
+    const minesResult = runMines(inventory, mining, dispatch, powerBuffer);
     inventory = minesResult.inventory;
-    powerLeft = minesResult.powerLeft;
+    powerBuffer = minesResult.powerBuffer;
     const poweredMineIds = minesResult.poweredMineIds;
 
-    const furnaceResult = runFurnaces(inventory, smelting, dispatch, powerLeft);
+    const furnaceResult = runFurnaces(inventory, smelting, dispatch, powerBuffer);
     inventory = furnaceResult.inventory;
-    powerLeft = furnaceResult.powerLeft;
+    powerBuffer = furnaceResult.powerBuffer;
     const poweredFurnaceIds = furnaceResult.poweredFurnaceIds;
 
-    const craftingResult = runCrafters(inventory, crafting, dispatch, powerLeft);
-    powerLeft = craftingResult.powerLeft;
+    const craftingResult = runCrafters(inventory, crafting, dispatch, powerBuffer);
+    powerBuffer = craftingResult.powerBuffer;
 
     handmining(dispatch, player);
     handcrafting(dispatch, player);
@@ -235,8 +260,8 @@ export default function mainGameTick(dispatch, player, inventory, power, smeltin
         poweredMineIds,
         poweredFurnaceIds,
         ppResult.totalPowerProduced,
-        powerLeft,
         ppResult.totalItemsUsed,
         ppResult.poweredPowerplants,
-        craftingResult.poweredAssemblerIds));
+        craftingResult.poweredAssemblerIds,
+        powerBuffer));
 }

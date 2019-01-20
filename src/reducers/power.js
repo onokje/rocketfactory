@@ -1,7 +1,10 @@
 const initialResourcesState = {
     powerPlants: [],
     powerProducedLastTick: 0,
-    powerLeft: 0
+    powerUsedLastTick: 0,
+    powerLeft: 0,
+    bufferMax: 0,
+    bufferCurrent: 0
 };
 
 const findPowerPlantIdInPoweredPowerPlantsArray = (poweredPowerplants, powerPlantId) => {
@@ -15,6 +18,7 @@ const power = (state = initialResourcesState, action) => {
         case 'LOAD_PLAYER':
             return action.playerData.power;
         case 'BUILD_POWER_PLANT':
+            let newBuffer;
             powerplants = JSON.parse(JSON.stringify(state.powerPlants));
             powerplants.push({
                 techType: action.techType,
@@ -22,7 +26,12 @@ const power = (state = initialResourcesState, action) => {
                 powered: false,
                 on: false
             });
-            return {...state, powerPlants: powerplants};
+            switch (action.techType) {
+                case 'coal': newBuffer = state.bufferMax + 10000; break;
+                default: throw Error('Invalid tech type found in build powerplant switch case');
+            }
+
+            return {...state, powerPlants: powerplants, bufferMax: newBuffer};
 
         case 'TOGGLE_POWERPLANT':
             powerplants = state.powerPlants.map(powerplant => {
@@ -41,8 +50,14 @@ const power = (state = initialResourcesState, action) => {
                     powered: powered
                 }
             });
-
-            return {...state, powerProducedLastTick: action.totalPowerProduced, powerLeft: action.powerLeft, powerPlants: powerplants};
+            const powerUsedLastTick = state.bufferCurrent - action.newBufferSize + action.totalPowerProduced;
+            return {
+                ...state,
+                powerProducedLastTick: action.totalPowerProduced,
+                powerUsedLastTick: powerUsedLastTick,
+                bufferCurrent: action.newBufferSize,
+                powerPlants: powerplants
+            };
         default:
             return state;
     }

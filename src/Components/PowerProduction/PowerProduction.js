@@ -35,7 +35,6 @@ class PowerProduction extends Component {
             console.log('you cannot afford a power plant!');
         }
 
-
     };
 
     render() {
