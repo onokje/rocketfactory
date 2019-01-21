@@ -4,6 +4,12 @@ export const buildFurnace = (techType, id) => ({
     id
 });
 
+export const sellFurnace = (techType, id) => ({
+    type: 'SELL_FURNACE',
+    techType,
+    id
+});
+
 export const toggleFurnace = (furnaceId, on, nextItem) => ({
     type: 'TOGGLE_FURNACE',
     furnaceId,

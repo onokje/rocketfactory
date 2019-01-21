@@ -7,6 +7,12 @@ export const buildMine = (resourceType, techType, id, x, y) => ({
     y
 });
 
+export const sellMine = (techType, id) => ({
+    type: 'SELL_MINE',
+    techType,
+    id
+});
+
 export const toggleMine = (mineId, on) => ({
     type: 'TOGGLE_MINE',
     mineId,

@@ -5,12 +5,16 @@ export const coalPowerPlantPrice = [
     },
     {
         name: 'steelPlate',
-        amount: 5
+        amount: 10
     },
     {
         name: 'copperPlate',
-        amount: 15
-    },    
+        amount: 10
+    },
+    {
+        name: 'belt',
+        amount: 2
+    },
 ];
 
 export const furnacePrices = {
@@ -61,33 +65,29 @@ export const furnacePrices = {
 export const minePrices = {
     coal1: [
         {
-            name: 'ironPlate',
-            amount: 10
-        },
-        {   name: 'ironTube',
-            amount: 4
-        },
-        {
-            name: 'ironGear',
+            name: 'steelPlate',
             amount: 2
         },
-        {
-            name: 'coal',
-            amount: 4
+        {   name: 'ironPlate',
+            amount: 10
         },
+        {
+            name: 'belt',
+            amount: 2
+        }
     ],
     electric1: [
         {
             name: 'steelPlate',
-            amount: 4
+            amount: 6
         },
         {
             name: 'ironPlate',
             amount: 10
         },
         {
-            name: 'ironGear',
-            amount: 10
+            name: 'belt',
+            amount: 6
         },
         {
             name: 'greenChip',
@@ -100,7 +100,7 @@ export const assemblerPrices = {
     assembler1: [
         {
             name: 'ironPlate',
-            amount: 6
+            amount: 8
         },
         {
             name: 'ironGear',

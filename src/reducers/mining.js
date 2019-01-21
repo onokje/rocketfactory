@@ -28,7 +28,8 @@ const mining = (state = initialResourcesState, action) => {
                 y: action.y
             });
             return {...state, mines: mines};
-
+        case 'SELL_MINE':
+            return {...state, mines: state.mines.filter(mine => mine.id !== action.id)};
         case 'TOGGLE_MINE':
             mines = state.mines.map(mine => {
                 return mine.id === action.mineId ? {

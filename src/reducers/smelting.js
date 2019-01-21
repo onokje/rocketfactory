@@ -27,6 +27,8 @@ const smelting = (state = initialFurnaceState, action) => {
                 techType: action.techType
             });
             return {...state, furnaces: furnaces};
+        case 'SELL_FURNACE':
+            return {...state, furnaces: state.furnaces.filter(furnace => furnace.id !== action.id)};
 
         case 'TOGGLE_FURNACE':
             furnaces = state.furnaces.map(furnace => {

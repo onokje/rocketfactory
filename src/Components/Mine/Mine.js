@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import ProgressBar from "../ProgressBar/ProgressBar";
-import {toggleMine} from "../../actions/mining";
+import {sellMine, toggleMine} from "../../actions/mining";
 import MachineState from "../MachineState/MachineState";
 
 
@@ -17,6 +17,9 @@ const mapDispatchToProps = dispatch => ({
     toggleMine: (mineId, on) => {
         dispatch(toggleMine(mineId, on));
     },
+    sellMine: (techType, id) => {
+        dispatch(sellMine(techType, id));
+    },
 
 });
 
@@ -26,6 +29,11 @@ class Mine extends Component {
         const {mine, toggleMine} = this.props;
         toggleMine(mine.id, !mine.on);
     };
+
+    sellMine() {
+        const {mine, sellMine} = this.props;
+        sellMine(mine.techType, mine.id);
+    }
 
     renderMineState() {
         const {mine} = this.props;
@@ -46,6 +54,9 @@ class Mine extends Component {
                 <div>{this.getMineTypeName()}</div>
                 <div>{this.renderMineState()} <button onClick={this.toggleMine}>Turn {mine.on ? 'OFF' : 'ON'}</button></div>
                 <ProgressBar completedPercentage={completedPercentage}/>
+                <div className="sellMachine">
+                    <button onClick={() => this.sellMine()}>Sell</button>
+                </div>
             </div>
         );
 
@@ -54,7 +65,8 @@ class Mine extends Component {
 
 Mine.propTypes = {
     mine: PropTypes.object.isRequired,
-    toggleMine: PropTypes.func.isRequired
+    toggleMine: PropTypes.func.isRequired,
+    sellMine: PropTypes.func.isRequired
 };
 
 export default connect(

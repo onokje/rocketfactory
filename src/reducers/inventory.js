@@ -6,12 +6,12 @@ import {
 } from "../helpers/gameData";
 import {
     addItemsToInventory,
-    addItemToInventory,
+    addItemToInventory, multiplyItemsInItemsArray,
     removeItemsFromInventory
 } from "../helpers/InventoryHelper";
 
 const initialInventoryState = [];
-let itemCost;
+let itemCost, itemsReturned;
 
 const inventory = (state = initialInventoryState, action) => {
     switch (action.type) {
@@ -38,7 +38,12 @@ const inventory = (state = initialInventoryState, action) => {
 
             itemCost = minePrices[action.techType].slice(0);
             return removeItemsFromInventory(state, itemCost);
-
+        case 'SELL_FURNACE':
+            itemsReturned = multiplyItemsInItemsArray(furnacePrices[action.techType].slice(0), 0.5);
+            return addItemsToInventory(state, itemsReturned);
+        case 'SELL_MINE':
+            itemsReturned = multiplyItemsInItemsArray(minePrices[action.techType].slice(0), 0.5);
+            return addItemsToInventory(state, itemsReturned);
         case 'PRODUCTION_TICK':
             return removeItemsFromInventory(state, action.itemsUsed);
         case 'FURNACE_PRODUCTION_START':

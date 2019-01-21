@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {toggleFurnace} from "../../actions/smelting";
+import {sellFurnace, toggleFurnace} from "../../actions/smelting";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import MachineState from "../MachineState/MachineState";
 
@@ -16,6 +16,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     toggleFurnace: (id, on, nextItem) => {
         dispatch(toggleFurnace(id, on, nextItem));
+    },
+    sellFurnace: (techType, id) => {
+        dispatch(sellFurnace(techType, id));
     },
 
 });
@@ -36,6 +39,11 @@ class Furnace extends Component {
         toggleFurnace(furnace.id, !furnace.on, furnace.nextItem);
 
     };
+
+    sellFurnace() {
+        const {furnace, sellFurnace} = this.props;
+        sellFurnace(furnace.techType, furnace.id)
+    }
 
     renderFurnaceState() {
         const {furnace} = this.props;
@@ -58,6 +66,9 @@ class Furnace extends Component {
                 <div>Currently Smelting: {furnace.currentItem}<br/>
                 <ProgressBar completedPercentage={completedPercentage}/>
                 </div>
+                <div className="sellMachine">
+                    <button onClick={() => this.sellFurnace()}>Sell</button>
+                </div>
             </div>
         );
 
@@ -66,7 +77,8 @@ class Furnace extends Component {
 
 Furnace.propTypes = {
     furnace: PropTypes.object.isRequired,
-    toggleFurnace: PropTypes.func.isRequired
+    toggleFurnace: PropTypes.func.isRequired,
+    sellFurnace: PropTypes.func.isRequired
 };
 
 export default connect(
