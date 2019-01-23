@@ -4,6 +4,12 @@ export const buildPowerPlant = (techType, id) => ({
     id
 });
 
+export const sellPowerPlant = (techType, id) => ({
+    type: 'SELL_POWER_PLANT',
+    techType,
+    id
+});
+
 export const togglePowerplant = (powerPlantId, on) => ({
     type: 'TOGGLE_POWERPLANT',
     powerPlantId,

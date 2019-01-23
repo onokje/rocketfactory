@@ -27,7 +27,8 @@ const crafting = (state = initialCraftingState, action) => {
                 techType: action.techType
             });
             return {...state, assemblers: assemblers};
-
+        case 'SELL_ASSEMBLER':
+            return {...state, assemblers: state.assemblers.filter(assembler => assembler.id !== action.id)};
         case 'TOGGLE_ASSEMBLER':
             assemblers = state.assemblers.map(assembler => {
                 return assembler.id === action.id ? {

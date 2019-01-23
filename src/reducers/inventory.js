@@ -1,8 +1,8 @@
 import {
     assemblerPrices,
-    coalPowerPlantPrice,
     furnacePrices,
     minePrices,
+    powerPlantPrices,
 } from "../helpers/gameData";
 import {
     addItemsToInventory,
@@ -20,14 +20,8 @@ const inventory = (state = initialInventoryState, action) => {
         case 'MINE_RESOURCE':
             return addItemToInventory(state, action.resourceType, 1);
         case 'BUILD_POWER_PLANT':
-            switch (action.techType) {
-                case 'coal':
-
-                    return removeItemsFromInventory(state, coalPowerPlantPrice);
-
-                default:
-                    return state;
-            }
+            itemCost = powerPlantPrices[action.techType];
+            return removeItemsFromInventory(state, itemCost);
         case 'BUILD_FURNACE':
             itemCost = furnacePrices[action.techType].slice(0);
             return removeItemsFromInventory(state, itemCost);
@@ -35,7 +29,6 @@ const inventory = (state = initialInventoryState, action) => {
             itemCost = assemblerPrices[action.techType].slice(0);
             return removeItemsFromInventory(state, itemCost);
         case 'BUILD_MINE':
-
             itemCost = minePrices[action.techType].slice(0);
             return removeItemsFromInventory(state, itemCost);
         case 'SELL_FURNACE':
@@ -43,6 +36,12 @@ const inventory = (state = initialInventoryState, action) => {
             return addItemsToInventory(state, itemsReturned);
         case 'SELL_MINE':
             itemsReturned = multiplyItemsInItemsArray(minePrices[action.techType].slice(0), 0.5);
+            return addItemsToInventory(state, itemsReturned);
+        case 'SELL_ASSEMBLER':
+            itemsReturned = multiplyItemsInItemsArray(assemblerPrices[action.techType].slice(0), 0.5);
+            return addItemsToInventory(state, itemsReturned);
+        case 'SELL_POWER_PLANT':
+            itemsReturned = multiplyItemsInItemsArray(powerPlantPrices[action.techType].slice(0), 0.5);
             return addItemsToInventory(state, itemsReturned);
         case 'PRODUCTION_TICK':
             return removeItemsFromInventory(state, action.itemsUsed);

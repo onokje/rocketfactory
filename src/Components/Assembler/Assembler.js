@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import ProgressBar from "../ProgressBar/ProgressBar";
-import {toggleAssembler} from "../../actions/crafting";
+import {sellAssembler, toggleAssembler} from "../../actions/crafting";
 import {itemRecipes} from "../../helpers/gameData";
 import MachineState from "../MachineState/MachineState";
 
@@ -18,7 +18,9 @@ const mapDispatchToProps = dispatch => ({
     toggleAssembler: (id, on, nextItem) => {
         dispatch(toggleAssembler(id, on, nextItem));
     },
-
+    sellAssembler: (techType, id) => {
+        dispatch(sellAssembler(techType, id));
+    },
 });
 
 class Assembler extends Component {
@@ -44,6 +46,12 @@ class Assembler extends Component {
 
     };
 
+    sellAssembler() {
+        const {assembler, sellAssembler} = this.props;
+        sellAssembler(assembler.techType, assembler.id);
+    }
+
+
     renderAssemblerState() {
         const {assembler} = this.props;
         return <MachineState on={assembler.on} powered={assembler.powered} running={assembler.running}/>
@@ -65,6 +73,9 @@ class Assembler extends Component {
                 <div>Currently Crafting: {assembler.currentItem}<br/>
                     <ProgressBar completedPercentage={completedPercentage}/>
                 </div>
+                <div className="sellMachine">
+                    <button onClick={() => this.sellAssembler()}>Sell</button>
+                </div>
             </div>
         );
 
@@ -73,7 +84,8 @@ class Assembler extends Component {
 
 Assembler.propTypes = {
     assembler: PropTypes.object.isRequired,
-    toggleAssembler: PropTypes.func.isRequired
+    toggleAssembler: PropTypes.func.isRequired,
+    sellAssembler: PropTypes.func.isRequired
 };
 
 export default connect(

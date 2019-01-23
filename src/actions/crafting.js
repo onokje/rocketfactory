@@ -4,6 +4,12 @@ export const buildAssembler = (techType, id) => ({
     id
 });
 
+export const sellAssembler = (techType, id) => ({
+    type: 'SELL_ASSEMBLER',
+    techType,
+    id
+});
+
 export const toggleAssembler = (id, on, nextItem) => ({
     type: 'TOGGLE_ASSEMBLER',
     id,

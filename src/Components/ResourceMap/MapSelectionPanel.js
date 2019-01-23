@@ -110,16 +110,23 @@ class MapSelectionPanel extends Component {
             return <Mine key={mine.id} mine={mine}/>
         } else {
             if (selectedCell.resource === 'oil') {
+                return <div>
+                    <div className="simpleDivider">
+                        <h2>Build oil pump</h2>
+                        <ProductionCost items={minePrices['pump']}/>
+                        <button onClick={() => this.buildMine(selectedCell.resource, 'pump', selectedCell)} >Build</button>
+                    </div>
 
+                </div>
             } else {
                 return <div>
                     <div className="simpleDivider">
-                        <h2>Construct coal-powered {selectedCell.resource} mine</h2>
+                        <h2>Build coal-powered {selectedCell.resource} mine</h2>
                         <ProductionCost items={minePrices['coal1']}/>
                         <button onClick={() => this.buildMine(selectedCell.resource, 'coal1', selectedCell)} >Build</button>
                     </div>
                     <div className="simpleDivider">
-                        <h2>Construct electric {selectedCell.resource} mine</h2>
+                        <h2>Build electric {selectedCell.resource} mine</h2>
                         <ProductionCost items={minePrices['electric1']}/>
                         <button onClick={() => this.buildMine(selectedCell.resource, 'electric1', selectedCell)} >Build</button>
                     </div>

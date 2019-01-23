@@ -28,11 +28,13 @@ const power = (state = initialResourcesState, action) => {
             });
             switch (action.techType) {
                 case 'coal': newBuffer = state.bufferMax + 10000; break;
+                case 'oil': newBuffer = state.bufferMax + 10000; break;
                 default: throw Error('Invalid tech type found in build powerplant switch case');
             }
 
             return {...state, powerPlants: powerplants, bufferMax: newBuffer};
-
+        case 'SELL_POWER_PLANT':
+            return {...state, powerPlants: state.powerPlants.filter(plant => plant.id !== action.id)};
         case 'TOGGLE_POWERPLANT':
             powerplants = state.powerPlants.map(powerplant => {
                 return powerplant.id === action.powerPlantId ? {

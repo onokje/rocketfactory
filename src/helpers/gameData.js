@@ -1,21 +1,42 @@
-export const coalPowerPlantPrice = [
-    {
-        name: 'ironPlate',
-        amount: 10
-    },
-    {
-        name: 'steelPlate',
-        amount: 10
-    },
-    {
-        name: 'copperPlate',
-        amount: 10
-    },
-    {
-        name: 'belt',
-        amount: 2
-    },
-];
+export const powerPlantPrices = {
+    coal: [
+        {
+            name: 'ironPlate',
+            amount: 10
+        },
+        {
+            name: 'steelPlate',
+            amount: 10
+        },
+        {
+            name: 'copperWire',
+            amount: 12
+        },
+        {
+            name: 'belt',
+            amount: 2
+        },
+    ],
+    oil: [
+        {
+            name: 'ironPlate',
+            amount: 10
+        },
+        {
+            name: 'steelPlate',
+            amount: 8
+        },
+        {
+            name: 'ironTube',
+            amount: 16
+        },
+        {
+            name: 'copperWire',
+            amount: 12
+        },
+    ]
+
+};
 
 export const furnacePrices = {
     'stone': [
@@ -93,6 +114,24 @@ export const minePrices = {
             name: 'greenChip',
             amount: 4
         }
+    ],
+    pump: [
+        {
+            name: 'steelPlate',
+            amount: 2
+        },
+        {
+            name: 'ironPlate',
+            amount: 10
+        },
+        {
+            name: 'ironTube',
+            amount: 12
+        },
+        {
+            name: 'greenChip',
+            amount: 2
+        }
     ]
 };
 
@@ -120,6 +159,7 @@ export const assemblerPrices = {
 export const itemRecipes = {
     ironPlate: {
         type: 'smelting',
+        scienceRequired: null,
         resultAmount: 2,
         cost: [
             {
@@ -130,6 +170,7 @@ export const itemRecipes = {
     },
     copperPlate: {
         type: 'smelting',
+        scienceRequired: null,
         resultAmount: 2,
         cost: [
             {
@@ -140,20 +181,22 @@ export const itemRecipes = {
     },
     steelPlate: {
         type: 'smelting',
+        scienceRequired: null,
         resultAmount: 2,
         cost: [
             {
                 name: 'ironPlate',
-                amount: 4
+                amount: 2
             },
             {
                 name: 'coal',
-                amount: 2
+                amount: 1
             }
         ]
     },
     brick: {
         type: 'smelting',
+        scienceRequired: null,
         resultAmount: 1,
         cost: [
             {
@@ -164,6 +207,7 @@ export const itemRecipes = {
     },
     ironGear: {
         type: 'crafting',
+        scienceRequired: null,
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -175,6 +219,7 @@ export const itemRecipes = {
     },
     ironTube: {
         type: 'crafting',
+        scienceRequired: null,
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -186,6 +231,7 @@ export const itemRecipes = {
     },
     copperWire: {
         type: 'crafting',
+        scienceRequired: 'electronics',
         handcrafting: true,
         resultAmount: 2,
         cost: [
@@ -197,6 +243,7 @@ export const itemRecipes = {
     },
     belt: {
         type: 'crafting',
+        scienceRequired: null,
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -212,6 +259,7 @@ export const itemRecipes = {
     },
     greenChip: {
         type: 'crafting',
+        scienceRequired: 'electronics',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -227,6 +275,7 @@ export const itemRecipes = {
     },
     redChip: {
         type: 'crafting',
+        scienceRequired: 'advancedElectronics',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -246,6 +295,7 @@ export const itemRecipes = {
     },
     blueChip: {
         type: 'crafting',
+        scienceRequired: 'advancedElectronics2',
         handcrafting: false,
         resultAmount: 1,
         cost: [
@@ -265,6 +315,7 @@ export const itemRecipes = {
     },
     inserter: {
         type: 'crafting',
+        scienceRequired: 'electronics',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -284,6 +335,7 @@ export const itemRecipes = {
     },
     redScience: {
         type: 'crafting',
+        scienceRequired: null,
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -299,6 +351,7 @@ export const itemRecipes = {
     },
     greenScience: {
         type: 'crafting',
+        scienceRequired: 'electronics',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -314,6 +367,7 @@ export const itemRecipes = {
     },
     blueScience: {
         type: 'crafting',
+        scienceRequired: 'advancedElectronics',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -333,6 +387,7 @@ export const itemRecipes = {
     },
     greyScience: {
         type: 'crafting',
+        scienceRequired: 'military',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -352,6 +407,7 @@ export const itemRecipes = {
     },
     purpleScience: {
         type: 'crafting',
+        scienceRequired: 'advancedElectronics',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -367,6 +423,7 @@ export const itemRecipes = {
     },
     yellowScience: {
         type: 'crafting',
+        scienceRequired: 'advancedElectronics2',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -390,6 +447,7 @@ export const itemRecipes = {
     },
     battery: {
         type: 'crafting',
+        scienceRequired: 'battery',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -409,6 +467,7 @@ export const itemRecipes = {
     },
     miningDrill: {
         type: 'crafting',
+        scienceRequired: 'electronics',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -428,6 +487,7 @@ export const itemRecipes = {
     },
     engine: {
         type: 'crafting',
+        scienceRequired: 'engine',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -447,6 +507,7 @@ export const itemRecipes = {
     },
     ammo1: {
         type: 'crafting',
+        scienceRequired: 'military',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -462,6 +523,7 @@ export const itemRecipes = {
     },
     ammo2: {
         type: 'crafting',
+        scienceRequired: 'military',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -481,6 +543,7 @@ export const itemRecipes = {
     },
     grenade: {
         type: 'crafting',
+        scienceRequired: 'military',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -496,6 +559,7 @@ export const itemRecipes = {
     },
     gunTurret: {
         type: 'crafting',
+        scienceRequired: 'military',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -515,6 +579,7 @@ export const itemRecipes = {
     },
     electricEngine: {
         type: 'crafting',
+        scienceRequired: 'electricEngine',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -534,6 +599,7 @@ export const itemRecipes = {
     },
     furnaceParts: {
         type: 'crafting',
+        scienceRequired: 'advancedElectronics',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -553,6 +619,7 @@ export const itemRecipes = {
     },
     speedModule: {
         type: 'crafting',
+        scienceRequired: 'modules',
         handcrafting: true,
         resultAmount: 1,
         cost: [

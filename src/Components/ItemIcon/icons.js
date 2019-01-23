@@ -30,6 +30,7 @@ import gunTurret from "../../images/items/Gun_turret.png"
 import furnaceParts from "../../images/items/Electric_furnace.png"
 import speedModule from "../../images/items/Speed_module.png"
 import brick from "../../images/items/Stone_brick.png"
+import oil from "../../images/items/Crude_oil_barrel.png"
 
 export const icons = {
     iron,
@@ -63,5 +64,6 @@ export const icons = {
     gunTurret,
     furnaceParts,
     speedModule,
-    brick
+    brick,
+    oil
 };

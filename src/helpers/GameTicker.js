@@ -15,7 +15,8 @@ import {assemblerProductionFinish, assemblerProductionStart} from "../actions/cr
 function runPowerPlants(inventory, power) {
     let totalPowerProduced = 0;
     const poweredPowerplants = [];
-    const itemsRequired = [];
+    const coalRequired = [];
+    const oilRequired = [];
     const totalItemsUsed = [];
     let buffer = power.bufferCurrent;
 
@@ -25,8 +26,8 @@ function runPowerPlants(inventory, power) {
 
             switch (powerPlant.techType) {
                 case 'coal':
-                    itemsRequired.push({name: 'coal', amount: 1});
-                    if (canAfford(inventory, itemsRequired)) { // can we afford a run for this pp?
+                    coalRequired.push({name: 'coal', amount: 1});
+                    if (canAfford(inventory, coalRequired)) { // can we afford a run for this pp?
                         // do we need it?
                         if (buffer + 5000 <= power.bufferMax) {
                             totalPowerProduced += 5000;
@@ -36,6 +37,20 @@ function runPowerPlants(inventory, power) {
                             poweredPowerplants.push(powerPlant.id);
                         }
 
+                    }
+
+                    break;
+                case 'oil':
+                    oilRequired.push({name: 'oil', amount: 1});
+                    if (canAfford(inventory, oilRequired)) { // can we afford a run for this pp?
+                        // do we need it?
+                        if (buffer + 5000 <= power.bufferMax) {
+                            totalPowerProduced += 5000;
+                            buffer += 5000;
+                            totalItemsUsed.push({name: 'oil', amount: 1});
+                            inventory = removeItemFromInventory(inventory, 'oil', 1);
+                            poweredPowerplants.push(powerPlant.id);
+                        }
                     }
 
                     break;
@@ -131,6 +146,7 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
             switch (mine.techType) {
                 case 'coal1' : powerUsage = 0; break;// doesn't use power
                 case 'electric1' : powerUsage = 400; break;
+                case 'pump' : powerUsage = 450; break;
                 default: throw Error('Invalid tech type found in run mines switch case');
             }
 

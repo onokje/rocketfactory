@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {buildPowerPlant} from "../../actions/power";
 import {canAfford} from "../../helpers/InventoryHelper";
-import {coalPowerPlantPrice} from "../../helpers/gameData";
+import {powerPlantPrices} from "../../helpers/gameData";
 import ProductionCost from "../ProductionCost/ProductionCost";
 import uuidv4 from "uuid/v4";
 import PowerPlant from "../PowerPlant/PowerPlant";
@@ -16,21 +16,21 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    buildPowerPlant: (powerType, id) => {
-        dispatch(buildPowerPlant(powerType, id));
+    buildPowerPlant: (techType, id) => {
+        dispatch(buildPowerPlant(techType, id));
     },
 
 });
 
 class PowerProduction extends Component {
 
-    buildCoalPowerPlant = () => {
+    buildPowerPlant(techType) {
         const {inventory, buildPowerPlant} = this.props;
 
-        if (canAfford(inventory, coalPowerPlantPrice)) {
+        if (canAfford(inventory, powerPlantPrices[techType])) {
             const uuid = uuidv4();
 
-            buildPowerPlant('coal', uuid);
+            buildPowerPlant(techType, uuid);
         } else {
             console.log('you cannot afford a power plant!');
         }
@@ -47,9 +47,14 @@ class PowerProduction extends Component {
                 <div className="defaultContainer">
                     <h1>Power production</h1>
                     <div className="simpleDivider">
-                        <h2>Construct new coal Power plant</h2>
-                        <ProductionCost items={coalPowerPlantPrice}/>
-                        <button onClick={this.buildCoalPowerPlant} >Build coal power plant!</button>
+                        <h2>Build coal Power plant</h2>
+                        <ProductionCost items={powerPlantPrices['coal']}/>
+                        <button onClick={() => this.buildPowerPlant('coal')} >Build coal power plant!</button>
+                    </div>
+                    <div className="simpleDivider">
+                        <h2>Build oil power plant</h2>
+                        <ProductionCost items={powerPlantPrices['oil']}/>
+                        <button onClick={() => this.buildPowerPlant('oil')} >Build oil power plant</button>
                     </div>
                     <div className="simpleDivider">
                         <h2>Power plants:</h2>
