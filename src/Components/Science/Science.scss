@@ -1,0 +1,33 @@
+div.scienceItem {
+    background: #600;
+
+    margin-bottom: 2px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    div.scienceIcon  {
+        height: 64px;
+        width: 64px;
+        background-color: #999;
+        border: 1px solid #ccc;
+        border-right: 2px #2a2a2a;
+        border-bottom: 2px #2a2a2a;
+    }
+    img {
+        margin: 16px;
+    }
+    div.scienceInfo {
+        margin-left: 10px;
+
+        div.scienceName {
+            font-weight: bold;
+            padding: 3px 0;
+        }
+    }
+}
+
+div.learnable {
+    background: #333;
+    cursor: pointer;
+}

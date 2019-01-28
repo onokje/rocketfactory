@@ -12,7 +12,6 @@ const mapDispatchToProps = dispatch => ({
     switchTab: (tab) => {
         dispatch(switchTab(tab));
     },
-
 });
 
 class Header extends Component {
@@ -37,6 +36,9 @@ class Header extends Component {
                     </div>
                     <div className={player.tab === 'crafting' ? 'active' : ''}  onClick={() => switchTab('crafting')}>
                         Automated crafting
+                    </div>
+                    <div className={player.tab === 'science' ? 'active' : ''}  onClick={() => switchTab('science')}>
+                        Research
                     </div>
                 </nav>
 

@@ -9,6 +9,7 @@ import {
     addItemToInventory, multiplyItemsInItemsArray,
     removeItemsFromInventory
 } from "../helpers/InventoryHelper";
+import {sciences} from "../helpers/gameDataScience";
 
 const initialInventoryState = [];
 let itemCost, itemsReturned;
@@ -19,6 +20,9 @@ const inventory = (state = initialInventoryState, action) => {
             return action.playerData.inventory;
         case 'MINE_RESOURCE':
             return addItemToInventory(state, action.resourceType, 1);
+        case 'START_SCIENCE':
+            itemCost = sciences[action.scienceId].cost;
+            return removeItemsFromInventory(state, itemCost);
         case 'BUILD_POWER_PLANT':
             itemCost = powerPlantPrices[action.techType];
             return removeItemsFromInventory(state, itemCost);

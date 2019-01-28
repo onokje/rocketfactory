@@ -2,6 +2,9 @@
  * time is in minutes
  *
  */
+
+export const scienceTicksMuliplier = 60;
+
 export const sciences = {
     steel: {
         name: 'Steel Processing',
@@ -88,7 +91,7 @@ export const sciences = {
     concrete: {
         name: 'Concrete',
         requiredScience: ['steel'],
-        time: 6,
+        time: 5,
         cost: [
             {
                 name: 'redScience',
@@ -141,7 +144,7 @@ export const sciences = {
     sulfur: {
         name: 'Sulfur Processing',
         requiredScience: 'oil',
-        time: 6,
+        time: 8,
         cost: [
             {
                 name: 'redScience',
@@ -173,6 +176,52 @@ export const sciences = {
             {
                 name: 'greyScience',
                 amount: 25
+            }
+        ]
+    },
+    advancedElectronics: {
+        name: 'Advanced Electronics',
+        requiredScience: ['electronics'],
+        time: 10,
+        cost: [
+            {
+                name: 'redScience',
+                amount: 25
+            },
+            {
+                name: 'greenScience',
+                amount: 25
+            },
+            {
+                name: 'greyScience',
+                amount: 25
+            }
+        ]
+    },
+    advancedElectronics2: {
+        name: 'Advanced Electronics 2',
+        requiredScience: ['advancedElectronics'],
+        time: 15,
+        cost: [
+            {
+                name: 'redScience',
+                amount: 50
+            },
+            {
+                name: 'greenScience',
+                amount: 50
+            },
+            {
+                name: 'greyScience',
+                amount: 50
+            },
+            {
+                name: 'blueScience',
+                amount: 50
+            },
+            {
+                name: 'purpleScience',
+                amount: 50
             }
         ]
     }

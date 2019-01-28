@@ -11,6 +11,7 @@ import Smelting from "./Components/Smelting/Smelting";
 import HandCrafting from "./Components/HandCrafting/HandCrafting";
 import Crafting from "./Components/Crafting/Crafting";
 import ResourceMap from "./Components/ResourceMap/ResourceMap";
+import Science from "./Components/Science/Science";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -63,6 +64,7 @@ class App extends Component {
                     <Smelting/>
                     <HandCrafting/>
                     <Crafting/>
+                    <Science/>
 
                 </div>
             );
