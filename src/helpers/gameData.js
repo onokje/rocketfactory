@@ -181,7 +181,7 @@ export const itemRecipes = {
     },
     steelPlate: {
         type: 'smelting',
-        scienceRequired: null,
+        scienceRequired: 'steel',
         resultAmount: 2,
         cost: [
             {

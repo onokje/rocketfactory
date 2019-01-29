@@ -10,6 +10,7 @@ import {furnaceProductionFinish, furnaceProductionStart} from "../actions/smelti
 import {miningProductionFinish, miningProductionStart} from "../actions/mining";
 import {handCraftingFinish, handminingFinish} from "../actions/player";
 import {assemblerProductionFinish, assemblerProductionStart} from "../actions/crafting";
+import {finishScience} from "../actions/science";
 
 
 function runPowerPlants(inventory, power) {
@@ -131,7 +132,6 @@ function runFurnaces(inventory, smelting, dispatch, powerBuffer) {
             }
         }
 
-
     }
 
     return {inventory: inventory, powerBuffer: powerBuffer, poweredFurnaceIds: poweredFurnaceIds};
@@ -250,7 +250,13 @@ function handcrafting(dispatch, player){
     }
 }
 
-export default function mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting) {
+function scienceTick(dispatch, science){
+    if (science.researching && science.researchingProgressTicks === science.researchingTicksCost) {
+        dispatch(finishScience());
+    }
+}
+
+export default function mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting, science) {
 
     const ppResult = runPowerPlants(inventory, power);
     inventory = ppResult.inventory;
@@ -271,6 +277,7 @@ export default function mainGameTick(dispatch, player, inventory, power, smeltin
 
     handmining(dispatch, player);
     handcrafting(dispatch, player);
+    scienceTick(dispatch, science);
 
     dispatch(productionTick(
         poweredMineIds,

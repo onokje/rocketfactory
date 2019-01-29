@@ -19,7 +19,8 @@ const mapStateToProps = state => ({
     power: state.power,
     smelting: state.smelting,
     mining: state.mining,
-    crafting: state.crafting
+    crafting: state.crafting,
+    science: state.science
 });
 
 
@@ -37,8 +38,8 @@ class App extends Component {
     }
 
     mainTick = () => {
-        const {dispatch, player, inventory, power, smelting, mining, crafting} = this.props;
-        mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting);
+        const {dispatch, player, inventory, power, smelting, mining, crafting, science} = this.props;
+        mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting, science);
     };
 
     startTimer() {
@@ -79,9 +80,9 @@ App.propTypes = {
     power: PropTypes.object.isRequired,
     smelting: PropTypes.object.isRequired,
     mining:PropTypes.object.isRequired,
-    crafting:PropTypes.object.isRequired
+    crafting:PropTypes.object.isRequired,
+    science: PropTypes.object.isRequired
 };
-
 
 export default connect(
     mapStateToProps, null

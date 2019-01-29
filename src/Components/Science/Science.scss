@@ -1,33 +1,76 @@
-div.scienceItem {
-    background: #600;
-
-    margin-bottom: 2px;
+div.scienceContainer{
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    div.scienceIcon  {
-        height: 64px;
-        width: 64px;
-        background-color: #999;
-        border: 1px solid #ccc;
-        border-right: 2px #2a2a2a;
-        border-bottom: 2px #2a2a2a;
-    }
-    img {
-        margin: 16px;
-    }
-    div.scienceInfo {
-        margin-left: 10px;
+}
 
-        div.scienceName {
-            font-weight: bold;
-            padding: 3px 0;
+div.scienceListContainer{
+    width: 500px;
+
+    ul.scienceList{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li{
+            background: #333;
+            margin-bottom: 2px;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
+            align-items: center;
+            cursor: pointer;
+
+            div.scienceName {
+                font-weight: bold;
+                padding: 3px 10px;
+
+            }
+        }
+        li:hover{
+            background: #444;
+        }
+        li.notLearnable{
+            opacity: 0.5;
+        }
+        li.hasLearned {
+            opacity: 0.5;
+            background-color: #060;
         }
     }
 }
 
-div.learnable {
-    background: #333;
-    cursor: pointer;
+div.scienceSelectionPanel{
+    margin-left: 10px;
+    width: 400px;
+
+    div.scienceHeader {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 10px;
+        background: #333;
+
+        div.scienceIcon{
+            background: #999;
+            border: 1px solid #ccc;
+            border-right: 2px #2a2a2a;
+            border-bottom: 2px #2a2a2a;
+            img{
+                margin: 16px;
+            }
+        }
+        div.scienceName {
+            padding: 10px;
+            font-weight: bold;
+        }
+    }
+
+    div.scienceUnlocksContainer, div.unlocksItemsContainer, div.scienceRequiredContainer {
+        margin-top: 10px;
+    }
+
+    div.unlocksItems{
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+    }
 }

@@ -4,7 +4,11 @@ export const startScience = (scienceId, ticksCost) => ({
     ticksCost
 });
 
-export const finishScience = (scienceId) => ({
-    type: 'FINISH_SCIENCE',
+export const finishScience = () => ({
+    type: 'FINISH_SCIENCE'
+});
+
+export const selectScience = (scienceId) => ({
+    type: 'SELECT_SCIENCE',
     scienceId,
 });

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from "prop-types";
+
 import connect from "react-redux/es/connect/connect";
 import Inventory from "../Inventory/Inventory";
 import SideBarPower from "../SideBarPower/SideBarPower";
 import PlayerCraftingBar from "../PlayerCraftingBar/PlayerCraftingBar";
 import "./Sidebar.scss";
+import SideBarScience from "./SideBarScience";
 
 const mapStateToProps = state => ({
 
@@ -22,15 +23,13 @@ class SideBar extends Component {
 
                 <Inventory/>
                 <SideBarPower/>
+                <SideBarScience/>
                 <PlayerCraftingBar/>
             </div>
         );
     }
 }
 
-SideBar.propTypes = {
-
-};
 
 export default connect(
     mapStateToProps,

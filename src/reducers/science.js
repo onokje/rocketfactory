@@ -4,12 +4,15 @@ const initialScienceState = {
     researchingScienceId: null,
     researchingProgressTicks: null,
     researchingTicksCost: 0,
+    selectedScience: null,
 };
 
 const science = (state = initialScienceState, action) => {
     switch (action.type) {
         case 'LOAD_PLAYER':
             return action.playerData.science;
+        case 'SELECT_SCIENCE':
+            return {...state, selectedScience: action.scienceId};
         case 'START_SCIENCE':
             return {
                 ...state,
@@ -19,9 +22,11 @@ const science = (state = initialScienceState, action) => {
                 researchingTicksCost: action.ticksCost
             };
         case 'FINISH_SCIENCE':
+            const sciences = JSON.parse(JSON.stringify(state.sciences));
+            sciences.push(state.researchingScienceId)
             return {
                 ...state,
-                sciences: state.sciences.slice(0).push(action.scienceId),
+                sciences: sciences,
                 researching: false,
                 researchingScienceId: null,
                 researchingProgressTicks: 0,
@@ -29,7 +34,7 @@ const science = (state = initialScienceState, action) => {
             };
         case 'PRODUCTION_TICK':
             if (state.researching) {
-                const newTicks = state.researchingProgressTicks >= state.researchingTicksCost ? 0 : state.researchingProgressTicks + 1;
+                const newTicks = state.researchingProgressTicks >= state.researchingTicksCost ? state.researchingTicksCost : state.researchingProgressTicks + 1;
                 return {...state, researchingProgressTicks: newTicks};
             }
 
