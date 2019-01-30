@@ -24,6 +24,17 @@ export const sciences = {
         cost: [
             {
                 name: 'redScience',
+                amount: 5
+            }
+        ]
+    },
+    electricity: {
+        name: 'Electricity',
+        requiredScience: [],
+        time: 2,
+        cost: [
+            {
+                name: 'redScience',
                 amount: 10
             }
         ]
@@ -35,16 +46,12 @@ export const sciences = {
         cost: [
             {
                 name: 'redScience',
-                amount: 12
-            },
-            {
-                name: 'greenScience',
-                amount: 2
+                amount: 10
             }
         ]
     },
     oil: {
-        name: 'Oil processing',
+        name: 'Oil drilling',
         requiredScience: ['electronics'],
         time: 4,
         cost: [
@@ -162,7 +169,7 @@ export const sciences = {
     },
     electricEngine: {
         name: 'Electric Engine',
-        requiredScience: ['electronics','oil','engine'],
+        requiredScience: ['automation1','oil','engine'],
         time: 6,
         cost: [
             {
@@ -181,7 +188,7 @@ export const sciences = {
     },
     advancedElectronics: {
         name: 'Advanced Electronics',
-        requiredScience: ['electronics'],
+        requiredScience: ['automation1', 'plastics'],
         time: 10,
         cost: [
             {
@@ -200,7 +207,7 @@ export const sciences = {
     },
     advancedMaterials: {
         name: 'Advanced Material Processing',
-        requiredScience: ['electronics'],
+        requiredScience: ['automation1', 'steel'],
         time: 10,
         cost: [
             {

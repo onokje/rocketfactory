@@ -3,15 +3,16 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
 import {canAfford} from "../../helpers/InventoryHelper";
-
 import ProductionCost from "../ProductionCost/ProductionCost";
 import uuidv4 from "uuid/v4";
 import {buildAssembler} from "../../actions/crafting";
 import {assemblerPrices} from "../../helpers/gameData";
 import Assembler from "../Assembler/Assembler";
+import {playerHasScience} from "../../helpers/ScienceHelper";
 
 const mapStateToProps = state => ({
     player: state.player,
+    science: state.science,
     inventory: state.inventory,
     crafting: state.crafting
 });
@@ -37,11 +38,18 @@ class Crafting extends Component {
     };
 
     render() {
-        const {player, crafting} = this.props;
-
+        const {player, crafting, science} = this.props;
         const totalAssemblers = crafting.assemblers.length;
 
         if (player.initialized && player.tab === 'crafting') {
+
+            if (!playerHasScience(science.sciences, 'automation1')){
+                return <div className="defaultContainer">
+                    <h1>Automated crafting</h1>
+                    <p>Research Automation 1 first.</p>
+                </div>
+            }
+
             return (
                 <div className="defaultContainer">
                     <h1>Automated crafting</h1>
@@ -67,6 +75,7 @@ class Crafting extends Component {
 
 Crafting.propTypes = {
     player: PropTypes.object.isRequired,
+    science: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     crafting: PropTypes.object.isRequired,
     buildAssembler: PropTypes.func.isRequired

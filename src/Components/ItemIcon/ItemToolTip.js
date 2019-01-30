@@ -7,6 +7,7 @@ import {getItemAmountByName} from "../../helpers/InventoryHelper";
 import itemNames from "./itemNames";
 import {itemRecipes} from "../../helpers/gameData";
 import ProductionCost from "../ProductionCost/ProductionCost";
+import ScienceItem from "../Science/ScienceItem";
 
 const mapStateToProps = state => ({
     inventory: state.inventory
@@ -23,10 +24,21 @@ class ItemToolTip extends Component {
             const recipe = itemRecipes[item];
             return <div>
                 <h2>How to make:</h2>
-                <p>Type: {recipe.type}</p>
+                <p>Type: {recipe.type}{recipe.handcrafting ? ', handcrafting' : ''}</p>
                 <ProductionCost items={recipe.cost} label="Cost to make:" showToolTips={false} />
             </div>
 
+        }
+        return null;
+    }
+
+    renderScienceRequired() {
+        const {item, showScienceRequired} = this.props;
+        if (showScienceRequired) {
+            return <div>
+                <div>Science required:</div>
+                <ScienceItem scienceId={itemRecipes[item].scienceRequired} />
+            </div>
         }
         return null;
     }
@@ -35,16 +47,16 @@ class ItemToolTip extends Component {
 
         const {item, inventory} = this.props;
         const style = {background: `#999 url(${icons[item]}) no-repeat 3px 3px`};
-        const recipe = itemRecipes.hasOwnProperty(item) ? itemRecipes[item] : false;
 
         return <div>
             <div className="itemToolTipIconAndName">
-                <div className="icon" style={style} />
+                <div className="itemIcon" style={style} />
                 <div className="itemName">{itemNames[item] || item}</div>
             </div>
             <p>You have: <b>{getItemAmountByName(inventory, item)}</b></p>
-            <p>Handcraftable: {recipe && recipe.handcrafting ? 'Yes' : 'No'}</p>
+
             {this.renderCraftingRecipe()}
+            {this.renderScienceRequired()}
 
         </div>
     }
@@ -53,7 +65,8 @@ class ItemToolTip extends Component {
 ItemToolTip.propTypes = {
     inventory: PropTypes.array.isRequired,
     item: PropTypes.string.isRequired,
-    amount: PropTypes.number
+    amount: PropTypes.number,
+    showScienceRequired: PropTypes.bool,
 };
 
 export default connect(

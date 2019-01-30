@@ -17,6 +17,7 @@ import rocketry from "../../images/research/32px-Rocketry_(research).png"
 import solar from "../../images/research/32px-Solar_energy_(research).png"
 import steel from "../../images/research/32px-Steel_processing_(research).png"
 import sulfur from "../../images/research/32px-Sulfur_processing_(research).png"
+import electricity from "../../images/research/32px-Electric_energy_distribution_(research).png"
 
 
 export const scienceIcons = {
@@ -38,5 +39,6 @@ export const scienceIcons = {
     rocketry,
     solar,
     steel,
-    sulfur
+    sulfur,
+    electricity
 };

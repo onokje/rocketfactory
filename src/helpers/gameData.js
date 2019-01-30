@@ -315,7 +315,7 @@ export const itemRecipes = {
     },
     inserter: {
         type: 'crafting',
-        scienceRequired: 'electronics',
+        scienceRequired: 'automation1',
         handcrafting: true,
         resultAmount: 1,
         cost: [
@@ -351,7 +351,7 @@ export const itemRecipes = {
     },
     greenScience: {
         type: 'crafting',
-        scienceRequired: 'electronics',
+        scienceRequired: 'automation1',
         handcrafting: true,
         resultAmount: 1,
         cost: [

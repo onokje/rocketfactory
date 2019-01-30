@@ -15,9 +15,9 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class ItemIcon extends Component {
-    render() {
 
-        const {item, amount, showAvailable, inventory, onClick, toolTip} = this.props;
+    renderIcon() {
+        const {item, amount, showAvailable, inventory, onClick, extraClasses} = this.props;
         let bgColor = '999';
         if (showAvailable) {
             const haveAmount = getItemAmountByName(inventory, item);
@@ -28,17 +28,28 @@ class ItemIcon extends Component {
             }
         }
         const displayAmount = amount > 1000 ? Math.floor(amount / 1000)+'k' : amount;
-
         const style = {background: `#${bgColor} url(${icons[item]}) no-repeat 3px 3px`};
+
+        return <div
+            onClick={onClick}
+            className={`itemIcon ${extraClasses}`}
+            style={style}
+        >
+            {displayAmount}
+        </div>
+    }
+
+    render() {
+        const {item, toolTip, showScienceRequired} = this.props;
 
         if (toolTip) {
             return (
-                <Tooltip content={<ItemToolTip item={item}/>}>
-                    <div onClick={onClick} className="icon" style={style}>{displayAmount}</div>
+                <Tooltip content={<ItemToolTip item={item} showScienceRequired={showScienceRequired}/>}>
+                    {this.renderIcon()}
                 </Tooltip>
             );
         } else {
-            return <div onClick={onClick} className="icon" style={style}>{displayAmount}</div>
+            return this.renderIcon();
         }
 
     }
@@ -46,7 +57,8 @@ class ItemIcon extends Component {
 
 ItemIcon.defaultProps = {
     toolTip: true,
-    showAvailable: false
+    showAvailable: false,
+    showScienceRequired: false
 };
 
 ItemIcon.propTypes = {
@@ -55,7 +67,9 @@ ItemIcon.propTypes = {
     amount: PropTypes.number,
     showAvailable: PropTypes.bool,
     onClick: PropTypes.func,
-    toolTip: PropTypes.bool
+    toolTip: PropTypes.bool,
+    showScienceRequired: PropTypes.bool,
+    extraClasses: PropTypes.string,
 };
 
 export default connect(

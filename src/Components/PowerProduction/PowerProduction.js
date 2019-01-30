@@ -7,10 +7,11 @@ import {powerPlantPrices} from "../../helpers/gameData";
 import ProductionCost from "../ProductionCost/ProductionCost";
 import uuidv4 from "uuid/v4";
 import PowerPlant from "../PowerPlant/PowerPlant";
-
+import {playerHasScience} from "../../helpers/ScienceHelper";
 
 const mapStateToProps = state => ({
     player: state.player,
+    science: state.science,
     inventory: state.inventory,
     power: state.power
 });
@@ -38,11 +39,20 @@ class PowerProduction extends Component {
     };
 
     render() {
-        const {player, power} = this.props;
+        const {player, power, science} = this.props;
 
         const totalPowerplants = power.powerPlants.length;
 
+
         if (player.initialized && player.tab === 'power') {
+
+            if (!playerHasScience(science.sciences, 'electricity')){
+                return <div className="defaultContainer">
+                    <h1>Power production</h1>
+                    <p>Research electricity first.</p>
+                </div>
+            }
+
             return (
                 <div className="defaultContainer">
                     <h1>Power production</h1>
@@ -74,6 +84,7 @@ class PowerProduction extends Component {
 
 PowerProduction.propTypes = {
     player: PropTypes.object.isRequired,
+    science: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
     buildPowerPlant: PropTypes.func.isRequired

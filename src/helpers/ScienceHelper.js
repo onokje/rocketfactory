@@ -1,4 +1,7 @@
 export function playerHasScience(playerScience, science) {
+    if (!science) {
+        return true;
+    }
     return !!playerScience.find(item => item === science);
 }
 

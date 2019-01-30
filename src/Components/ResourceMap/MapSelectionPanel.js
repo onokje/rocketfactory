@@ -11,10 +11,12 @@ import ProductionCost from "../ProductionCost/ProductionCost";
 import {minePrices} from "../../helpers/gameData";
 import {canAfford} from "../../helpers/InventoryHelper";
 import uuidv4 from "uuid/v4";
+import {playerHasScience} from "../../helpers/ScienceHelper";
 
 
 const mapStateToProps = state => ({
     player: state.player,
+    science: state.science,
     inventory: state.inventory,
     power: state.power,
     mining: state.mining,
@@ -104,7 +106,7 @@ class MapSelectionPanel extends Component {
             return null;
         }
 
-        const {mining} = this.props;
+        const {mining, science} = this.props;
         const mine = findMineByCoords(mining.mines, selectedCell.x, selectedCell.y);
         if (mine) {
             return <Mine key={mine.id} mine={mine}/>
@@ -125,11 +127,12 @@ class MapSelectionPanel extends Component {
                         <ProductionCost items={minePrices['coal1']}/>
                         <button onClick={() => this.buildMine(selectedCell.resource, 'coal1', selectedCell)} >Build</button>
                     </div>
+                    {playerHasScience(science.sciences, 'electricity') ?
                     <div className="simpleDivider">
                         <h2>Build electric {selectedCell.resource} mine</h2>
                         <ProductionCost items={minePrices['electric1']}/>
                         <button onClick={() => this.buildMine(selectedCell.resource, 'electric1', selectedCell)} >Build</button>
-                    </div>
+                    </div> : ''}
                 </div>
             }
 
@@ -177,6 +180,7 @@ class MapSelectionPanel extends Component {
 
 MapSelectionPanel.propTypes = {
     player: PropTypes.object.isRequired,
+    science: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
     mining: PropTypes.object.isRequired,
