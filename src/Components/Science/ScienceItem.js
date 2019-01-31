@@ -1,5 +1,5 @@
 import {scienceIcons} from "./scienceIcons";
-import {sciences} from "../../helpers/gameDataScience";
+import {sciences} from "../../gamedata/science";
 import React from "react";
 import PropTypes from "prop-types";
 import "./ScienceItem.scss";

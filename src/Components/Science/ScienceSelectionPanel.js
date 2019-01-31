@@ -5,12 +5,12 @@ import connect from "react-redux/es/connect/connect";
 import {canAfford} from "../../helpers/InventoryHelper";
 import {startScience} from "../../actions/science";
 
-import {sciences, scienceTicksMuliplier} from "../../helpers/gameDataScience";
+import {sciences, scienceTicksMuliplier} from "../../gamedata/science";
+import {itemRecipes} from "../../gamedata/items";
 import {scienceIcons} from "./scienceIcons";
 import "./Science.scss";
 import {playerHasAllSciences, playerHasScience} from "../../helpers/ScienceHelper";
 import ProductionCost from "../ProductionCost/ProductionCost";
-import {itemRecipes} from "../../helpers/gameData";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import ScienceItem from "./ScienceItem";
 

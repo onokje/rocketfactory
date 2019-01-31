@@ -7,19 +7,16 @@ import NewPlayer from "./Components/NewPlayer/NewPlayer";
 import SideBar from "./Components/Sidebar/Sidebar";
 import PowerProduction from "./Components/PowerProduction/PowerProduction";
 import mainGameTick from "./helpers/GameTicker";
-import Smelting from "./Components/Smelting/Smelting";
-import HandCrafting from "./Components/HandCrafting/HandCrafting";
-import Crafting from "./Components/Crafting/Crafting";
 import ResourceMap from "./Components/ResourceMap/ResourceMap";
 import Science from "./Components/Science/Science";
+import Production from "./Components/Production/Production";
 
 const mapStateToProps = state => ({
     player: state.player,
     inventory: state.inventory,
     power: state.power,
-    smelting: state.smelting,
+    production: state.production,
     mining: state.mining,
-    crafting: state.crafting,
     science: state.science
 });
 
@@ -38,8 +35,8 @@ class App extends Component {
     }
 
     mainTick = () => {
-        const {dispatch, player, inventory, power, smelting, mining, crafting, science} = this.props;
-        mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting, science);
+        const {dispatch, player, inventory, power, production, mining, science} = this.props;
+        mainGameTick(dispatch, player, inventory, power, production, mining, science);
     };
 
     startTimer() {
@@ -62,9 +59,7 @@ class App extends Component {
                     <NewPlayer/>
                     <ResourceMap/>
                     <PowerProduction/>
-                    <Smelting/>
-                    <HandCrafting/>
-                    <Crafting/>
+                    <Production/>
                     <Science/>
 
                 </div>
@@ -78,9 +73,8 @@ App.propTypes = {
     player: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
-    smelting: PropTypes.object.isRequired,
+    production: PropTypes.object.isRequired,
     mining:PropTypes.object.isRequired,
-    crafting:PropTypes.object.isRequired,
     science: PropTypes.object.isRequired
 };
 

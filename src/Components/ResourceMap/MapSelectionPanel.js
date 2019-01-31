@@ -8,7 +8,7 @@ import {handminingStart} from "../../actions/player";
 import {buildMine} from "../../actions/mining";
 import Mine from "../Mine/Mine";
 import ProductionCost from "../ProductionCost/ProductionCost";
-import {minePrices} from "../../helpers/gameData";
+import {minePrices} from "../../gamedata/machines";
 import {canAfford} from "../../helpers/InventoryHelper";
 import uuidv4 from "uuid/v4";
 import {playerHasScience} from "../../helpers/ScienceHelper";

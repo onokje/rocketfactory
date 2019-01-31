@@ -4,13 +4,12 @@ import {
     removeItemFromInventory,
     removeItemsFromInventory
 } from "./InventoryHelper";
-import {itemRecipes} from "./gameData";
-import {productionTick} from "../actions/production";
-import {furnaceProductionFinish, furnaceProductionStart} from "../actions/smelting";
+import {itemRecipes} from "../gamedata/items";
+import {machineProductionFinish, machineProductionStart, productionTick} from "../actions/production";
 import {miningProductionFinish, miningProductionStart} from "../actions/mining";
 import {handCraftingFinish, handminingFinish} from "../actions/player";
-import {assemblerProductionFinish, assemblerProductionStart} from "../actions/crafting";
 import {finishScience} from "../actions/science";
+import {machines} from "../gamedata/machines";
 
 
 function runPowerPlants(inventory, power) {
@@ -24,15 +23,14 @@ function runPowerPlants(inventory, power) {
     for (let powerPlant of power.powerPlants){
         if (powerPlant.on) {
 
-
             switch (powerPlant.techType) {
                 case 'coal':
                     coalRequired.push({name: 'coal', amount: 1});
                     if (canAfford(inventory, coalRequired)) { // can we afford a run for this pp?
                         // do we need it?
-                        if (buffer + 5000 <= power.bufferMax) {
-                            totalPowerProduced += 5000;
-                            buffer += 5000;
+                        if (buffer + 500 <= power.bufferMax) {
+                            totalPowerProduced += 500;
+                            buffer += 500;
                             totalItemsUsed.push({name: 'coal', amount: 1});
                             inventory = removeItemFromInventory(inventory, 'coal', 1);
                             poweredPowerplants.push(powerPlant.id);
@@ -45,9 +43,9 @@ function runPowerPlants(inventory, power) {
                     oilRequired.push({name: 'oil', amount: 1});
                     if (canAfford(inventory, oilRequired)) { // can we afford a run for this pp?
                         // do we need it?
-                        if (buffer + 5000 <= power.bufferMax) {
-                            totalPowerProduced += 5000;
-                            buffer += 5000;
+                        if (buffer + 500 <= power.bufferMax) {
+                            totalPowerProduced += 500;
+                            buffer += 500;
                             totalItemsUsed.push({name: 'oil', amount: 1});
                             inventory = removeItemFromInventory(inventory, 'oil', 1);
                             poweredPowerplants.push(powerPlant.id);
@@ -66,65 +64,50 @@ function runPowerPlants(inventory, power) {
 
 }
 
-function runFurnaces(inventory, smelting, dispatch, powerBuffer) {
-    const poweredFurnaceIds = [];
+function runProduction(inventory, production, dispatch, powerBuffer) {
+    const poweredMachineIds = [];
 
-    for (let furnace of smelting.furnaces) {
-        if (furnace.on) {
+    for (let machine of production.machines) {
+        if (machine.on) {
+            const machineData = machines[machine.techType];
+            const powerUsage = machineData.powerUsage;
             let powered = false;
-            let powerUsage;
-            switch (furnace.techType) {
-                case 'stone' : powerUsage = 0; break;// doesn't use power
-                case 'steel': powerUsage = 0; break;// doesn't use power
-                case 'electric' : powerUsage = 600; break;
-                default: throw Error('Invalid tech type found in run furnaces switch case');
-            }
 
             // check if enough power is available
             if (!powerUsage || powerBuffer >= powerUsage) {
                 powerBuffer = powerBuffer - powerUsage;
                 powered = true;
-                poweredFurnaceIds.push(furnace.id);
+                poweredMachineIds.push(machine.id);
             }
 
             if (powered) {
 
-                if (furnace.progressTicks === furnace.ticksCost) {
-                    // furnace is ready with this recipe, dispatch action to add the result to the inventory
+                if (machine.progressTicks === machine.ticksCost) {
+                    // machine is ready with this recipe, dispatch action to add the result to the inventory
 
                     //get recipe:
-                    const recipe = itemRecipes[furnace.currentItem];
+                    const recipe = itemRecipes[machine.currentItem];
                     let itemsProduced = [];
-                    itemsProduced.push({name: furnace.currentItem, amount: recipe.resultAmount});
+                    itemsProduced.push({name: machine.currentItem, amount: recipe.resultAmount});
+                    itemsProduced = multiplyItemsInItemsArray(itemsProduced, machineData.resultMultiplier);
 
-                    switch (furnace.techType) {
-                        case 'steel': itemsProduced = multiplyItemsInItemsArray(itemsProduced, 2); break;// doesn't use power
-                        case 'electric' : itemsProduced = multiplyItemsInItemsArray(itemsProduced, 4); break;
-                        default:
-                    }
-
-                    dispatch(furnaceProductionFinish(furnace.id, itemsProduced));
+                    dispatch(machineProductionFinish(machine.id, itemsProduced));
                 }
 
-                if (furnace.progressTicks === 0) {
-                    // furnace is starting with a new recipe, dispatch action to subtract the item cost from the inventory
+                if (machine.progressTicks === 0) {
+                    // machine is starting with a new recipe, dispatch action to subtract the item cost from the inventory
 
                     //get recipe:
-                    const recipe = itemRecipes[furnace.nextItem];
+                    const recipe = itemRecipes[machine.nextItem];
                     let itemCost = recipe.cost.slice(0);
+                    itemCost = multiplyItemsInItemsArray(itemCost, machineData.resultMultiplier);
 
-                    switch (furnace.techType) {
-                        case 'steel': itemCost = multiplyItemsInItemsArray(itemCost, 2); break;// doesn't use power
-                        case 'electric' : itemCost = multiplyItemsInItemsArray(itemCost, 4); break;
-                        default:
-                    }
+                    // add fuel cost if any
+                    Array.prototype.push.apply(itemCost, machineData.fuelCost);
 
-                    if (furnace.techType === 'stone' || furnace.techType === 'steel') {
-                        itemCost.push({name: 'coal', amount: 1}); // added fuel cost for stone or steel furnace
-                    }
 
                     if (canAfford(inventory, itemCost)) {
-                        dispatch(furnaceProductionStart(furnace.id, furnace.nextItem, itemCost));
+                        dispatch(machineProductionStart(machine.id, machine.nextItem, itemCost));
 
                         inventory = removeItemsFromInventory(inventory, itemCost);
                     }
@@ -134,7 +117,7 @@ function runFurnaces(inventory, smelting, dispatch, powerBuffer) {
 
     }
 
-    return {inventory: inventory, powerBuffer: powerBuffer, poweredFurnaceIds: poweredFurnaceIds};
+    return {inventory: inventory, powerBuffer: powerBuffer, poweredMachineIds: poweredMachineIds};
 }
 
 function runMines(inventory, mining, dispatch, powerBuffer) {
@@ -145,8 +128,8 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
             let powerUsage;
             switch (mine.techType) {
                 case 'coal1' : powerUsage = 0; break;// doesn't use power
-                case 'electric1' : powerUsage = 400; break;
-                case 'pump' : powerUsage = 450; break;
+                case 'electric1' : powerUsage = 40; break;
+                case 'pump' : powerUsage = 45; break;
                 default: throw Error('Invalid tech type found in run mines switch case');
             }
 
@@ -188,52 +171,6 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
     return {inventory: inventory, powerBuffer: powerBuffer, poweredMineIds: poweredMineIds};
 }
 
-function runCrafters(inventory, crafting, dispatch, powerBuffer) {
-    const poweredAssemblerIds = [];
-    for (let assembler of crafting.assemblers) {
-        if (assembler.on) {
-            let powered = false;
-            let powerUsage;
-            switch (assembler.techType) {
-                case 'assembler1' : powerUsage = 300; break;
-                default: throw Error('Invalid tech type found in run assemblers switch case');
-            }
-
-            // check if enough power is available
-            if (powerBuffer >= powerUsage) {
-                powerBuffer = powerBuffer - powerUsage;
-                powered = true;
-                poweredAssemblerIds.push(assembler.id);
-            }
-
-            if (powered) {
-
-                if (assembler.progressTicks === assembler.ticksCost) {
-                    // assembler is ready with this batch, dispatch action to add result to the inventory
-
-                    const itemsProduced = [];
-                    itemsProduced.push({name: assembler.currentItem, amount: itemRecipes[assembler.currentItem].resultAmount});
-
-                    dispatch(assemblerProductionFinish(assembler.id, itemsProduced));
-                }
-
-                if (assembler.progressTicks === 0) {
-                    // assembler is starting with a new batch, dispach start action.
-
-                    const itemCost = JSON.parse(JSON.stringify(itemRecipes[assembler.nextItem].cost));
-
-                    if (canAfford(inventory, itemCost)) {
-                        dispatch(assemblerProductionStart(assembler.id, assembler.nextItem, itemCost));
-                        inventory = removeItemsFromInventory(inventory, itemCost);
-                    }
-                }
-            }
-        }
-    }
-
-    return {inventory: inventory, powerBuffer: powerBuffer, poweredAssemblerIds: poweredAssemblerIds};
-}
-
 function handmining(dispatch, player){
     if (player.handmining && player.handminingProgressTicks === player.handminingTicksCost) {
         const itemsProduced = [];
@@ -256,7 +193,7 @@ function scienceTick(dispatch, science){
     }
 }
 
-export default function mainGameTick(dispatch, player, inventory, power, smelting, mining, crafting, science) {
+export default function mainGameTick(dispatch, player, inventory, power, production, mining, science) {
 
     const ppResult = runPowerPlants(inventory, power);
     inventory = ppResult.inventory;
@@ -267,13 +204,9 @@ export default function mainGameTick(dispatch, player, inventory, power, smeltin
     powerBuffer = minesResult.powerBuffer;
     const poweredMineIds = minesResult.poweredMineIds;
 
-    const furnaceResult = runFurnaces(inventory, smelting, dispatch, powerBuffer);
-    inventory = furnaceResult.inventory;
-    powerBuffer = furnaceResult.powerBuffer;
-    const poweredFurnaceIds = furnaceResult.poweredFurnaceIds;
-
-    const craftingResult = runCrafters(inventory, crafting, dispatch, powerBuffer);
-    powerBuffer = craftingResult.powerBuffer;
+    const productionResult = runProduction(inventory, production, dispatch, powerBuffer);
+    inventory = productionResult.inventory;
+    powerBuffer = productionResult.powerBuffer;
 
     handmining(dispatch, player);
     handcrafting(dispatch, player);
@@ -281,10 +214,9 @@ export default function mainGameTick(dispatch, player, inventory, power, smeltin
 
     dispatch(productionTick(
         poweredMineIds,
-        poweredFurnaceIds,
         ppResult.totalPowerProduced,
         ppResult.totalItemsUsed,
         ppResult.poweredPowerplants,
-        craftingResult.poweredAssemblerIds,
+        productionResult.poweredMachineIds,
         powerBuffer));
 }

@@ -5,7 +5,7 @@ import {icons} from "./icons";
 import "./ItemIcon.scss";
 import {getItemAmountByName} from "../../helpers/InventoryHelper";
 import itemNames from "./itemNames";
-import {itemRecipes} from "../../helpers/gameData";
+import {itemRecipes} from "../../gamedata/items";
 import ProductionCost from "../ProductionCost/ProductionCost";
 import ScienceItem from "../Science/ScienceItem";
 

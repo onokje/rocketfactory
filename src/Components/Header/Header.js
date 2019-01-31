@@ -26,16 +26,10 @@ class Header extends Component {
                         Resource Map
                     </div>
                     <div className={player.tab === 'power' ? 'active' : ''}  onClick={() => switchTab('power')}>
-                        Power production
+                        Power
                     </div>
-                    <div className={player.tab === 'smelting' ? 'active' : ''}  onClick={() => switchTab('smelting')}>
-                        Smelting
-                    </div>
-                    <div className={player.tab === 'handcrafting' ? 'active' : ''}  onClick={() => switchTab('handcrafting')}>
-                        Handcrafting
-                    </div>
-                    <div className={player.tab === 'crafting' ? 'active' : ''}  onClick={() => switchTab('crafting')}>
-                        Automated crafting
+                    <div className={player.tab === 'production' ? 'active' : ''}  onClick={() => switchTab('production')}>
+                        Production
                     </div>
                     <div className={player.tab === 'science' ? 'active' : ''}  onClick={() => switchTab('science')}>
                         Research

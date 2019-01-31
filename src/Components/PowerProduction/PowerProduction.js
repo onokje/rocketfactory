@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {buildPowerPlant} from "../../actions/power";
 import {canAfford} from "../../helpers/InventoryHelper";
-import {powerPlantPrices} from "../../helpers/gameData";
+import {powerPlantPrices} from "../../gamedata/machines";
 import ProductionCost from "../ProductionCost/ProductionCost";
 import uuidv4 from "uuid/v4";
 import PowerPlant from "../PowerPlant/PowerPlant";

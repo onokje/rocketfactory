@@ -4,7 +4,7 @@ import connect from "react-redux/es/connect/connect";
 
 import {selectScience} from "../../actions/science";
 
-import {sciences} from "../../helpers/gameDataScience";
+import {sciences} from "../../gamedata/science";
 import {scienceIcons} from "./scienceIcons";
 import "./Science.scss";
 import {playerHasAllSciences, playerHasScience} from "../../helpers/ScienceHelper";

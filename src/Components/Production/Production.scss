@@ -1,0 +1,47 @@
+div.productionContainer {
+    display: flex;
+
+    div.productionMachines {
+        width: 70%;
+        ul.machineList {
+            list-style: none;
+            margin:0;
+            padding:0;
+            display: flex;
+            flex-wrap:wrap;
+            align-content: flex-start;
+
+            li{
+                background-color: #444;
+                padding: 5px;
+                width: 250px;
+                margin-right: 2px;
+                margin-bottom: 2px;
+                div.machineName{
+                    font-weight: bold;
+                }
+
+
+            }
+        }
+    }
+
+    div.productionSidePanel {
+        min-width: 200px;
+        max-width: 400px;
+        background-color: #333;
+
+        div.buildOptions {
+            div.buildOption{
+                background-color: #444;
+                margin-bottom: 2px;
+            }
+        }
+
+        div.handcraftingButtons{
+            display: flex;
+            flex-wrap:wrap;
+            align-content: flex-start;
+        }
+    }
+}
