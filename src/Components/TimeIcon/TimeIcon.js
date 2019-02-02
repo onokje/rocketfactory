@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
-import connect from "react-redux/es/connect/connect";
 import Tooltip from 'react-tooltip-lite';
 import {icons} from "./../ItemIcon/icons";
 
-const mapStateToProps = state => ({
-    inventory: state.inventory
-});
-
-const mapDispatchToProps = dispatch => ({
-});
+import "../ItemIcon/ItemIcon.scss";
 
 class TimeIcon extends Component {
 
@@ -51,7 +45,4 @@ TimeIcon.propTypes = {
     extraClasses: PropTypes.string,
 };
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(TimeIcon)
+export default TimeIcon;

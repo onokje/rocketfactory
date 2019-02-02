@@ -47,3 +47,12 @@ export const machineProductionFinish = (id, itemsProduced) => ({
     id,
     itemsProduced
 });
+
+export const openMachineDialog = (id) => ({
+    type: 'OPEN_MACHINE_DIALOG',
+    id
+});
+
+export const closeMachineDialog = () => ({
+    type: 'CLOSE_MACHINE_DIALOG'
+});

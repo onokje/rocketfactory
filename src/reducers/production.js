@@ -1,5 +1,7 @@
 const initialProductionState = {
     machines: [],
+    machineDialogOpen: false,
+    machineDialogMachineId: null
 };
 
 const findIdArray = (arr, id) => {
@@ -75,6 +77,10 @@ const production = (state = initialProductionState, action) => {
             });
 
             return {...state, machines: machines};
+        case 'OPEN_MACHINE_DIALOG':
+            return {...state, machineDialogOpen: true, machineDialogMachineId: action.id};
+        case 'CLOSE_MACHINE_DIALOG':
+            return {...state, machineDialogOpen: false};
         default:
             return state;
     }

@@ -10,6 +10,7 @@ import {playerHasScience} from "../../helpers/ScienceHelper";
 
 
 const mapStateToProps = state => ({
+    production: state.production,
     science: state.science
 });
 
@@ -22,10 +23,20 @@ const mapDispatchToProps = dispatch => ({
     },
 });
 
-class Machine extends Component {
+class MachineDialog extends Component {
+
+    getMachine() {
+        const {production} = this.props;
+
+        if (!production.machineDialogOpen) {
+            return false;
+        }
+        return production.machines.find(item => item.id === production.machineDialogMachineId);
+    }
 
     getRecipes() {
-        const {machine, science} = this.props;
+        const { science} = this.props;
+        const machine = this.getMachine();
         const machineData = machines[machine.techType];
 
         const recipes = [];
@@ -42,12 +53,14 @@ class Machine extends Component {
     }
 
     handleChangeRecipe = (event) => {
-        const {machine, toggleMachine} = this.props;
+        const {toggleMachine} = this.props;
+        const machine = this.getMachine();
         toggleMachine(machine.id, machine.on, event.target.value);
     };
 
     toggleMachine = () => {
-        const {machine, toggleMachine} = this.props;
+        const {toggleMachine} = this.props;
+        const machine = this.getMachine();
         if (machine.nextItem) {
             toggleMachine(machine.id, !machine.on, machine.nextItem);
         }
@@ -55,16 +68,21 @@ class Machine extends Component {
     };
 
     sellMachine() {
-        const {machine, sellMachine} = this.props;
+        const {sellMachine} = this.props;
+        const machine = this.getMachine();
         sellMachine(machine.techType, machine.id)
     }
 
     render() {
-        const {machine} = this.props;
+        const machine = this.getMachine();
+        if (!machine) {
+            return null;
+        }
+
         const machineData = machines[machine.techType];
         const completedPercentage = machine.on ? (machine.progressTicks * 100 / machine.ticksCost) : 0;
 
-        return <li key={machine.id}>
+        return <div>
             <div className="machineName">{machineData.name}</div>
             <MachineState on={machine.on} powered={machine.powered} running={machine.running}/>
             <button onClick={this.toggleMachine}>Turn {machine.on ? 'OFF' : 'ON'}</button>
@@ -79,13 +97,13 @@ class Machine extends Component {
             <div className="sellMachine">
                 <button onClick={() => this.sellMachine()}>Sell</button>
             </div>
-        </li>
+        </div>
     }
 }
 
-Machine.propTypes = {
+MachineDialog.propTypes = {
+    production: PropTypes.object.isRequired,
     science: PropTypes.object.isRequired,
-    machine: PropTypes.object.isRequired,
     toggleMachine: PropTypes.func.isRequired,
     sellMachine: PropTypes.func.isRequired,
 };
@@ -93,4 +111,4 @@ Machine.propTypes = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Machine)
+)(MachineDialog)
