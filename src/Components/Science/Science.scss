@@ -28,11 +28,14 @@ div.scienceListContainer{
             background: #444;
         }
         li.notLearnable{
-            opacity: 0.5;
+            opacity: 0.4;
         }
         li.hasLearned {
-            opacity: 0.5;
+            opacity: 0.4;
             background-color: #060;
+        }
+        li.selected {
+            background-color: #162f96;
         }
     }
 }

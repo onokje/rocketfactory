@@ -31,6 +31,7 @@ import furnaceParts from "../../images/items/Electric_furnace.png"
 import speedModule from "../../images/items/Speed_module.png"
 import brick from "../../images/items/Stone_brick.png"
 import oil from "../../images/items/Crude_oil_barrel.png"
+import time from "../../images/items/Time_icon.png"
 
 export const icons = {
     iron,
@@ -65,5 +66,6 @@ export const icons = {
     furnaceParts,
     speedModule,
     brick,
-    oil
+    oil,
+    time
 };

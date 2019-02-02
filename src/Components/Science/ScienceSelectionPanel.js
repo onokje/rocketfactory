@@ -45,10 +45,15 @@ class ScienceSelectionPanel extends Component {
     };
 
     renderScienceRequired(sciencesRequired) {
+        const {science} = this.props;
         if (!sciencesRequired.length) {
             return <p>None</p>
         }
-        return sciencesRequired.map(scienceRequiredId => <ScienceItem scienceId={scienceRequiredId}/>);
+
+        return sciencesRequired.map(scienceRequiredId => <ScienceItem
+            scienceId={scienceRequiredId}
+            extraClass={playerHasScience(science.sciences, scienceRequiredId) ? 'scienceItemGreen' : 'scienceItemRed'}
+        />);
     }
 
     renderScienceUnlocks(scienceId) {
@@ -100,7 +105,11 @@ class ScienceSelectionPanel extends Component {
             <div className="scienceInfo">
 
                 {hasScience ? <div>Research complete</div> : <>
-                <ProductionCost items={currentScienceData.cost} label={'Cost to research:'}/>
+                <ProductionCost
+                    items={currentScienceData.cost}
+                    label={'Cost to research:'}
+                    time={currentScienceData.time + 'm'}
+                />
                 <div className="scienceRequiredContainer">
                     <div>Research required:</div>
                     <div className="scienceRequired">{this.renderScienceRequired(currentScienceData.requiredScience)}</div>

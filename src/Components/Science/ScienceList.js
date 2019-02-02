@@ -30,7 +30,8 @@ class ScienceList extends Component {
 
         const canLearn = playerHasAllSciences(science.sciences, currentScienceData.requiredScience);
         const hasLearned = playerHasScience(science.sciences, scienceId);
-        const className = hasLearned ? 'hasLearned' : canLearn ? '' : 'notLearnable';
+        let className = hasLearned ? 'hasLearned' : canLearn ? '' : 'notLearnable';
+        className = science.selectedScience === scienceId ? className + ' selected' : className;
 
         return <li key={scienceId} onClick={() => selectScience(scienceId)} className={`scienceItem ${className}`} >
             <img alt={scienceId} src={scienceIcons[scienceId]} />
