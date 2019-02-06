@@ -37,11 +37,11 @@ div.productionContainer {
                 margin-bottom: 2px;
             }
         }
-
-        div.handcraftingButtons{
-            display: flex;
-            flex-wrap:wrap;
-            align-content: flex-start;
-        }
     }
+}
+
+div.itembuttons{
+    display: flex;
+    flex-wrap:wrap;
+    align-content: flex-start;
 }

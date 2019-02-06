@@ -1,7 +1,8 @@
 const initialProductionState = {
     machines: [],
     machineDialogOpen: false,
-    machineDialogMachineId: null
+    machineDialogMachineId: null,
+    machineDialogSelectorOpen: false
 };
 
 const findIdArray = (arr, id) => {
@@ -41,7 +42,7 @@ const production = (state = initialProductionState, action) => {
                 } : machine
             });
 
-            return {...state, machines: machines};
+            return {...state, machines: machines, machineDialogSelectorOpen: false};
         case 'PRODUCTION_TICK':
             machines = state.machines.map(machine => {
                 if (machine.on) {
@@ -78,9 +79,13 @@ const production = (state = initialProductionState, action) => {
 
             return {...state, machines: machines};
         case 'OPEN_MACHINE_DIALOG':
-            return {...state, machineDialogOpen: true, machineDialogMachineId: action.id};
+            return {...state, machineDialogOpen: true, machineDialogMachineId: action.id, machineDialogSelectorOpen: false};
         case 'CLOSE_MACHINE_DIALOG':
-            return {...state, machineDialogOpen: false};
+            return {...state, machineDialogOpen: false, machineDialogSelectorOpen: false};
+        case 'OPEN_MACHINE_DIALOG_SELECTOR':
+            return {...state, machineDialogSelectorOpen: true};
+        case 'CLOSE_MACHINE_DIALOG_SELECTOR':
+            return {...state, machineDialogSelectorOpen: false};
         default:
             return state;
     }

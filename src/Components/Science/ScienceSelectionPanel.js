@@ -10,7 +10,7 @@ import {itemRecipes} from "../../gamedata/items";
 import {scienceIcons} from "./scienceIcons";
 import "./Science.scss";
 import {playerHasAllSciences, playerHasScience} from "../../helpers/ScienceHelper";
-import ProductionCost from "../ProductionCost/ProductionCost";
+import ItemList from "../ItemList/ItemList";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import ScienceItem from "./ScienceItem";
 
@@ -99,13 +99,13 @@ class ScienceSelectionPanel extends Component {
 
         return <>
             <div className="scienceHeader">
-                <div className="scienceIcon"> <img src={scienceIcons[scienceId]} /></div>
+                <div className="scienceIcon"> <img alt={currentScienceData.name} src={scienceIcons[scienceId]} /></div>
                 <div className="scienceName"> {currentScienceData.name}</div>
             </div>
             <div className="scienceInfo">
 
                 {hasScience ? <div>Research complete</div> : <>
-                <ProductionCost
+                <ItemList
                     items={currentScienceData.cost}
                     label={'Cost to research:'}
                     time={currentScienceData.time + 'm'}

@@ -53,7 +53,7 @@ class HandCrafting extends Component {
     render() {
         return (
 
-            <div className="handcraftingButtons">
+            <div className="itembuttons">
                 {Object.entries(itemRecipes).map(entry => this.renderHandCraftingButton(entry))}
             </div>
 

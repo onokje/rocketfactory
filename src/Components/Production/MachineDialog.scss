@@ -1,0 +1,76 @@
+div.overlay {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: #000;
+    opacity: 0.6;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    display: flex;
+}
+
+div.machinedialogContainer {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    z-index: 11;
+    top: 0;
+    left: 0;
+    display: flex;
+
+    div.machinedialog {
+        width: 400px;
+        height: 350px;
+        margin: auto;
+        background-color: #000;
+        padding: 2px;
+        border: solid 2px #333;
+
+        div.machineTitle {
+            position: relative;
+            font-weight: bold;
+            font-size: 24px;
+            padding: 3px 10px;
+            background-color: #333;
+
+            div.machineStateMessage {
+                position: absolute;
+                top: 6px;
+                right: 50px;
+                text-align:right;
+                font-size: 16px;
+            }
+
+            div.closebutton{
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: #666;
+                padding: 0 5px;
+                color: #800;
+                cursor: pointer;
+            }
+        }
+
+        div.selectRecipe{
+            padding: 10px;
+        }
+
+        div.currentProgress {
+            padding: 10px;
+
+
+        }
+
+        div.sellMachine{
+            padding: 10px;
+        }
+
+
+    }
+}

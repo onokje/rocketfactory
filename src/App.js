@@ -10,6 +10,7 @@ import mainGameTick from "./helpers/GameTicker";
 import ResourceMap from "./Components/ResourceMap/ResourceMap";
 import Science from "./Components/Science/Science";
 import Production from "./Components/Production/Production";
+import MachineDialog from "./Components/Production/MachineDialog";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -61,6 +62,7 @@ class App extends Component {
                     <PowerProduction/>
                     <Production/>
                     <Science/>
+                    <MachineDialog/>
 
                 </div>
             );

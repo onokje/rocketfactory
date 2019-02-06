@@ -3,81 +3,60 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {machines} from "../../gamedata/machines";
 import MachineState from "../MachineState/MachineState";
-import {sellMachine, toggleMachine} from "../../actions/production";
-import {itemRecipes} from "../../gamedata/items";
+import {openMachineDialog, toggleMachine} from "../../actions/production";
 import ProgressBar from "../ProgressBar/ProgressBar";
-import {playerHasScience} from "../../helpers/ScienceHelper";
-
+import ItemIcon from "../ItemIcon/ItemIcon";
+import {itemRecipes} from "../../gamedata/items";
+import {canAfford} from "../../helpers/InventoryHelper";
 
 const mapStateToProps = state => ({
-    science: state.science
+    science: state.science,
+    inventory: state.inventory
 });
 
 const mapDispatchToProps = dispatch => ({
     toggleMachine: (id, on, nextItem) => {
         dispatch(toggleMachine(id, on, nextItem));
     },
-    sellMachine: (techType, id) => {
-        dispatch(sellMachine(techType, id));
-    },
+    openMachineDialog: (id) => {
+        dispatch(openMachineDialog(id));
+    }
 });
 
 class Machine extends Component {
-
-    getRecipes() {
-        const {machine, science} = this.props;
-        const machineData = machines[machine.techType];
-
-        const recipes = [];
-        for (let itemKey in itemRecipes) {
-            if (itemRecipes.hasOwnProperty(itemKey)
-                && itemRecipes[itemKey].type === machineData.type
-                && playerHasScience(science.sciences, itemRecipes[itemKey].scienceRequired)) {
-                recipes.push(itemKey);
-
-            }
-        }
-
-        return recipes;
-    }
-
-    handleChangeRecipe = (event) => {
-        const {machine, toggleMachine} = this.props;
-        toggleMachine(machine.id, machine.on, event.target.value);
-    };
 
     toggleMachine = () => {
         const {machine, toggleMachine} = this.props;
         if (machine.nextItem) {
             toggleMachine(machine.id, !machine.on, machine.nextItem);
         }
-
     };
 
-    sellMachine() {
-        const {machine, sellMachine} = this.props;
-        sellMachine(machine.techType, machine.id)
-    }
-
     render() {
-        const {machine} = this.props;
+        const {machine, openMachineDialog, inventory} = this.props;
         const machineData = machines[machine.techType];
         const completedPercentage = machine.on ? (machine.progressTicks * 100 / machine.ticksCost) : 0;
+        let missingItems = false;
+        let missingFuel = false;
 
-        return <li key={machine.id}>
+        if (!machine.running && machine.nextItem) {
+            const recipe = itemRecipes[machine.nextItem];
+            if (!canAfford(inventory, recipe.cost)) {
+                missingItems = true;
+            }
+            if (!canAfford(inventory, machineData.fuelCost)) {
+                missingFuel = true;
+            }
+        }
+
+        return <li key={machine.id} onClick={() => openMachineDialog(machine.id)}>
             <div className="machineName">{machineData.name}</div>
-            <MachineState on={machine.on} powered={machine.powered} running={machine.running}/>
+            <MachineState on={machine.on} powered={machine.powered} running={machine.running} missingItems={missingItems} missingFuel={missingFuel}/>
             <button onClick={this.toggleMachine}>Turn {machine.on ? 'OFF' : 'ON'}</button>
-            <div>Select Recipe:
-                <select value={machine.nextItem} onChange={this.handleChangeRecipe}>
-                    {this.getRecipes().map(option => (<option key={option} value={option}>{option}</option>))}
-                </select>
-            </div>
-            <div>Currentl progress: {machine.currentItem}<br/>
+
+            <div>
+                <ItemIcon item={machine.currentItem || machine.nextItem} />
                 <ProgressBar completedPercentage={completedPercentage}/>
-            </div>
-            <div className="sellMachine">
-                <button onClick={() => this.sellMachine()}>Sell</button>
             </div>
         </li>
     }
@@ -85,9 +64,10 @@ class Machine extends Component {
 
 Machine.propTypes = {
     science: PropTypes.object.isRequired,
+    inventory: PropTypes.object.isRequired,
     machine: PropTypes.object.isRequired,
     toggleMachine: PropTypes.func.isRequired,
-    sellMachine: PropTypes.func.isRequired,
+    openMachineDialog: PropTypes.func.isRequired,
 };
 
 export default connect(

@@ -7,7 +7,7 @@ import {exploreStart} from "../../actions/resourcemap";
 import {handminingStart} from "../../actions/player";
 import {buildMine} from "../../actions/mining";
 import Mine from "../Mine/Mine";
-import ProductionCost from "../ProductionCost/ProductionCost";
+import ItemList from "../ItemList/ItemList";
 import {minePrices} from "../../gamedata/machines";
 import {canAfford} from "../../helpers/InventoryHelper";
 import uuidv4 from "uuid/v4";
@@ -115,7 +115,7 @@ class MapSelectionPanel extends Component {
                 return <div>
                     <div className="simpleDivider">
                         <h2>Build oil pump</h2>
-                        <ProductionCost items={minePrices['pump']}/>
+                        <ItemList items={minePrices['pump']}/>
                         <button onClick={() => this.buildMine(selectedCell.resource, 'pump', selectedCell)} >Build</button>
                     </div>
 
@@ -124,13 +124,13 @@ class MapSelectionPanel extends Component {
                 return <div>
                     <div className="simpleDivider">
                         <h2>Build coal-powered {selectedCell.resource} mine</h2>
-                        <ProductionCost items={minePrices['coal1']}/>
+                        <ItemList items={minePrices['coal1']}/>
                         <button onClick={() => this.buildMine(selectedCell.resource, 'coal1', selectedCell)} >Build</button>
                     </div>
                     {playerHasScience(science.sciences, 'electricity') ?
                     <div className="simpleDivider">
                         <h2>Build electric {selectedCell.resource} mine</h2>
-                        <ProductionCost items={minePrices['electric1']}/>
+                        <ItemList items={minePrices['electric1']}/>
                         <button onClick={() => this.buildMine(selectedCell.resource, 'electric1', selectedCell)} >Build</button>
                     </div> : ''}
                 </div>

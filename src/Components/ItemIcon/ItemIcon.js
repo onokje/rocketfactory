@@ -18,21 +18,21 @@ class ItemIcon extends Component {
 
     renderIcon() {
         const {item, amount, showAvailable, inventory, onClick, extraClasses} = this.props;
-        let bgColor = '999';
+        let classes = extraClasses;
         if (showAvailable) {
             const haveAmount = getItemAmountByName(inventory, item);
             if (haveAmount >= amount) {
-                bgColor = '090';
+                classes += ' itemGreen';
             } else {
-                bgColor = '900';
+                classes += ' itemRed';
             }
         }
         const displayAmount = amount > 1000 ? Math.floor(amount / 1000)+'k' : amount;
-        const style = {background: `#${bgColor} url(${icons[item]}) no-repeat 3px 3px`};
+        const style = {backgroundImage: `url(${icons[item]})`};
 
         return <div
             onClick={onClick}
-            className={`itemIcon ${extraClasses}`}
+            className={`itemIcon ${classes}`}
             style={style}
         >
             {displayAmount}

@@ -4,7 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {buildPowerPlant} from "../../actions/power";
 import {canAfford} from "../../helpers/InventoryHelper";
 import {powerPlantPrices} from "../../gamedata/machines";
-import ProductionCost from "../ProductionCost/ProductionCost";
+import ItemList from "../ItemList/ItemList";
 import uuidv4 from "uuid/v4";
 import PowerPlant from "../PowerPlant/PowerPlant";
 import {playerHasScience} from "../../helpers/ScienceHelper";
@@ -58,12 +58,12 @@ class PowerProduction extends Component {
                     <h1>Power production</h1>
                     <div className="simpleDivider">
                         <h2>Build coal Power plant</h2>
-                        <ProductionCost items={powerPlantPrices['coal']}/>
+                        <ItemList items={powerPlantPrices['coal']}/>
                         <button onClick={() => this.buildPowerPlant('coal')} >Build coal power plant!</button>
                     </div>
                     <div className="simpleDivider">
                         <h2>Build oil power plant</h2>
-                        <ProductionCost items={powerPlantPrices['oil']}/>
+                        <ItemList items={powerPlantPrices['oil']}/>
                         <button onClick={() => this.buildPowerPlant('oil')} >Build oil power plant</button>
                     </div>
                     <div className="simpleDivider">

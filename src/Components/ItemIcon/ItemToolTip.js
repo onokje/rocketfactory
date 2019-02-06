@@ -6,8 +6,8 @@ import "./ItemIcon.scss";
 import {getItemAmountByName} from "../../helpers/InventoryHelper";
 import itemNames from "./itemNames";
 import {itemRecipes} from "../../gamedata/items";
-import ProductionCost from "../ProductionCost/ProductionCost";
 import ScienceItem from "../Science/ScienceItem";
+import ItemRecipe from "../ItemRecipe/ItemRecipe";
 
 const mapStateToProps = state => ({
     inventory: state.inventory
@@ -25,7 +25,7 @@ class ItemToolTip extends Component {
             return <div>
                 <h2>How to make:</h2>
                 <p>Type: {recipe.type}{recipe.handcrafting ? ', handcrafting' : ''}</p>
-                <ProductionCost items={recipe.cost} label="Cost to make:" showToolTips={false} />
+                <ItemRecipe recipeKey={item} showToolTips={false} />
             </div>
 
         }

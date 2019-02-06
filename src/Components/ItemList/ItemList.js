@@ -1,36 +1,32 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import "./ProductionCost.scss";
+import "./ItemList.scss";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import TimeIcon from "../TimeIcon/TimeIcon";
 
-function costItem(item, showToolTip) {
-    return <ItemIcon item={item.name} amount={item.amount} showAvailable={true} toolTip={showToolTip} />
-}
-
-export default function ProductionCost(props) {
+export default function ItemList(props) {
 
     const {items, label, showToolTips, time} = props;
 
     return (
         <div>
             <span>{label}</span>
-            <div className="itemcost">
+            <div className="horizontalItemList">
                 {time ? <TimeIcon time={time}/> : ''}
-                {items.map(item => costItem(item, showToolTips))}
+                {items.map(item => <ItemIcon item={item.name} amount={item.amount} showAvailable={true} toolTip={showToolTips} />)}
             </div>
         </div>
     );
 }
 
-ProductionCost.propTypes = {
+ItemList.propTypes = {
     items: PropTypes.array.isRequired,
     label: PropTypes.string,
     showToolTips: PropTypes.bool,
     time: PropTypes.string,
 };
 
-ProductionCost.defaultProps = {
+ItemList.defaultProps = {
     label: 'Cost to build:',
     showToolTips: true
 };

@@ -56,3 +56,11 @@ export const openMachineDialog = (id) => ({
 export const closeMachineDialog = () => ({
     type: 'CLOSE_MACHINE_DIALOG'
 });
+
+export const openMachineDialogSelector = () => ({
+    type: 'OPEN_MACHINE_DIALOG_SELECTOR'
+});
+
+export const closeMachineDialogSelector = () => ({
+    type: 'CLOSE_MACHINE_DIALOG_SELECTOR'
+});
