@@ -130,6 +130,54 @@ export const machines = {
         ],
         fuelCost: [],
         scienceRequired: 'automation1'
+    },
+    refinary: {
+        type: 'refinary',
+        name: 'Oil refinary',
+        powerUsage: 50,
+        resultMultiplier: 1,
+        cost: [
+            {
+                name: 'steelPlate',
+                amount: 10
+            },
+            {
+                name: 'ironTube',
+                amount: 20
+            },
+            {
+                name: 'greenChip',
+                amount: 4
+            }
+        ],
+        fuelCost: [],
+        scienceRequired: 'oil'
+    },
+    chemicalPlant: {
+        type: 'chemicalPlant',
+        name: 'Chemical plant',
+        powerUsage: 30,
+        resultMultiplier: 1,
+        cost: [
+            {
+                name: 'steelPlate',
+                amount: 8
+            },
+            {
+                name: 'ironTube',
+                amount: 10
+            },
+            {
+                name: 'greenChip',
+                amount: 4
+            },
+            {
+                name: 'ironPlate',
+                amount: 10
+            }
+        ],
+        fuelCost: [],
+        scienceRequired: 'oil'
     }
 };
 

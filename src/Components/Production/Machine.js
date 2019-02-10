@@ -7,7 +7,7 @@ import {openMachineDialog, toggleMachine} from "../../actions/production";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import {itemRecipes} from "../../gamedata/items";
-import {canAfford} from "../../helpers/InventoryHelper";
+import {canAfford, multiplyItemsInItemsArray} from "../../helpers/InventoryHelper";
 
 const mapStateToProps = state => ({
     science: state.science,
@@ -41,7 +41,7 @@ class Machine extends Component {
 
         if (!machine.running && machine.nextItem) {
             const recipe = itemRecipes[machine.nextItem];
-            if (!canAfford(inventory, recipe.cost)) {
+            if (!canAfford(inventory, multiplyItemsInItemsArray(recipe.cost, machineData.resultMultiplier))) {
                 missingItems = true;
             }
             if (!canAfford(inventory, machineData.fuelCost)) {

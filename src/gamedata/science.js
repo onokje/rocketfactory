@@ -169,7 +169,7 @@ export const sciences = {
     },
     electricEngine: {
         name: 'Electric Engine',
-        requiredScience: ['automation1','oil','engine'],
+        requiredScience: ['electronics','engine'],
         time: 6,
         cost: [
             {

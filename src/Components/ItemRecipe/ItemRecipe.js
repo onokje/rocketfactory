@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import {itemRecipes} from "../../gamedata/items";
 import "./ItemRecipe.scss";
 import ItemList from "../ItemList/ItemList";
+import {multiplyItemsInItemsArray} from "../../helpers/InventoryHelper";
 
 class ItemRecipe extends Component {
 
@@ -20,14 +21,21 @@ class ItemRecipe extends Component {
     }
 
     render() {
-        const {recipeKey, showToolTips} = this.props;
+        const {recipeKey, showToolTips, machineMultiplier} = this.props;
         const recipe = itemRecipes[recipeKey];
+        const cost = multiplyItemsInItemsArray(recipe.cost, machineMultiplier);
+        const resultAmount = recipe.resultAmount * machineMultiplier;
 
         return <div className="itemRecipe">
             {this.renderFuelItems()}
-            <ItemList items={recipe.cost} label="" showToolTips={showToolTips} />
+            <ItemList items={cost} label="" showToolTips={showToolTips} />
             <div className="arrow" />
-            <ItemList items={[{"name" : recipeKey, "amount" : recipe.resultAmount}]} label="" showToolTips={showToolTips} />
+            <ItemList
+                items={[{"name" : recipeKey, "amount" : resultAmount}]}
+                label=""
+                showToolTips={showToolTips}
+                showAvailable={false}
+            />
         </div>
     }
 }
@@ -35,12 +43,14 @@ class ItemRecipe extends Component {
 ItemRecipe.propTypes = {
     recipeKey: PropTypes.object.isRequired,
     showToolTips: PropTypes.bool,
-    fuelItems: PropTypes.array
+    fuelItems: PropTypes.array,
+    machineMultiplier: PropTypes.number
 };
 
 ItemRecipe.defaultProps = {
     showToolTips: true,
-    fuelItems: []
+    fuelItems: [],
+    machineMultiplier: 1
 };
 
 export default ItemRecipe;

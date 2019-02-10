@@ -434,8 +434,8 @@ export const itemRecipes = {
                 amount: 1
             },
             {
-                name: 'lube',
-                amount: 1
+                name: 'copperWire',
+                amount: 8
             }
         ]
     },
@@ -472,6 +472,46 @@ export const itemRecipes = {
             {
                 name: 'greenChip',
                 amount: 5
+            }
+        ]
+    },
+    refinedOil: {
+        type: 'refinary',
+        scienceRequired: 'oil',
+        handcrafting: false,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'oil',
+                amount: 1
+            }
+        ]
+    },
+    acid: {
+        type: 'chemicalPlant',
+        scienceRequired: 'oil',
+        handcrafting: false,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'refinedOil',
+                amount: 1
+            },
+            {
+                name: 'ironPlate',
+                amount: 1
+            }
+        ]
+    },
+    rp1: {
+        type: 'chemicalPlant',
+        scienceRequired: 'oil',
+        handcrafting: false,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'refinedOil',
+                amount: 1
             }
         ]
     }

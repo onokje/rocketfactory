@@ -34,7 +34,10 @@ div.productionContainer {
         div.buildOptions {
             div.buildOption{
                 background-color: #444;
-                margin-bottom: 2px;
+                margin-bottom: 10px;
+            }
+            div.missingScience{
+                opacity: 0.4;
             }
         }
     }

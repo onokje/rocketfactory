@@ -134,7 +134,10 @@ class MachineDialog extends Component {
             if (machine.currentItem || machine.nextItem) {
                 return <div className="currentProgress">
 
-                    <ItemRecipe recipeKey={machine.currentItem || machine.nextItem} fuelItems={machineData.fuelCost}/>
+                    <ItemRecipe
+                        recipeKey={machine.currentItem || machine.nextItem}
+                        fuelItems={machineData.fuelCost}
+                        machineMultiplier={machineData.resultMultiplier} />
                     <ProgressBar completedPercentage={completedPercentage}/>
                     <div>
                         Next item: <ItemIcon item={machine.nextItem}/> <button onClick={() => openMachineDialogSelector()}>Change recipe</button>
