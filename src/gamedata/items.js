@@ -514,5 +514,21 @@ export const itemRecipes = {
                 amount: 1
             }
         ]
+    },
+    plastic: {
+        type: 'chemicalPlant',
+        scienceRequired: 'plastics',
+        handcrafting: false,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'refinedOil',
+                amount: 2
+            },
+            {
+                name: 'coal',
+                amount: 1
+            }
+        ]
     }
 };

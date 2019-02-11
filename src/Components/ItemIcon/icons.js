@@ -30,8 +30,13 @@ import gunTurret from "../../images/items/Gun_turret.png"
 import furnaceParts from "../../images/items/Electric_furnace.png"
 import speedModule from "../../images/items/Speed_module.png"
 import brick from "../../images/items/Stone_brick.png"
-import oil from "../../images/items/Crude_oil_barrel.png"
+import oil from "../../images/items/Fill_crude_oil_barrel.png"
+import refinedOil from "../../images/items/Fill_light_oil_barrel.png"
+import rp1 from "../../images/items/Fill_petroleum_gas_barrel.png"
+import acid from "../../images/items/Fill_sulfuric_acid_barrel.png"
 import time from "../../images/items/Time_icon.png"
+import plastic from "../../images/items/Plastic_bar.png"
+import crudeOil from "../../images/items/Crude_oil.png"
 
 export const icons = {
     iron,
@@ -67,5 +72,10 @@ export const icons = {
     speedModule,
     brick,
     oil,
-    time
+    time,
+    refinedOil,
+    rp1,
+    acid,
+    plastic,
+    crudeOil
 };

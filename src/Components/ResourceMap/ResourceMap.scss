@@ -7,35 +7,20 @@ div.resourceMapGrid{
     width: 600px;
     border: solid 1px #666;
     position: relative;
+    background: url(./../../images/map.jpeg);
 
     div {
         height: 38px;
         width: 38px;
         border: solid 1px #666;
         position: absolute;
-        background-color: #000;
+        background: #000 no-repeat 2px 2px;
+        opacity: 0.7;
     }
 
-    div.base {
-        background-color: #0ce22e;
-    }
-    div.coal {
-        background-color: #222;
-    }
-    div.iron {
-        background-color: #1f43df;
-    }
-    div.oil {
-        background-color: #a7068b;
-    }
-    div.copper {
-        background-color: #e0514a;
-    }
-    div.stone {
-        background-color: #6e3d0a;
-    }
-    div.none {
-        background-color: #0c9200;
+    div.explored {
+        background-color: transparent;
+        opacity: 1;
     }
 
     div:hover {
