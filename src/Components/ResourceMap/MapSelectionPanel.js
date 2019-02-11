@@ -12,6 +12,7 @@ import {minePrices} from "../../gamedata/machines";
 import {canAfford} from "../../helpers/InventoryHelper";
 import uuidv4 from "uuid/v4";
 import {playerHasScience} from "../../helpers/ScienceHelper";
+import {icons} from "../ItemIcon/icons";
 
 
 const mapStateToProps = state => ({
@@ -47,14 +48,14 @@ class MapSelectionPanel extends Component {
                 if (resourcemap.exploring) {
                     const completedPercentage = resourcemap.exploringProgressTicks * 100 / resourcemap.exploringProgressTicksTotal;
                     if (resourcemap.exploringCoords.x === selectedCell.x && resourcemap.exploringCoords.y === selectedCell.y) {
-                        return <div>
+                        return <div className="exploring">
                             <div>Currently exploring this sector</div>
                             <ProgressBar completedPercentage={completedPercentage}/>
                         </div>
                     } else {
 
 
-                        return <div>
+                        return <div className="exploring">
                             <div>Currently exploring another sector</div>
                             <ProgressBar completedPercentage={completedPercentage}/>
                         </div>
@@ -86,7 +87,7 @@ class MapSelectionPanel extends Component {
             return null;
         }
         if (resource === 'oil') {
-            return <div>Oil cannot be mined by hand</div>;
+            return null;
         }
 
         const {player, handminingStart} = this.props;
@@ -157,6 +158,33 @@ class MapSelectionPanel extends Component {
         return null;
     }
 
+    renderSectorContents(selectedCell) {
+        const styles = {};
+
+        if (selectedCell.explored) {
+            if (selectedCell.resource === 'none') {
+                return <div className="sectorContents">
+                    <div className="resourceIcon"> </div>
+                    <p>This sector doesn't contain any resources.</p>
+                </div>
+            } else {
+                styles.backgroundImage = `url(${icons[selectedCell.resource]})`;
+                return <div className="sectorContents">
+                    <div className="resourceNameAndIcon">
+                        <div className="resourceIcon" style={styles} />
+                        <div className="resourceName">{selectedCell.resource}</div>
+                    </div>
+                    <p>
+                        This sector contains {selectedCell.resource}. {selectedCell.resource === 'oil' ? 'Oil cannot be mined by hand.' : 'Mine this by hand, or build an automated miner.'}
+                        </p>
+                </div>
+            }
+        } else {
+            return <div className="sectorContents">This sector is currently unexplored. Explore it first to see if it contains any resources!</div>
+        }
+
+    }
+
     render() {
         const {resourcemap} = this.props;
 
@@ -165,7 +193,7 @@ class MapSelectionPanel extends Component {
             const selectedCell = findSectorByCoords(resourcemap.map, resourcemap.mapSelected.x, resourcemap.mapSelected.y);
             return <div className="mapSelectionPanel">
                 <h2>Selected sector: {selectedCell.x},{selectedCell.y}</h2>
-                <div>Resource: {selectedCell.explored ? selectedCell.resource : 'unexplored'}</div>
+                {this.renderSectorContents(selectedCell)}
                 {this.renderExploreButton()}
                 {this.renderMiningOptions()}
             </div>

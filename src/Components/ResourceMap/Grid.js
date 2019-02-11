@@ -29,8 +29,13 @@ class Grid extends Component {
 
         if (cell.explored) {
             cellClasses = 'explored';
-            styles.backgroundImage = `url(${icons[cell.resource]})`;
+            const resource = cell.resource === 'oil' ? 'crudeOil' : cell.resource;
+            styles.backgroundImage = `url(${icons[resource]})`;
         }
+        if (resourcemap.exploring && resourcemap.exploringCoords.x === cell.x && resourcemap.exploringCoords.y === cell.y) {
+            cellClasses = 'exploring';
+        }
+
         if (resourcemap.mapSelected && resourcemap.mapSelected.x === cell.x && resourcemap.mapSelected.y === cell.y) {
             cellClasses = cellClasses + ' selected';
         }

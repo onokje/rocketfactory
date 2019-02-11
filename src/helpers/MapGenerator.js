@@ -1,5 +1,5 @@
 const createCell = (x, y, resource) => {
-    return {x: x, y: y, resource: resource, explored: (x > 5 && x < 9 && y > 5 && y < 9)};
+    return {x: x, y: y, resource: resource, explored: (x > 3 && x < 6 && y > 3 && y < 6)};
 };
 
 const getRandomResource = () => {
@@ -27,27 +27,18 @@ const getRandomResource = () => {
 export default function createGrid() {
     const grid = [];
 
-    for (let x = 0; x < 15; x++) {
+    for (let x = 0; x < 10; x++) {
 
-        for (let y = 0; y < 15; y++) {
+        for (let y = 0; y < 10; y++) {
 
-            if (x === 7 && y === 7) {
-                grid.push(createCell(x, y, 'base'));
-            } else if (x === 6 && y === 7){
+            if (x === 4 && y === 4){
                 grid.push(createCell(x, y, 'coal'));
-            } else if (x === 7 && y === 6){
+            } else if (x === 4 && y === 5){
                 grid.push(createCell(x, y, 'iron'));
-            } else if (x === 8 && y === 7){
+            } else if (x === 5 && y === 4){
                 grid.push(createCell(x, y, 'copper'));
-            } else if (x === 7 && y === 8){
+            } else if (x === 5 && y === 5){
                 grid.push(createCell(x, y, 'stone'));
-            } else if (
-                (x === 6 && y === 6) ||
-                (x === 8 && y === 6) ||
-                (x === 6 && y === 8) ||
-                (x === 8 && y === 8)
-            ){
-                grid.push(createCell(x, y, 'none'));
             } else {
                 grid.push(createCell(x, y, getRandomResource()));
             }
