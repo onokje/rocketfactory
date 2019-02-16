@@ -41,7 +41,7 @@ class ItemRecipe extends Component {
 }
 
 ItemRecipe.propTypes = {
-    recipeKey: PropTypes.object.isRequired,
+    recipeKey: PropTypes.string.isRequired,
     showToolTips: PropTypes.bool,
     fuelItems: PropTypes.array,
     machineMultiplier: PropTypes.number

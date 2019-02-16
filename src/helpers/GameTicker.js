@@ -9,7 +9,7 @@ import {machineProductionFinish, machineProductionStart, productionTick} from ".
 import {miningProductionFinish, miningProductionStart} from "../actions/mining";
 import {handCraftingFinish, handminingFinish} from "../actions/player";
 import {finishScience} from "../actions/science";
-import {machines} from "../gamedata/machines";
+import {machines, minePrices} from "../gamedata/machines";
 
 
 function runPowerPlants(inventory, power) {
@@ -24,7 +24,7 @@ function runPowerPlants(inventory, power) {
         if (powerPlant.on) {
 
             switch (powerPlant.techType) {
-                case 'coal':
+                case 'coalPower':
                     coalRequired.push({name: 'coal', amount: 1});
                     if (canAfford(inventory, coalRequired)) { // can we afford a run for this pp?
                         // do we need it?
@@ -39,7 +39,7 @@ function runPowerPlants(inventory, power) {
                     }
 
                     break;
-                case 'oil':
+                case 'oilPower':
                     oilRequired.push({name: 'oil', amount: 1});
                     if (canAfford(inventory, oilRequired)) { // can we afford a run for this pp?
                         // do we need it?
@@ -125,13 +125,8 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
     for (let mine of mining.mines) {
         if (mine.on) {
             let powered = false;
-            let powerUsage;
-            switch (mine.techType) {
-                case 'coal1' : powerUsage = 0; break;// doesn't use power
-                case 'electric1' : powerUsage = 40; break;
-                case 'pump' : powerUsage = 45; break;
-                default: throw Error('Invalid tech type found in run mines switch case');
-            }
+            let machineData = minePrices[mine.techType];
+            let powerUsage = machineData.powerUsage;;
 
             // check if enough power is available
             if (!powerUsage || powerBuffer >= powerUsage) {
@@ -155,9 +150,8 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
                     // mine is starting with a new batch, dispach start action.
 
                     const itemCost = [];
-                    if (mine.techType === 'coal1') {
-                        itemCost.push({name: 'coal', amount: 1}); // added fuel cost for coal powered mines
-                    }
+                    // add fuel cost if any
+                    Array.prototype.push.apply(itemCost, machineData.fuelCost);
 
                     if (canAfford(inventory, itemCost)) {
                         dispatch(miningProductionStart(mine.id, itemCost));

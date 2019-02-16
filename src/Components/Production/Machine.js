@@ -55,7 +55,7 @@ class Machine extends Component {
             <button onClick={this.toggleMachine}>Turn {machine.on ? 'OFF' : 'ON'}</button>
 
             <div>
-                <ItemIcon item={machine.currentItem || machine.nextItem} />
+                {machine.currentItem || machine.nextItem ? <ItemIcon item={machine.currentItem || machine.nextItem} /> : null}
                 <ProgressBar completedPercentage={completedPercentage}/>
             </div>
         </li>
@@ -64,7 +64,7 @@ class Machine extends Component {
 
 Machine.propTypes = {
     science: PropTypes.object.isRequired,
-    inventory: PropTypes.object.isRequired,
+    inventory: PropTypes.array.isRequired,
     machine: PropTypes.object.isRequired,
     toggleMachine: PropTypes.func.isRequired,
     openMachineDialog: PropTypes.func.isRequired,

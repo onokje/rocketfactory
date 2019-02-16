@@ -99,6 +99,7 @@ class MachineDialog extends Component {
         }
 
         return <ItemIcon
+            key={recipe.recipeKey}
             item={recipe.recipeKey}
             amount={recipe.recipe.resultAmount}
             onClick={onClick}

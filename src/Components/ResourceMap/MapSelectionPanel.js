@@ -7,12 +7,12 @@ import {exploreStart} from "../../actions/resourcemap";
 import {handminingStart} from "../../actions/player";
 import {buildMine} from "../../actions/mining";
 import Mine from "../Mine/Mine";
-import ItemList from "../ItemList/ItemList";
 import {minePrices} from "../../gamedata/machines";
 import {canAfford} from "../../helpers/InventoryHelper";
 import uuidv4 from "uuid/v4";
 import {playerHasScience} from "../../helpers/ScienceHelper";
 import {icons} from "../ItemIcon/icons";
+import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
 
 
 const mapStateToProps = state => ({
@@ -38,7 +38,6 @@ const mapDispatchToProps = dispatch => ({
 
 class MapSelectionPanel extends Component {
 
-
     renderExploreButton() {
         const {resourcemap, exploreStart} = this.props;
         if (resourcemap.mapSelected) {
@@ -60,8 +59,6 @@ class MapSelectionPanel extends Component {
                             <ProgressBar completedPercentage={completedPercentage}/>
                         </div>
                     }
-
-
                 }
 
                 return <button onClick={() => exploreStart(selectedCell.x, selectedCell.y)}>Explore!</button>
@@ -70,23 +67,20 @@ class MapSelectionPanel extends Component {
         return null;
     }
 
-    buildMine(resourceType, techType, selectedCell) {
+    buildMine(techType, selectedCell) {
         const {inventory, buildMine} = this.props;
 
-        const itemCost = minePrices[techType].slice(0);
+        const itemCost = minePrices[techType].cost.slice(0);
         if (canAfford(inventory, itemCost)) {
             const uuid = uuidv4();
-            buildMine(resourceType, techType, uuid, selectedCell.x, selectedCell.y);
+            buildMine(selectedCell.resource, techType, uuid, selectedCell.x, selectedCell.y);
         } else {
             console.log('you cannot afford this mine!');
         }
     };
 
     renderHandminingOptions(resource) {
-        if (resource === 'none' || resource === 'base') {
-            return null;
-        }
-        if (resource === 'oil') {
+        if (resource === 'none' || resource === 'base' || resource === 'oil') {
             return null;
         }
 
@@ -98,8 +92,29 @@ class MapSelectionPanel extends Component {
 
         return <div className="simpleDivider">
             <h2>Mine by hand</h2>
-            <button disabled={buttonDisabled} onClick={() => handminingStart(resource)} >Mine {resource}!</button>
+            <button disabled={buttonDisabled} onClick={() => handminingStart(resource)} >Mine {resource}</button>
         </div>;
+    }
+
+    getBuildOptions(selectedCell) {
+        const {science, inventory} = this.props;
+        const options = [];
+
+        for (let mine in minePrices) {
+            if (minePrices.hasOwnProperty(mine)) {
+                if ((selectedCell.resource === 'oil' && minePrices[mine].type === 'pump')
+                    || (selectedCell.resource !== 'oil' && minePrices[mine].type !== 'pump')) {
+                    options.push({
+                        machineKey: mine,
+                        machineData: minePrices[mine],
+                        hasScience: playerHasScience(science.sciences, minePrices[mine].scienceRequired),
+                        canAfford: canAfford(inventory, minePrices[mine].cost)
+                    });
+                }
+
+            }
+        }
+        return options;
     }
 
     renderMines(selectedCell){
@@ -107,35 +122,25 @@ class MapSelectionPanel extends Component {
             return null;
         }
 
-        const {mining, science} = this.props;
+        const {mining} = this.props;
         const mine = findMineByCoords(mining.mines, selectedCell.x, selectedCell.y);
         if (mine) {
             return <Mine key={mine.id} mine={mine}/>
         } else {
-            if (selectedCell.resource === 'oil') {
-                return <div>
-                    <div className="simpleDivider">
-                        <h2>Build oil pump</h2>
-                        <ItemList items={minePrices['pump']}/>
-                        <button onClick={() => this.buildMine(selectedCell.resource, 'pump', selectedCell)} >Build</button>
-                    </div>
+            return <div>
+
+                <h2>build options:</h2>
+                <div className="buildOptions">
+                    {this.getBuildOptions(selectedCell).map(item => <MachineBuildOption
+                        key={item.machineKey}
+                        buildOption={item}
+                        machineType="mine"
+                        onClick={() => this.buildMine(item.machineKey, selectedCell)}
+                    />)}
 
                 </div>
-            } else {
-                return <div>
-                    <div className="simpleDivider">
-                        <h2>Build coal-powered {selectedCell.resource} mine</h2>
-                        <ItemList items={minePrices['coal1']}/>
-                        <button onClick={() => this.buildMine(selectedCell.resource, 'coal1', selectedCell)} >Build</button>
-                    </div>
-                    {playerHasScience(science.sciences, 'electricity') ?
-                    <div className="simpleDivider">
-                        <h2>Build electric {selectedCell.resource} mine</h2>
-                        <ItemList items={minePrices['electric1']}/>
-                        <button onClick={() => this.buildMine(selectedCell.resource, 'electric1', selectedCell)} >Build</button>
-                    </div> : ''}
-                </div>
-            }
+
+            </div>
 
         }
 

@@ -1,0 +1,45 @@
+div.buildOptions {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+
+
+    div.buildOption{
+        margin: 2px;
+        height: 60px;
+        width: 60px;
+        background: #666 no-repeat 13px 13px;
+    }
+    div.missingScience{
+        opacity: 0.4;
+    }
+}
+
+div.buildOptionTooltip{
+    max-width: 300px;
+    min-width: 200px;
+
+    p{
+        line-height: 130%;
+        font-size: 15px;
+    }
+
+    div.machineSpecs{
+        margin-top: 10px;
+        margin-bottom: 10px;
+        div {
+            margin-bottom: 3px;
+            font-size: 15px;
+        }
+    }
+
+
+}
+
+div.requiredScienceMissing{
+    margin-top: 10px;
+    div{
+        margin-bottom: 5px;
+    }
+}

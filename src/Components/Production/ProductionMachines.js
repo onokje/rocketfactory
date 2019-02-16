@@ -17,7 +17,7 @@ class ProductionMachines extends Component {
         return <div className="productionMachines">
             <h1>Production machines</h1>
             <ul className="machineList">
-            {production.machines.map(machine => <Machine machine={machine}/>)}
+            {production.machines.map(machine => <Machine key={machine.id} machine={machine}/>)}
             </ul>
         </div>
     }

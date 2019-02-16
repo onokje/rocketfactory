@@ -7,6 +7,7 @@ import {canAfford} from "../../helpers/InventoryHelper";
 import {buildMachine} from "../../actions/production";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
 import HandCrafting from "./HandCrafting";
+import uuidv4 from "uuid/v4";
 
 
 const mapStateToProps = state => ({
@@ -41,12 +42,29 @@ class ProductionSidePanel extends Component {
         return options;
     }
 
+    handleBuildMachineClick(buildOption){
+        const {buildMachine} = this.props;
+
+        if (buildOption.hasScience && buildOption.canAfford) {
+            const uuid = uuidv4();
+
+            buildMachine(buildOption.machineData.type, buildOption.machineKey, uuid);
+        } else {
+            console.log('Cannot build this machine...');
+        }
+    }
+
     render() {
 
         return <div className="productionSidePanel">
             <h2>build options:</h2>
             <div className="buildOptions">
-                {this.getBuildOptions().map(item => <MachineBuildOption buildOption={item}/>)}
+                {this.getBuildOptions().map(item => <MachineBuildOption
+                    key={item.machineKey}
+                    buildOption={item}
+                    machineType="production"
+                    onClick={() => this.handleBuildMachineClick(item)}
+                />)}
 
             </div>
             <h2>Handcrafting:</h2>
@@ -59,7 +77,7 @@ class ProductionSidePanel extends Component {
 ProductionSidePanel.propTypes = {
     production: PropTypes.object.isRequired,
     science: PropTypes.object.isRequired,
-    inventory: PropTypes.object.isRequired,
+    inventory: PropTypes.array.isRequired,
     buildMachine: PropTypes.func.isRequired,
 };
 

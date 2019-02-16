@@ -4,10 +4,10 @@ import connect from "react-redux/es/connect/connect";
 import {icons} from "./icons";
 import "./ItemIcon.scss";
 import {getItemAmountByName} from "../../helpers/InventoryHelper";
-import itemNames from "./itemNames";
 import {itemRecipes} from "../../gamedata/items";
 import ScienceItem from "../Science/ScienceItem";
 import ItemRecipe from "../ItemRecipe/ItemRecipe";
+import NameAndImageHeader from "../NameAndImageHeader/NameAndImageHeader";
 
 const mapStateToProps = state => ({
     inventory: state.inventory
@@ -20,7 +20,7 @@ class ItemToolTip extends Component {
 
     renderCraftingRecipe(){
         const {item} = this.props;
-        if (itemRecipes.hasOwnProperty(item)) {
+        if (itemRecipes.hasOwnProperty(item) && itemRecipes[item].type !== 'resource') {
             const recipe = itemRecipes[item];
             return <div>
                 <h2>How to make:</h2>
@@ -35,9 +35,12 @@ class ItemToolTip extends Component {
     renderScienceRequired() {
         const {item, showScienceRequired} = this.props;
         if (showScienceRequired) {
-            return <div>
-                <div>Science required:</div>
-                <ScienceItem scienceId={itemRecipes[item].scienceRequired} />
+            return <div className="requiredScienceMissing">
+                <div>Required Science missing:</div>
+                <ScienceItem
+                    scienceId={itemRecipes[item].scienceRequired}
+                    extraClass={'scienceItemRed'}
+                />
             </div>
         }
         return null;
@@ -46,13 +49,9 @@ class ItemToolTip extends Component {
     render() {
 
         const {item, inventory} = this.props;
-        const style = {background: `#999 url(${icons[item]}) no-repeat 3px 3px`};
 
         return <div>
-            <div className="itemToolTipIconAndName">
-                <div className="itemIcon" style={style} />
-                <div className="itemName">{itemNames[item] || item}</div>
-            </div>
+            <NameAndImageHeader name={itemRecipes[item].name || item} imageSrc={icons[item]}/>
             <p>You have: <b>{getItemAmountByName(inventory, item)}</b></p>
 
             {this.renderCraftingRecipe()}

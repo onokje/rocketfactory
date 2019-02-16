@@ -6,16 +6,22 @@ import TimeIcon from "../TimeIcon/TimeIcon";
 
 export default function ItemList(props) {
 
-    const {items, label, showToolTips, time, showAvailable} = props;
+    const {items, label, showToolTips, time, showAvailable, smallIcons} = props;
 
     return (
-        <div>
-            <span>{label}</span>
+        <>
+            {label ? <div className="ItemListLabel">{label}</div> : ''}
             <div className="horizontalItemList">
                 {time ? <TimeIcon time={time}/> : ''}
-                {items.map(item => <ItemIcon item={item.name} amount={item.amount} showAvailable={showAvailable} toolTip={showToolTips} />)}
+                {items.map(item => <ItemIcon
+                    extraClasses={smallIcons ? ' itemIconSmall' : ''}
+                    key={item.name}
+                    item={item.name}
+                    amount={item.amount}
+                    showAvailable={showAvailable}
+                    toolTip={showToolTips}/>)}
             </div>
-        </div>
+        </>
     );
 }
 
@@ -24,11 +30,12 @@ ItemList.propTypes = {
     label: PropTypes.string,
     showToolTips: PropTypes.bool,
     time: PropTypes.string,
-    showAvailable: PropTypes.bool
+    showAvailable: PropTypes.bool,
+    smallIcons: PropTypes.bool
 };
 
 ItemList.defaultProps = {
-    label: 'Cost to build:',
     showToolTips: true,
-    showAvailable: true
+    showAvailable: true,
+    smallIcons: false
 };

@@ -12,21 +12,15 @@ import redChip from "../../images/items/Advanced_circuit.png"
 import blueChip from "../../images/items/Processing_unit.png"
 import engine from "../../images/items/Engine_unit.png"
 import electricEngine from "../../images/items/Electric_engine_unit.png"
-import grenade from "../../images/items/Grenade.png"
 import ironTube from "../../images/items/Pipe.png"
 import belt from "../../images/items/Transport_belt.png"
 import inserter from "../../images/items/Inserter.png"
 import redScience from "../../images/items/Science_pack_1.png"
 import greenScience from "../../images/items/Science_pack_2.png"
 import blueScience from "../../images/items/Science_pack_3.png"
-import greyScience from "../../images/items/Military_science_pack.png"
-import purpleScience from "../../images/items/Production_science_pack.png"
 import yellowScience from "../../images/items/High_tech_science_pack.png"
 import battery from "../../images/items/Battery.png"
 import miningDrill from "../../images/items/Electric_mining_drill.png"
-import ammo1 from "../../images/items/Firearm_magazine.png"
-import ammo2 from "../../images/items/Piercing_rounds_magazine.png"
-import gunTurret from "../../images/items/Gun_turret.png"
 import furnaceParts from "../../images/items/Electric_furnace.png"
 import speedModule from "../../images/items/Speed_module.png"
 import brick from "../../images/items/Stone_brick.png"
@@ -37,6 +31,7 @@ import acid from "../../images/items/Fill_sulfuric_acid_barrel.png"
 import time from "../../images/items/Time_icon.png"
 import plastic from "../../images/items/Plastic_bar.png"
 import crudeOil from "../../images/items/Crude_oil.png"
+import concrete from "../../images/items/Concrete.png"
 
 export const icons = {
     iron,
@@ -53,21 +48,15 @@ export const icons = {
     blueChip,
     engine,
     electricEngine,
-    grenade,
     ironTube,
     belt,
     inserter,
     redScience,
     greenScience,
     blueScience,
-    greyScience,
-    purpleScience,
     yellowScience,
     battery,
     miningDrill,
-    ammo1,
-    ammo2,
-    gunTurret,
     furnaceParts,
     speedModule,
     brick,
@@ -77,5 +66,6 @@ export const icons = {
     rp1,
     acid,
     plastic,
-    crudeOil
+    crudeOil,
+    concrete
 };

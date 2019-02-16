@@ -15,7 +15,7 @@ const mapDispatchToProps = dispatch => ({
 class Inventory extends Component {
 
     renderInventoryItem(item) {
-        return <ItemIcon item={item.name} amount={item.amount} />;
+        return <ItemIcon key={item.name} item={item.name} amount={item.amount} />;
     }
 
     render() {

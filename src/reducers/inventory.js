@@ -1,7 +1,7 @@
 import {
     machines,
     minePrices,
-    powerPlantPrices,
+    powerPlants,
 } from "../gamedata/machines";
 import {
     addItemsToInventory,
@@ -20,25 +20,25 @@ const inventory = (state = initialInventoryState, action) => {
         case 'MINE_RESOURCE':
             return addItemToInventory(state, action.resourceType, 1);
         case 'START_SCIENCE':
-            itemCost = sciences[action.scienceId].cost;
+            itemCost = sciences[action.scienceId].cost.slice(0);
             return removeItemsFromInventory(state, itemCost);
         case 'BUILD_POWER_PLANT':
-            itemCost = powerPlantPrices[action.techType];
+            itemCost = powerPlants[action.techType].cost.slice(0);
             return removeItemsFromInventory(state, itemCost);
         case 'BUILD_MACHINE':
             itemCost = machines[action.techType].cost.slice(0);
             return removeItemsFromInventory(state, itemCost);
         case 'BUILD_MINE':
-            itemCost = minePrices[action.techType].slice(0);
+            itemCost = minePrices[action.techType].cost.slice(0);
             return removeItemsFromInventory(state, itemCost);
         case 'SELL_MINE':
-            itemsReturned = multiplyItemsInItemsArray(minePrices[action.techType].slice(0), 0.5);
+            itemsReturned = multiplyItemsInItemsArray(minePrices[action.techType].cost.slice(0), 0.5);
             return addItemsToInventory(state, itemsReturned);
         case 'SELL_MACHINE':
             itemsReturned = multiplyItemsInItemsArray(machines[action.techType].cost.slice(0), 0.5);
             return addItemsToInventory(state, itemsReturned);
         case 'SELL_POWER_PLANT':
-            itemsReturned = multiplyItemsInItemsArray(powerPlantPrices[action.techType].slice(0), 0.5);
+            itemsReturned = multiplyItemsInItemsArray(powerPlants[action.techType].cost.slice(0), 0.5);
             return addItemsToInventory(state, itemsReturned);
         case 'PRODUCTION_TICK':
             return removeItemsFromInventory(state, action.itemsUsed);

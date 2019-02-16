@@ -1,55 +1,45 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {buildMachine} from "../../actions/production";
-import uuidv4 from "uuid/v4";
-import ItemList from "../ItemList/ItemList";
-
+import "./MachineBuildOptions.scss";
+import Tooltip from "react-tooltip-lite";
+import MachineBuildOptionToolTip from "./MachineBuildOptionToolTip";
+import {machineIcons} from "../Production/machineIcons";
 
 const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    buildMachine: (productionType, techType, id) => {
-        dispatch(buildMachine(productionType, techType, id));
-    },
-
 });
 
 class MachineBuildOption extends Component {
 
-    buildMachineClick(){
-        const {buildMachine, buildOption} = this.props;
-        const canBuild = buildOption.hasScience && buildOption.canAfford;
-
-        if (!canBuild) {
-            console.log ('Cannot build this machine...');
-        } else {
-            const uuid = uuidv4();
-            buildMachine(buildOption.machineData.type, buildOption.machineKey, uuid);
-        }
-    }
-
     render() {
-        const {buildOption} = this.props;
+        const {buildOption, machineType, onClick} = this.props;
 
         const canBuild = buildOption.hasScience && buildOption.canAfford;
+        const styles = canBuild ? {cursor: 'pointer'} : {};
+        styles.backgroundImage = `url(${machineIcons[buildOption.machineKey]})`;
         let extraClasses = buildOption.hasScience ? '' : ' missingScience';
-        return <div
-            className={`buildOption ${extraClasses}`}
-            key={buildOption.machineKey}
-            onClick={canBuild ? () => this.buildMachineClick() : null}
-        >
-            <b>{buildOption.machineData.name}</b><br />
-            <ItemList items={buildOption.machineData.cost}/>
-        </div>
+        return <Tooltip content={<MachineBuildOptionToolTip
+                buildOption={buildOption}
+                machineType={machineType}
+                />}>
+            <div
+                className={`buildOption ${extraClasses}`}
+                key={buildOption.machineKey}
+                onClick={canBuild ? onClick : null}
+                style={styles}
+            />
+        </Tooltip>
 
     }
 }
 
 MachineBuildOption.propTypes = {
     buildOption: PropTypes.object.isRequired,
-    buildMachine: PropTypes.func.isRequired,
+    machineType: PropTypes.string.isRequired,
+    onClick: PropTypes.func
 };
 
 export default connect(

@@ -15,6 +15,16 @@ div.itemIcon {
     text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
 }
 
+div.itemIconSmall{
+    background: #999 no-repeat 0 0;
+    background-size: contain;
+    height: 24px;
+    width: 24px;
+    padding-top: 7px;
+    padding-right: 2px;
+    font-size: 12px;
+}
+
 div.notCraftable{
     background-color: #999;
     opacity: 0.4;
@@ -30,15 +40,4 @@ div.itemGreen{
 
 div.itemRed{
     background-color: #800;
-}
-
-div.itemToolTipIconAndName{
-    display: flex;
-    align-items: center;
-    background-color: #333;
-    min-width: 200px;
-    div.itemName{
-        padding: 2px 10px;
-        font-weight: bold;
-    }
 }

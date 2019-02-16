@@ -18,7 +18,9 @@ import solar from "../../images/research/32px-Solar_energy_(research).png"
 import steel from "../../images/research/32px-Steel_processing_(research).png"
 import sulfur from "../../images/research/32px-Sulfur_processing_(research).png"
 import electricity from "../../images/research/32px-Electric_energy_distribution_(research).png"
-
+import advancedOil from "../../images/research/32px-Advanced_oil_processing_(research).png"
+import rocketScience from "../../images/research/32px-Rocketry_(research).png"
+import modules from "../../images/research/32px-Modules_(research).png"
 
 export const scienceIcons = {
     advancedElectronics,
@@ -40,5 +42,8 @@ export const scienceIcons = {
     solar,
     steel,
     sulfur,
-    electricity
+    electricity,
+    advancedOil,
+    rocketScience,
+    modules
 };

@@ -1,0 +1,15 @@
+div.powerContainer{
+    display: flex;
+
+
+    div.powerMainPanel {
+        width: 70%;
+    }
+
+    div.powerSidePanel {
+        min-width: 200px;
+        max-width: 400px;
+        background-color: #333;
+    }
+
+}

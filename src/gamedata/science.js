@@ -9,11 +9,11 @@ export const sciences = {
     steel: {
         name: 'Steel Processing',
         requiredScience: [],
-        time: 2,
+        time: 3,
         cost: [
             {
                 name: 'redScience',
-                amount: 5
+                amount: 10
             }
         ]
     },
@@ -28,25 +28,14 @@ export const sciences = {
             }
         ]
     },
-    electricity: {
-        name: 'Electricity',
-        requiredScience: [],
-        time: 2,
-        cost: [
-            {
-                name: 'redScience',
-                amount: 10
-            }
-        ]
-    },
     automation1: {
         name: 'Automation 1',
         requiredScience: ['electronics'],
-        time: 2,
+        time: 3,
         cost: [
             {
                 name: 'redScience',
-                amount: 10
+                amount: 5
             }
         ]
     },
@@ -57,17 +46,32 @@ export const sciences = {
         cost: [
             {
                 name: 'redScience',
-                amount: 12
+                amount: 15
             },
             {
                 name: 'greenScience',
-                amount: 5
+                amount: 10
+            }
+        ]
+    },
+    advancedOil: {
+        name: 'Oil processing',
+        requiredScience: ['oil'],
+        time: 4,
+        cost: [
+            {
+                name: 'redScience',
+                amount: 25
+            },
+            {
+                name: 'greenScience',
+                amount: 25
             }
         ]
     },
     plastics: {
         name: 'Plastics',
-        requiredScience: ['oil'],
+        requiredScience: ['advancedOil'],
         time: 5,
         cost: [
             {
@@ -77,21 +81,6 @@ export const sciences = {
             {
                 name: 'greenScience',
                 amount: 15
-            }
-        ]
-    },
-    military: {
-        name: 'Military',
-        requiredScience: ['steel'],
-        time: 5,
-        cost: [
-            {
-                name: 'redScience',
-                amount: 15
-            },
-            {
-                name: 'greenScience',
-                amount: 10
             }
         ]
     },
@@ -109,14 +98,14 @@ export const sciences = {
                 amount: 20
             },
             {
-                name: 'greyScience',
+                name: 'blueScience',
                 amount: 20
             }
         ]
     },
     battery: {
         name: 'Battery Equipment',
-        requiredScience: ['electronics','oil'],
+        requiredScience: ['electronics','advancedOil'],
         time: 6,
         cost: [
             {
@@ -141,34 +130,11 @@ export const sciences = {
             {
                 name: 'greenScience',
                 amount: 20
-            },
-            {
-                name: 'greyScience',
-                amount: 20
-            }
-        ]
-    },
-    sulfur: {
-        name: 'Sulfur Processing',
-        requiredScience: ['oil'],
-        time: 8,
-        cost: [
-            {
-                name: 'redScience',
-                amount: 25
-            },
-            {
-                name: 'greenScience',
-                amount: 25
-            },
-            {
-                name: 'greyScience',
-                amount: 25
             }
         ]
     },
     electricEngine: {
-        name: 'Electric Engine',
+        name: 'Electric drivetrain technology',
         requiredScience: ['electronics','engine'],
         time: 6,
         cost: [
@@ -181,7 +147,7 @@ export const sciences = {
                 amount: 25
             },
             {
-                name: 'greyScience',
+                name: 'blueScience',
                 amount: 25
             }
         ]
@@ -200,7 +166,7 @@ export const sciences = {
                 amount: 25
             },
             {
-                name: 'greyScience',
+                name: 'blueScience',
                 amount: 25
             }
         ]
@@ -212,42 +178,57 @@ export const sciences = {
         cost: [
             {
                 name: 'redScience',
-                amount: 25
+                amount: 30
             },
             {
                 name: 'greenScience',
-                amount: 25
+                amount: 30
             },
             {
-                name: 'greyScience',
-                amount: 25
+                name: 'blueScience',
+                amount: 30
             }
         ]
     },
-    advancedElectronics2: {
-        name: 'Advanced Electronics 2',
-        requiredScience: ['advancedElectronics'],
+    rocketScience: {
+        name: 'Rocket Science',
+        requiredScience: ['advancedElectronics', 'advancedMaterials', 'concrete'],
         time: 15,
         cost: [
             {
                 name: 'redScience',
-                amount: 50
+                amount: 100
             },
             {
                 name: 'greenScience',
-                amount: 50
-            },
-            {
-                name: 'greyScience',
-                amount: 50
+                amount: 100
             },
             {
                 name: 'blueScience',
-                amount: 50
+                amount: 100
             },
             {
-                name: 'purpleScience',
-                amount: 50
+                name: 'yellowScience',
+                amount: 100
+            }
+        ]
+    },
+    modules: {
+        name: 'Modules',
+        requiredScience: ['advancedElectronics'],
+        time: 8,
+        cost: [
+            {
+                name: 'redScience',
+                amount: 30
+            },
+            {
+                name: 'greenScience',
+                amount: 30
+            },
+            {
+                name: 'blueScience',
+                amount: 30
             }
         ]
     }

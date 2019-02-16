@@ -13,6 +13,7 @@ import {playerHasAllSciences, playerHasScience} from "../../helpers/ScienceHelpe
 import ItemList from "../ItemList/ItemList";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import ScienceItem from "./ScienceItem";
+import NameAndImageHeader from "../NameAndImageHeader/NameAndImageHeader";
 
 
 const mapStateToProps = state => ({
@@ -51,6 +52,7 @@ class ScienceSelectionPanel extends Component {
         }
 
         return sciencesRequired.map(scienceRequiredId => <ScienceItem
+            key={scienceRequiredId}
             scienceId={scienceRequiredId}
             extraClass={playerHasScience(science.sciences, scienceRequiredId) ? 'scienceItemGreen' : 'scienceItemRed'}
         />);
@@ -69,7 +71,7 @@ class ScienceSelectionPanel extends Component {
             }
         }
 
-        return sciencesUnlocked.map(scienceId => <ScienceItem scienceId={scienceId}/>);
+        return sciencesUnlocked.map(scienceId => <ScienceItem key={scienceId} scienceId={scienceId}/>);
     }
 
     renderUnlocksItems(scienceId) {
@@ -83,7 +85,7 @@ class ScienceSelectionPanel extends Component {
             }
         }
 
-        return itemsUnlocked.map(item => <ItemIcon item={item}/>);
+        return itemsUnlocked.map(item => <ItemIcon extraClasses={' itemIconSmall'} key={item} item={item}/>);
     }
 
     renderScience(scienceId) {
@@ -98,10 +100,7 @@ class ScienceSelectionPanel extends Component {
         }
 
         return <>
-            <div className="scienceHeader">
-                <div className="scienceIcon"> <img alt={currentScienceData.name} src={scienceIcons[scienceId]} /></div>
-                <div className="scienceName"> {currentScienceData.name}</div>
-            </div>
+            <NameAndImageHeader name={currentScienceData.name} imageSrc={scienceIcons[scienceId]} largeIcon={true} />
             <div className="scienceInfo">
 
                 {hasScience ? <div>Research complete</div> : <>

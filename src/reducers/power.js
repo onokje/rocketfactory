@@ -27,8 +27,8 @@ const power = (state = initialResourcesState, action) => {
                 on: false
             });
             switch (action.techType) {
-                case 'coal': newBuffer = state.bufferMax + 1000; break;
-                case 'oil': newBuffer = state.bufferMax + 1000; break;
+                case 'coalPower': newBuffer = state.bufferMax + 1000; break;
+                case 'oilPower': newBuffer = state.bufferMax + 1000; break;
                 default: throw Error('Invalid tech type found in build powerplant switch case');
             }
 

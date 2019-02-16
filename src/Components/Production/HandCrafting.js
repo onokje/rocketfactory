@@ -39,6 +39,7 @@ class HandCrafting extends Component {
             }
 
             return <ItemIcon
+                key={itemKey}
                 item={itemKey}
                 amount={entry[1].resultAmount}
                 onClick={onClick}

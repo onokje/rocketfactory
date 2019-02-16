@@ -14,6 +14,11 @@ const mining = (state = initialResourcesState, action) => {
             return action.playerData.mining;
         case 'BUILD_MINE':
 
+            if (!action.resourceType || !action.techType) {
+                console.log(action);
+                throw Error('Error building mine!');
+            }
+
             mines = JSON.parse(JSON.stringify(state.mines));
             mines.push({
                 id: action.id,
