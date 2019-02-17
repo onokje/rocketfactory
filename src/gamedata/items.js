@@ -437,7 +437,7 @@ export const itemRecipes = {
         type: 'chemicalPlant',
         scienceRequired: 'plastics',
         handcrafting: false,
-        resultAmount: 1,
+        resultAmount: 2,
         cost: [
             {
                 name: 'refinedOil',

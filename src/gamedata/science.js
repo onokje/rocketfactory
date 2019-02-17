@@ -159,15 +159,11 @@ export const sciences = {
         cost: [
             {
                 name: 'redScience',
-                amount: 25
+                amount: 35
             },
             {
                 name: 'greenScience',
-                amount: 25
-            },
-            {
-                name: 'blueScience',
-                amount: 25
+                amount: 35
             }
         ]
     },
