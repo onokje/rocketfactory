@@ -15,6 +15,12 @@ div.itemIcon {
     text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000, -1px 1px 1px #000;
 }
 
+div.itemIcon-trans {
+    background: transparent no-repeat 3px 3px;
+    border: none;
+}
+
+
 div.itemIconSmall{
     background: #999 no-repeat 0 0;
     background-size: contain;

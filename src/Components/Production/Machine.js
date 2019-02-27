@@ -8,6 +8,9 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import {itemRecipes} from "../../gamedata/items";
 import {canAfford, multiplyItemsInItemsArray} from "../../helpers/InventoryHelper";
+import {machineIcons} from "./machineIcons";
+import MachineStateV2 from "../MachineState/MachineStateV2";
+import {getMachineState} from "../../helpers/machineStateHelper";
 
 const mapStateToProps = state => ({
     science: state.science,
@@ -48,14 +51,18 @@ class Machine extends Component {
                 missingFuel = true;
             }
         }
+        const styles = {};
+        styles.backgroundImage = `url(${machineIcons[machine.techType]})`;
 
         return <li key={machine.id} onClick={() => openMachineDialog(machine.id)}>
-            <div className="machineName">{machineData.name}</div>
-            <MachineState on={machine.on} powered={machine.powered} running={machine.running} missingItems={missingItems} missingFuel={missingFuel}/>
-            <button onClick={this.toggleMachine}>Turn {machine.on ? 'OFF' : 'ON'}</button>
-
+            <div className="machineImage" style={styles}>
+                {machine.currentItem || machine.nextItem ? <ItemIcon extraClasses="itemIcon-trans" item={machine.currentItem || machine.nextItem} /> : null}
+            </div>
+            <MachineStateV2
+                stateClass={getMachineState(machineData, machine, missingItems, missingFuel)}
+                styles={{position: 'absolute', top: 10, left: 10}}
+            />
             <div>
-                {machine.currentItem || machine.nextItem ? <ItemIcon item={machine.currentItem || machine.nextItem} /> : null}
                 <ProgressBar completedPercentage={completedPercentage}/>
             </div>
         </li>

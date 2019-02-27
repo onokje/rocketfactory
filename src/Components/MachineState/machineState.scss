@@ -1,19 +1,73 @@
+$color-off: #ffd30b;
+$color-on: #0ce22e;
+$color-waiting: #00a9e2;
+$color-nopower: #e22d00;
+
+// TODO: remove old classes below of old machineState component is no longer used
+
 span.off, span.noItems{
     font-weight: bold;
-    color: #ffd30b;
+    color: $color-off;
 }
 
 span.on{
     font-weight: bold;
-    color: #0ce22e;
+    color: $color-on;
 }
 
 span.waiting{
     font-weight: bold;
-    color: #00a9e2;
+    color: $color-waiting;
 }
 
 span.nopower{
     font-weight: bold;
-    color: #e22d00;
+    color: $color-nopower;
+}
+
+div.machineStateText{
+    span {
+        font-weight: bold;
+    }
+    span.off, span.noitems{
+        color: $color-off;
+    }
+
+    span.running{
+        color: $color-on;
+    }
+
+    span.waiting{
+        color: $color-waiting;
+    }
+
+    span.nopower, span.nofuel{
+        color: $color-nopower;
+    }
+}
+
+div.machineState {
+
+    span {
+        height: 10px;
+        width: 10px;
+        border-radius: 5px;
+        display: block;
+    }
+
+    span.off, span.noitems{
+        background-color: $color-off;
+    }
+
+    span.running{
+        background-color: $color-on;
+    }
+
+    span.waiting{
+        background-color: $color-waiting;
+    }
+
+    span.nopower, span.nofuel{
+        background-color: $color-nopower;
+    }
 }
