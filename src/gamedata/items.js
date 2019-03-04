@@ -465,5 +465,72 @@ export const itemRecipes = {
                 amount: 1
             }
         ]
-    }
+    },
+    rocketHull: {
+        name: 'Rocket hull part',
+        type: 'crafting',
+        scienceRequired: 'rocketScience',
+        handcrafting: false,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'steelPlate',
+                amount: 10
+            },
+            {
+                name: 'plastic',
+                amount: 2
+            }
+        ]
+    },
+    rocketElectronics: {
+        name: 'Rocket electronics',
+        type: 'crafting',
+        scienceRequired: 'rocketScience',
+        handcrafting: false,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'redChip',
+                amount: 5
+            },
+            {
+                name: 'speedModule',
+                amount: 1
+            },
+            {
+                name: 'plastic',
+                amount: 1
+            },
+            {
+                name: 'copperWire',
+                amount: 5
+            }
+        ]
+    },
+    rocketEngine: {
+        name: 'Rocket engine part',
+        type: 'crafting',
+        scienceRequired: 'rocketScience',
+        handcrafting: false,
+        resultAmount: 1,
+        cost: [
+            {
+                name: 'engine',
+                amount: 2
+            },
+            {
+                name: 'steelPlate',
+                amount: 1
+            },
+            {
+                name: 'copperPlate',
+                amount: 2
+            },
+            {
+                name: 'ironTube',
+                amount: 5
+            }
+        ]
+    },
 };

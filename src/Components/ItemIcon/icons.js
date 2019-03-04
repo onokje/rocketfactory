@@ -32,6 +32,9 @@ import time from "../../images/items/Time_icon.png"
 import plastic from "../../images/items/Plastic_bar.png"
 import crudeOil from "../../images/items/Crude_oil.png"
 import concrete from "../../images/items/Concrete.png"
+import rocketHull from "../../images/items/Low_density_structure.png"
+import rocketElectronics from "../../images/items/Rocket_control_unit.png"
+import rocketEngine from "../../images/items/Rocket.png"
 
 export const icons = {
     iron,
@@ -67,5 +70,8 @@ export const icons = {
     acid,
     plastic,
     crudeOil,
-    concrete
+    concrete,
+    rocketHull,
+    rocketElectronics,
+    rocketEngine
 };
