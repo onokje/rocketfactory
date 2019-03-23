@@ -11,6 +11,7 @@ import ResourceMap from "./Components/ResourceMap/ResourceMap";
 import Science from "./Components/Science/Science";
 import Production from "./Components/Production/Production";
 import MachineDialog from "./Components/Production/MachineDialog";
+import RocketSilo from "./Components/RocketSilo/RocketSilo";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -63,6 +64,7 @@ class App extends Component {
                     <Production/>
                     <Science/>
                     <MachineDialog/>
+                    <RocketSilo/>
 
                 </div>
             );

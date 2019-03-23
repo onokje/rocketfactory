@@ -2,20 +2,26 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
-import {canAfford} from "../../helpers/InventoryHelper";
 import {playerHasScience} from "../../helpers/ScienceHelper";
+import RocketSiloRocket from "./RocketSiloRocket";
+import RocketSiloCheckList from "./RocketSiloCheckList";
+import ProgressBar from "../ProgressBar/ProgressBar";
+import ItemList from "../ItemList/ItemList";
+import {rocketSiloData} from "../../gamedata/rocketSilo";
+import {canAfford} from "../../helpers/InventoryHelper";
+import {buildStepSilo} from "../../actions/rocketSilo";
 
 
 const mapStateToProps = state => ({
     player: state.player,
     science: state.science,
     inventory: state.inventory,
-    power: state.power
+    rocketSilo: state.rocketSilo
 });
 
 const mapDispatchToProps = dispatch => ({
-    buildPowerPlant: (techType, id) => {
-        dispatch(buildPowerPlant(techType, id));
+    buildStepSilo: (step) => {
+        dispatch(buildStepSilo(step));
     },
 
 });
@@ -36,34 +42,53 @@ class RocketSilo extends Component {
 
 
     render() {
-        const {player, power} = this.props;
-
-        const totalPowerplants = power.powerPlants.length;
+        const {player, science, inventory, rocketSilo} = this.props;
 
 
-        if (player.initialized && player.tab === 'power') {
+        if (player.initialized && player.tab === 'silo') {
 
-            return (
-                <div className="defaultContainer rocketSiloContainer">
-                    <div className="powerMainPanel">
-                        <h1>Power production</h1>
-                        {power.powerPlants.map(powerplant => (<PowerPlant key={powerplant.id} powerplant={powerplant}/>))}
+            if (rocketSilo.checklist.silo) {
+                // silo building is done
+                return (
+                    <div className="defaultContainer rocketSiloContainer">
+                        <RocketSiloRocket rocketSilo={rocketSilo}/>
+                        <RocketSiloCheckList rocketSilo={rocketSilo}/>
 
-                        {!totalPowerplants ? (<div>You do not have any power plants</div>) : ''}
                     </div>
-                    <div className="powerSidePanel">
-                        <h2>build options:</h2>
-                        <div className="buildOptions">
-                            {this.getBuildOptions().map(item => <MachineBuildOption
-                                key={item.machineKey}
-                                buildOption={item}
-                                machineType="power"
-                                onClick={() => this.handleBuildPowerPlantClick(item)}
-                            />)}
+                );
+            } else {
+                // silo building is not done yet
+                if (rocketSilo.buildingNow === 'silo') {
+                    // silo is under construction. show progress
+
+                    const completedPercentage = rocketSilo.siloBuildProgressTicks * 100 / rocketSilo.siloBuildProgressTotal;
+
+                    return (
+                        <div className="defaultContainer rocketSiloContainer">
+                            <p>Silo is building. progress:</p>
+                            <ProgressBar completedPercentage={completedPercentage} />
+
                         </div>
-                    </div>
-                </div>
-            );
+                    );
+                } else {
+                    // silo is not yet under construction
+                    const hasScience = playerHasScience(science.sciences, rocketSiloData.scienceRequired);
+                    const canBuild = hasScience && canAfford(inventory, rocketSiloData.cost);
+
+                    return (
+                        <div className="defaultContainer rocketSiloContainer">
+                            <p>Build silo:</p>
+
+                            <ItemList items={rocketSiloData.cost} label="cost to build:"/>
+
+                            <button disabled={!canBuild}>Build silo</button>
+
+                        </div>
+                    );
+                }
+            }
+
+
         }
 
         return null;
@@ -75,8 +100,7 @@ RocketSilo.propTypes = {
     player: PropTypes.object.isRequired,
     science: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
-    power: PropTypes.object.isRequired,
-    buildPowerPlant: PropTypes.func.isRequired
+    rocketSilo: PropTypes.object.isRequired,
 };
 
 export default connect(

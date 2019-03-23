@@ -532,5 +532,6 @@ export const itemRecipes = {
                 amount: 5
             }
         ]
-    },
+    }
+
 };

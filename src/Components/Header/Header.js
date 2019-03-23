@@ -34,6 +34,9 @@ class Header extends Component {
                     <div className={player.tab === 'science' ? 'active' : ''}  onClick={() => switchTab('science')}>
                         Research
                     </div>
+                    <div className={player.tab === 'silo' ? 'active' : ''}  onClick={() => switchTab('silo')}>
+                        Rocket Silo
+                    </div>
                 </nav>
 
             </header>
