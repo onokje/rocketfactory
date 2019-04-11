@@ -1,0 +1,27 @@
+div.rocketSiloContainer {
+    background: url(../../images/falconheavy.png) no-repeat 50% 200px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    div.rocketSiloRocket {
+        height: 400px;
+        width: 40%;
+    }
+
+    div.rocketSiloChecklist {
+        height: 400px;
+        width: 40%;
+    }
+
+    div.rocketSiloOps {
+        height: 400px;
+        width: 40%;
+    }
+
+    div.rocketSiloFuel {
+        height: 400px;
+        width: 40%;
+    }
+}

@@ -7,11 +7,11 @@ export const rocketSiloData = {
     cost: [
         {
             name: 'concrete',
-            amount: 1500
+            amount: 1000
         },
         {
             name: 'steelPlate',
-            amount: 1000
+            amount: 750
         },
         {
             name: 'copperWire',

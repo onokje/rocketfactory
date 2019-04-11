@@ -6,8 +6,8 @@ const initialRocketSiloState = {
     siloBuildProgressTotal: null,
     fuelProgressTicks: null, // fuel runs automatically if there are parts
     rocketPartProgressTicks: null, // rocket parts runs automatically if there are parts
-    rocketParts: 0,
-    fuelParts: 0,
+    rocketParts: 0, // max 100
+    fuelParts: 0, // max 100
     checklist: {
         silo: false,
         rocket: false,
@@ -46,6 +46,35 @@ const rocketSilo = (state = initialRocketSiloState, action) => {
                 siloBuildProgressTotal: ticksCost,
                 buildingNow: step
             };
+        case 'PRODUCTION_TICK':
+            let siloBuildProgressTicks = state.siloBuildProgressTicks;
+            const checklist = {...state.checklist};
+            let buildingNow = state.buildingNow;
+
+            if (state.buildingNow) {
+
+                if (state.siloBuildProgressTicks >= state.siloBuildProgressTotal) {
+                    buildingNow = null;
+                    switch (state.buildingNow){
+                        case 'silo':
+                            checklist.silo = true;
+                            break;
+                        case 'launchpad':
+                            checklist.launchpad = true;
+                            break;
+                        case 'car':
+                            checklist.payload = true;
+                            break;
+                        default:
+                            throw Error('Invalid rocketsilo buildingnow state');
+                    }
+                }
+
+                siloBuildProgressTicks +=1 ;
+            }
+
+            return {...state, checklist, buildingNow, siloBuildProgressTicks};
+
         default:
             return state;
     }

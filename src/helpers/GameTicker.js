@@ -82,7 +82,7 @@ function runProduction(inventory, production, dispatch, powerBuffer) {
 
             if (powered) {
 
-                if (machine.progressTicks === machine.ticksCost) {
+                if (machine.progressTicks >= machine.ticksCost) {
                     // machine is ready with this recipe, dispatch action to add the result to the inventory
 
                     //get recipe:
@@ -137,7 +137,7 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
 
             if (powered) {
 
-                if (mine.progressTicks === mine.ticksCost) {
+                if (mine.progressTicks >= mine.ticksCost) {
                     // mine is ready with this batch, dispatch action to add result to the inventory
 
                     const itemsProduced = [];

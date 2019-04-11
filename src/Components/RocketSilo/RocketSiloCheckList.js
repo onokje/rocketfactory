@@ -1,18 +1,23 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
+function check(val){
+    return val ? 'true' : 'false';
+}
+
 export default function RocketSiloCheckList(props) {
 
-    const { rocketSilo } = this.props;
+    const { rocketSilo } = props;
 
     return (
         <div className="rocketSiloChecklist">
+            <h2>Rocket launch checklist:</h2>
             <ul>
-                <li>Silo: {rocketSilo.checklist.silo} </li>
-                <li>Rocket: {rocketSilo.checklist.rocket} </li>
-                <li>Launchpad: {rocketSilo.checklist.launchpad} </li>
-                <li>Fuel: {rocketSilo.checklist.fuel} </li>
-                <li>Payload ready: {rocketSilo.checklist.payload} </li>
+                <li>Silo: {check(rocketSilo.checklist.silo)} </li>
+                <li>Rocket: {check(rocketSilo.checklist.rocket)} </li>
+                <li>Launchpad: {check(rocketSilo.checklist.launchpad)} </li>
+                <li>Fuel: {check(rocketSilo.checklist.fuel)} </li>
+                <li>Payload ready: {check(rocketSilo.checklist.payload)} </li>
             </ul>
         </div>
     );

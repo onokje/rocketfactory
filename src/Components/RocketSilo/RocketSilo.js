@@ -7,9 +7,11 @@ import RocketSiloRocket from "./RocketSiloRocket";
 import RocketSiloCheckList from "./RocketSiloCheckList";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import ItemList from "../ItemList/ItemList";
-import {rocketSiloData} from "../../gamedata/rocketSilo";
+import {rocketSiloData, launchPad, car} from "../../gamedata/rocketSilo";
 import {canAfford} from "../../helpers/InventoryHelper";
 import {buildStepSilo} from "../../actions/rocketSilo";
+import "./rocketsilo.scss";
+import RocketSiloFuel from "./RocketSiloFuel";
 
 
 const mapStateToProps = state => ({
@@ -29,15 +31,90 @@ const mapDispatchToProps = dispatch => ({
 class RocketSilo extends Component {
 
     handleBuildSiloClick(){
-
+        const {buildStepSilo} = this.props;
+        buildStepSilo('silo');
     }
 
     handleBuildLaunchpadClick(){
-
+        const {buildStepSilo} = this.props;
+        buildStepSilo('launchpad');
     }
 
     handleBuildCarClick(){
+        const {buildStepSilo} = this.props;
+        buildStepSilo('car');
+    }
 
+    renderOpsCar() {
+        const {inventory, rocketSilo} = this.props;
+
+        if (!rocketSilo.checklist.payload) {
+            if (rocketSilo.buildingNow === 'car') {
+                // launchpad is building now, show progress
+                const completedPercentage = rocketSilo.siloBuildProgressTicks * 100 / rocketSilo.siloBuildProgressTotal;
+                return (
+                    <div>
+                        <p>Payload is building. progress:</p>
+                        <ProgressBar completedPercentage={completedPercentage} />
+                    </div>
+                );
+
+            } else {
+                const canBuild = canAfford(inventory, car.cost);
+
+                return (
+                    <div>
+                        <p>Build cherry-red electric sportscar (payload):</p>
+
+                        <ItemList items={car.cost} label="cost to build:"/>
+
+                        <button disabled={!canBuild} onClick={() => this.handleBuildCarClick()}>Build car</button>
+
+                    </div>
+                );
+            }
+        }
+    }
+
+    renderOpsLaunchPad() {
+        const {inventory, rocketSilo} = this.props;
+
+        if (!rocketSilo.checklist.launchpad) {
+            if (rocketSilo.buildingNow === 'launchpad') {
+                // launchpad is building now, show progress
+                const completedPercentage = rocketSilo.siloBuildProgressTicks * 100 / rocketSilo.siloBuildProgressTotal;
+                return (
+                    <>
+                        <p>Launchpad is building. progress:</p>
+                        <ProgressBar completedPercentage={completedPercentage} />
+                    </>
+                );
+
+            } else {
+                const canBuild = canAfford(inventory, launchPad.cost);
+
+                return (
+                    <>
+                        <p>Build launchpad:</p>
+
+                        <ItemList items={launchPad.cost} label="cost to build:"/>
+
+                        <button disabled={!canBuild} onClick={() => this.handleBuildLaunchpadClick()}>Build launchpad</button>
+
+                    </>
+                );
+            }
+        }
+    }
+
+    renderOps() {
+        return (
+            <div className="rocketSiloOps">
+                <h2>Rocket silo operations</h2>
+                {this.renderOpsLaunchPad()}
+                {this.renderOpsCar()}
+            </div>
+        );
     }
 
 
@@ -51,8 +128,11 @@ class RocketSilo extends Component {
                 // silo building is done
                 return (
                     <div className="defaultContainer rocketSiloContainer">
-                        <RocketSiloRocket rocketSilo={rocketSilo}/>
+                        {this.renderOps()}
                         <RocketSiloCheckList rocketSilo={rocketSilo}/>
+
+                        <RocketSiloRocket rocketSilo={rocketSilo}/>
+                        <RocketSiloFuel rocketSilo={rocketSilo} />
 
                     </div>
                 );
@@ -81,7 +161,7 @@ class RocketSilo extends Component {
 
                             <ItemList items={rocketSiloData.cost} label="cost to build:"/>
 
-                            <button disabled={!canBuild}>Build silo</button>
+                            <button disabled={!canBuild} onClick={() => this.handleBuildSiloClick()}>Build silo</button>
 
                         </div>
                     );
@@ -101,6 +181,7 @@ RocketSilo.propTypes = {
     science: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     rocketSilo: PropTypes.object.isRequired,
+    buildStepSilo: PropTypes.func.isRequired
 };
 
 export default connect(

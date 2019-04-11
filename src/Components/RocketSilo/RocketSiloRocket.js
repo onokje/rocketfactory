@@ -5,10 +5,11 @@ import ItemList from "../ItemList/ItemList";
 
 export default function RocketSiloRocket(props) {
 
-    const { rocketSilo } = this.props;
+    const { rocketSilo } = props;
 
     return (
         <div className="rocketSiloRocket">
+            <h2>Rocket building progress:</h2>
             <p>Rocket parts build: { rocketSilo.rocketParts } / 100</p>
             <p>Rocket parts are build automatically if you have enough resources.</p>
             <ItemList items={rocketPart.cost} />
