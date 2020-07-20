@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {machines} from "../../gamedata/machines";
-import MachineState from "../MachineState/MachineState";
 import {openMachineDialog, toggleMachine} from "../../actions/production";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import ItemIcon from "../ItemIcon/ItemIcon";
