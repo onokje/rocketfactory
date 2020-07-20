@@ -4,7 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {buildPowerPlant} from "../../actions/power";
 import {canAfford} from "../../helpers/InventoryHelper";
 import {powerPlants} from "../../gamedata/machines";
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from 'uuid';
 import PowerPlant from "../PowerPlant/PowerPlant";
 import {playerHasScience} from "../../helpers/ScienceHelper";
 import "./PowerProduction.scss";

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {canAfford} from "../../helpers/InventoryHelper";
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from 'uuid';
 import {buildMine} from "../../actions/mining";
 import {handminingStart} from "../../actions/player";
 import {createMap} from "../../actions/resourcemap";

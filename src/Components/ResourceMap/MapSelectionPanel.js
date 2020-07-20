@@ -9,7 +9,7 @@ import {buildMine} from "../../actions/mining";
 import Mine from "../Mine/Mine";
 import {minePrices} from "../../gamedata/machines";
 import {canAfford} from "../../helpers/InventoryHelper";
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from 'uuid';
 import {playerHasScience} from "../../helpers/ScienceHelper";
 import {icons} from "../ItemIcon/icons";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";

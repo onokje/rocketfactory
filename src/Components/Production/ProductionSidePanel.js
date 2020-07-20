@@ -7,7 +7,7 @@ import {canAfford} from "../../helpers/InventoryHelper";
 import {buildMachine} from "../../actions/production";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
 import HandCrafting from "./HandCrafting";
-import uuidv4 from "uuid/v4";
+import { v4 as uuidv4 } from 'uuid';
 
 
 const mapStateToProps = state => ({
