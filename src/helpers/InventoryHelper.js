@@ -19,50 +19,43 @@ export const findItemInPriceItemsArray = (priceItemsArray, itemName) => {
     });
 };
 
-export const multiplyItemsInItemsArray = (items, muliplier) => {
+export const multiplyItemsInItemsArray = (items, multiplier) => {
     return items.map(item => {
-        return {name: item.name, amount: (item.amount * muliplier)}
+        return {name: item.name, amount: (item.amount * multiplier)}
     });
 };
 
-export const removeItemFromInventory = (inventory, itemName, itemAmount) => {
-    return inventory.map(inventoryItem => {
+export const removeItemFromInventory = (inventorySlice, itemName, itemAmount) => {
+    inventorySlice.forEach(inventoryItem => {
         if (itemName === inventoryItem.name) {
-            return {name: inventoryItem.name, amount: inventoryItem.amount - itemAmount}
-        } else {
-            return inventoryItem;
+            inventoryItem.amount -= itemAmount;
         }
     });
 };
 
-export const removeItemsFromInventory = (inventory, priceItemsArray) => {
+export const removeItemsFromInventory = (inventorySlice, priceItemsArray) => {
     for (let priceItem of priceItemsArray) {
-        inventory = removeItemFromInventory(inventory, priceItem.name, priceItem.amount);
+        removeItemFromInventory(inventorySlice, priceItem.name, priceItem.amount);
     }
-    return inventory;
 };
 
-export const addItemToInventory = (inventory, itemName, itemAmount) => {
+export const addItemToInventory = (inventorySlice, itemName, itemAmount) => {
     let found = false;
-    const newInventory = inventory.map(inventoryItem => {
+    inventorySlice.forEach(inventoryItem => {
         if (inventoryItem.name === itemName) {
             found = true;
-            return {name: inventoryItem.name, amount: inventoryItem.amount + itemAmount}
-        } else {
-            return inventoryItem;
+            inventoryItem.amount += itemAmount;
         }
     });
     if (!found) {
-        newInventory.push({name: itemName, amount: itemAmount});
+        inventorySlice.push({name: itemName, amount: itemAmount});
     }
-    return newInventory;
 };
 
 export const addItemsToInventory = (inventory, itemsArray) => {
     for (let itemObj of itemsArray) {
-        inventory = addItemToInventory(inventory, itemObj.name, itemObj.amount);
+        addItemToInventory(inventory, itemObj.name, itemObj.amount);
     }
-    return inventory;
 };
 
 export const getItemAmountByName = (inventory, itemName) => {

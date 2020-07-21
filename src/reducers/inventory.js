@@ -17,8 +17,6 @@ const inventory = (state = initialInventoryState, action) => {
     switch (action.type) {
         case 'LOAD_PLAYER':
             return action.playerData.inventory;
-        case 'MINE_RESOURCE':
-            return addItemToInventory(state, action.resourceType, 1);
         case 'START_SCIENCE':
             itemCost = sciences[action.scienceId].cost.slice(0);
             return removeItemsFromInventory(state, itemCost);

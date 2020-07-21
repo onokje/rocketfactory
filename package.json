@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^1.4.0",
     "node-sass": "^4.11.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
@@ -10,9 +11,7 @@
     "react-redux": "^6.0.0",
     "react-scripts": "^3.4.1",
     "react-tooltip-lite": "^1.8.0",
-    "redux": "^4.0.1",
     "redux-devtools": "^3.5.0",
-    "redux-thunk": "^2.3.0",
     "uuid": "^8.0"
   },
   "scripts": {
@@ -21,9 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,7 +37,6 @@
     "@storybook/addon-links": "^5.0",
     "@storybook/addons": "^5.0",
     "@storybook/react": "^5.0",
-    "babel-loader": "^8.1.0",
-    "gh-pages": "^2.0.1"
+    "babel-loader": "^8.1.0"
   }
 }
