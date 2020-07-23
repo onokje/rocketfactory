@@ -7,8 +7,6 @@ const mapStateToProps = state => ({
 });
 
 class SideBarPower extends Component {
-
-
     render() {
         const {power} = this.props;
 

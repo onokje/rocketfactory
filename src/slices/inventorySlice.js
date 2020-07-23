@@ -6,7 +6,8 @@ import {
 } from "../helpers/InventoryHelper";
 import {sciences} from "../gamedata/science";
 import {machines, minePrices, powerPlants} from "../gamedata/machines";
-import {handCraftingFinish, handCraftingStart, handminingFinish, loadPlayer} from "./playerSlice";
+import {loadPlayer} from "./playerSlice";
+import {handCraftingFinish, handCraftingStart, handminingFinish} from "./manualProductionSlice";
 import {startScience} from "./scienceSlice";
 import {buildPowerPlant, sellPowerPlant} from "./powerSlice";
 import {
@@ -19,7 +20,7 @@ import {
 import {buildMine, miningProductionFinish, miningProductionStart, sellMine} from "./miningSlice";
 
 const inventorySlice = createSlice({
-    name: '',
+    name: 'inventory',
     initialState: [],
     reducers: {},
     extraReducers: {

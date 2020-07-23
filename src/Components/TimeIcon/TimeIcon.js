@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import Tooltip from 'react-tooltip-lite';
-import {icons} from "./../ItemIcon/icons";
+import {icons} from "../ItemIcon/icons";
 
 import "../ItemIcon/ItemIcon.scss";
 

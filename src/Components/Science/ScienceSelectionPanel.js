@@ -1,10 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-
 import {canAfford} from "../../helpers/InventoryHelper";
-import {startScience} from "../../actions/science";
-
 import {sciences, scienceTicksMuliplier} from "../../gamedata/science";
 import {itemRecipes} from "../../gamedata/items";
 import {scienceIcons} from "./scienceIcons";
@@ -14,6 +11,7 @@ import ItemList from "../ItemList/ItemList";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import ScienceItem from "./ScienceItem";
 import NameAndImageHeader from "../NameAndImageHeader/NameAndImageHeader";
+import {startScience} from "../../slices/scienceSlice";
 
 
 const mapStateToProps = state => ({
@@ -22,12 +20,7 @@ const mapStateToProps = state => ({
     inventory: state.inventory
 });
 
-const mapDispatchToProps = dispatch => ({
-    startScience: (scienceId, ticksCost) => {
-        dispatch(startScience(scienceId, ticksCost));
-    },
-
-});
+const mapDispatchToProps = {startScience};
 
 class ScienceSelectionPanel extends Component {
 
@@ -39,7 +32,7 @@ class ScienceSelectionPanel extends Component {
             && !science.researching
             && !playerHasScience(science.sciences, scienceId)
             && playerHasAllSciences(science.sciences, selectedScience.requiredScience)) {
-            startScience(scienceId, selectedScience.time * scienceTicksMuliplier);
+            startScience({scienceId, ticksCost: selectedScience.time * scienceTicksMuliplier});
         } else {
             console.log('cannot learn science ' + scienceId);
         }

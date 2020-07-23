@@ -27,8 +27,9 @@ const productionSlice = createSlice({
             });
         },
         buildMachine(state, action) {
+            const {id, productionType, techType} = action.payload;
             state.machines.push({
-                id: action.id,
+                id,
                 on: false,
                 powered: false,
                 running: false,
@@ -36,8 +37,8 @@ const productionSlice = createSlice({
                 currentItem: null,
                 progressTicks: 0,
                 ticksCost: 10,
-                productionType: action.payload.productionType,
-                techType: action.payload.techType
+                productionType,
+                techType
             });
         },
         sellMachine(state, action) {
@@ -64,7 +65,7 @@ const productionSlice = createSlice({
             machine.progressTicks = 0;
         },
         openMachineDialog(state, action) {
-            state = {...state, machineDialogOpen: true, machineDialogMachineId: action.id, machineDialogSelectorOpen: false};
+            state = {...state, machineDialogOpen: true, machineDialogMachineId: action.payload.id, machineDialogSelectorOpen: false};
         },
         closeMachineDialog(state) {
             state = {...state, machineDialogOpen: false, machineDialogSelectorOpen: false};

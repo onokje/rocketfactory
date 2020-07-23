@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-
-import {selectScience} from "../../actions/science";
-
 import {sciences} from "../../gamedata/science";
 import {scienceIcons} from "./scienceIcons";
 import "./Science.scss";
 import {playerHasAllSciences, playerHasScience} from "../../helpers/ScienceHelper";
+import {selectScience} from "../../slices/scienceSlice";
 
 
 const mapStateToProps = state => ({
@@ -15,11 +13,7 @@ const mapStateToProps = state => ({
     science: state.science
 });
 
-const mapDispatchToProps = dispatch => ({
-    selectScience: (scienceId) => {
-        dispatch(selectScience(scienceId));
-    },
-});
+const mapDispatchToProps = {selectScience};
 
 class ScienceList extends Component {
 
@@ -33,7 +27,7 @@ class ScienceList extends Component {
         let className = hasLearned ? 'hasLearned' : canLearn ? '' : 'notLearnable';
         className = science.selectedScience === scienceId ? className + ' selected' : className;
 
-        return <li key={scienceId} onClick={() => selectScience(scienceId)} className={`scienceItem ${className}`} >
+        return <li key={scienceId} onClick={() => selectScience({scienceId})} className={`scienceItem ${className}`} >
             <img alt={scienceId} src={scienceIcons[scienceId]} />
             <div className="scienceName"> {currentScienceData.name}</div>
         </li>;

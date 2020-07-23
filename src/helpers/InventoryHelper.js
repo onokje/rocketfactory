@@ -34,9 +34,12 @@ export const removeItemFromInventory = (inventorySlice, itemName, itemAmount) =>
 };
 
 export const removeItemsFromInventory = (inventorySlice, priceItemsArray) => {
-    for (let priceItem of priceItemsArray) {
-        removeItemFromInventory(inventorySlice, priceItem.name, priceItem.amount);
+    if (inventorySlice && priceItemsArray) {
+        for (let priceItem of priceItemsArray) {
+            removeItemFromInventory(inventorySlice, priceItem.name, priceItem.amount);
+        }
     }
+
 };
 
 export const addItemToInventory = (inventorySlice, itemName, itemAmount) => {

@@ -5,7 +5,7 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import "./PlayerCraftingBar.scss";
 
 const mapStateToProps = state => ({
-    player: state.player
+    manualProduction: state.manualProduction
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -15,24 +15,24 @@ const mapDispatchToProps = dispatch => ({
 class PlayerCraftingBar extends Component {
 
     render() {
-        const {player} = this.props;
+        const {manualProduction} = this.props;
 
-        if (player.handmining && player.handminingResource) {
-            const completedPercentage = player.handmining ? (player.handminingProgressTicks * 100 / player.handminingTicksCost) : 0;
+        if (manualProduction.handmining && manualProduction.handminingResource) {
+            const completedPercentage = manualProduction.handmining ? (manualProduction.handminingProgressTicks * 100 / manualProduction.handminingTicksCost) : 0;
 
             return (
                 <div className="playerCraftingBar">
-                    <div>Currently Mining {player.handminingResource}</div>
+                    <div>Currently Mining {manualProduction.handminingResource}</div>
                     <ProgressBar completedPercentage={completedPercentage}/>
                 </div>
             );
         }
-        if (player.handcrafting && player.handcraftingItem) {
-            const completedPercentage = player.handcrafting ? (player.handcraftingProgressTicks * 100 / player.handcraftingTicksCost) : 0;
+        if (manualProduction.handcrafting && manualProduction.handcraftingItem) {
+            const completedPercentage = manualProduction.handcrafting ? (manualProduction.handcraftingProgressTicks * 100 / manualProduction.handcraftingTicksCost) : 0;
 
             return (
                 <div className="playerCraftingBar">
-                    <div>Currently Crafting: {player.handcraftingItem}</div>
+                    <div>Currently Crafting: {manualProduction.handcraftingItem}</div>
                     <ProgressBar completedPercentage={completedPercentage}/>
                 </div>
             );
@@ -44,7 +44,7 @@ class PlayerCraftingBar extends Component {
 }
 
 PlayerCraftingBar.propTypes = {
-    player: PropTypes.object.isRequired,
+    manualProduction: PropTypes.object.isRequired,
 
 };
 

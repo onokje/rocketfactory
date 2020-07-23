@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import ProgressBar from "../ProgressBar/ProgressBar";
-import {sellMine, toggleMine} from "../../actions/mining";
+
 import MachineState from "../MachineState/MachineState";
+import {sellMine, toggleMine} from "../../slices/miningSlice";
 
 
 const mapStateToProps = state => ({
@@ -13,26 +14,18 @@ const mapStateToProps = state => ({
     // smelting: state.smelting
 });
 
-const mapDispatchToProps = dispatch => ({
-    toggleMine: (mineId, on) => {
-        dispatch(toggleMine(mineId, on));
-    },
-    sellMine: (techType, id) => {
-        dispatch(sellMine(techType, id));
-    },
-
-});
+const mapDispatchToProps = {sellMine, toggleMine};
 
 class Mine extends Component {
 
     toggleMine = () => {
         const {mine, toggleMine} = this.props;
-        toggleMine(mine.id, !mine.on);
+        toggleMine({mineId: mine.id, on: !mine.on});
     };
 
     sellMine() {
         const {mine, sellMine} = this.props;
-        sellMine(mine.techType, mine.id);
+        sellMine({id: mine.id});
     }
 
     renderMineState() {

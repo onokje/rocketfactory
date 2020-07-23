@@ -18,7 +18,7 @@ const powerSlice = createSlice({
     },
     reducers: {
         buildPowerPlant(state, action) {
-            const {techType} = action.payload;
+            const {techType, id} = action.payload;
             let newBuffer;
             switch (techType) {
                 case 'coalPower': newBuffer = state.bufferMax + 1000; break;
@@ -28,7 +28,7 @@ const powerSlice = createSlice({
 
             state.powerPlants.push({
                 techType,
-                id: action.id,
+                id,
                 powered: false,
                 on: false
             });

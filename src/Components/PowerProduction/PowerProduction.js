@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {buildPowerPlant} from "../../actions/power";
 import {canAfford} from "../../helpers/InventoryHelper";
 import {powerPlants} from "../../gamedata/machines";
 import { v4 as uuidv4 } from 'uuid';
@@ -9,6 +8,7 @@ import PowerPlant from "../PowerPlant/PowerPlant";
 import {playerHasScience} from "../../helpers/ScienceHelper";
 import "./PowerProduction.scss";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
+import {buildPowerPlant} from "../../slices/powerSlice";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -17,12 +17,7 @@ const mapStateToProps = state => ({
     power: state.power
 });
 
-const mapDispatchToProps = dispatch => ({
-    buildPowerPlant: (techType, id) => {
-        dispatch(buildPowerPlant(techType, id));
-    },
-
-});
+const mapDispatchToProps = {buildPowerPlant};
 
 class PowerProduction extends Component {
 
@@ -32,7 +27,7 @@ class PowerProduction extends Component {
         if (buildOption.hasScience && buildOption.canAfford) {
             const uuid = uuidv4();
 
-            buildPowerPlant(buildOption.machineKey, uuid);
+            buildPowerPlant({techType: buildOption.machineKey, id:uuid});
         } else {
             console.log('you cannot afford a power plant!');
         }
