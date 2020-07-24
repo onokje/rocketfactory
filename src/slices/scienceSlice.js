@@ -25,13 +25,11 @@ const scienceSlice = createSlice({
         },
         finishScience(state) {
             state.sciences.push(state.researchingScienceId)
-            return {
-                ...state,
-                researching: false,
-                researchingScienceId: null,
-                researchingProgressTicks: 0,
-                researchingTicksCost: 0
-            };
+            state.researching = false;
+            state.researchingScienceId = null;
+            state.researchingProgressTicks = 0;
+            state.researchingTicksCost = 0;
+
         },
         selectScience(state, action) {
             state.selectedScience =  action.payload.scienceId;

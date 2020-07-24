@@ -27,34 +27,34 @@ const inventorySlice = createSlice({
         [loadPlayer]: (state, action) => action.payload.playerData.inventory,
         [startScience]: (state, action) => {
             const itemCost = sciences[action.payload.scienceId].cost.slice(0);
-            removeItemsFromInventory(state, itemCost);
+            return removeItemsFromInventory(state, itemCost);
         },
         [buildPowerPlant]: (state, action) => {
             const itemCost = powerPlants[action.payload.techType].cost.slice(0);
-            removeItemsFromInventory(state, itemCost);
+            return removeItemsFromInventory(state, itemCost);
         },
         [sellPowerPlant]: (state, action) => {
             const itemsReturned = multiplyItemsInItemsArray(powerPlants[action.payload.techType].cost.slice(0), 0.5);
-            addItemsToInventory(state, itemsReturned);
+            return addItemsToInventory(state, itemsReturned);
         },
         [buildMachine]: (state, action) => {
             const itemCost = machines[action.payload.techType].cost.slice(0);
-            removeItemsFromInventory(state, itemCost);
+            return removeItemsFromInventory(state, itemCost);
         },
         [buildMine]: (state, action) => {
             const itemCost = minePrices[action.payload.techType].cost.slice(0);
-            removeItemsFromInventory(state, itemCost);
+            return removeItemsFromInventory(state, itemCost);
         },
         [sellMine]: (state, action) => {
             const itemsReturned = multiplyItemsInItemsArray(minePrices[action.payload.techType].cost.slice(0), 0.5);
-            addItemsToInventory(state, itemsReturned);
+            return addItemsToInventory(state, itemsReturned);
         },
         [sellMachine]: (state, action) => {
             const itemsReturned = multiplyItemsInItemsArray(machines[action.payload.techType].cost.slice(0), 0.5);
-            addItemsToInventory(state, itemsReturned);
+            return addItemsToInventory(state, itemsReturned);
         },
         [productionTick]: (state, action) => {
-            removeItemsFromInventory(state, action.payload.itemsUsed);
+            return removeItemsFromInventory(state, action.payload.itemsUsed);
         },
         [machineProductionStart]: (state, action) => removeItemsFromInventory(state, action.payload.itemCost),
         [miningProductionStart]: (state, action) => removeItemsFromInventory(state, action.payload.itemCost),

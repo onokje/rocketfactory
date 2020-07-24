@@ -72,7 +72,7 @@ class MachineDialog extends Component {
     sellMachine() {
         const {sellMachine} = this.props;
         const machine = this.getMachine();
-        sellMachine({id: machine.id});
+        sellMachine({id: machine.id, techType: machine.techType});
     }
 
     renderRecipeButton(recipe) {
@@ -85,7 +85,7 @@ class MachineDialog extends Component {
         extraClasses += machine.nextItem === recipe.recipeKey ? ' itemSelected' : '';
 
         if (hasPlayerScience) {
-            onClick = () => toggleMachine(machine.id, machine.on, recipe.recipeKey);
+            onClick = () => toggleMachine({id: machine.id, on: true, nextItem: recipe.recipeKey});
         }
 
         return <ItemIcon

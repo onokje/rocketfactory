@@ -17,7 +17,13 @@ class ProductionMachines extends Component {
         return <div className="productionMachines">
             <h1>Production machines</h1>
             <ul className="machineList">
-            {production.machines.map(machine => <Machine key={machine.id} machine={machine}/>)}
+            {production.machines.filter(machine => machine.productionType === 'smelting').map(machine => <Machine key={machine.id} machine={machine}/>)}
+            </ul>
+            <ul className="machineList">
+                {production.machines.filter(machine => machine.productionType === 'crafting').map(machine => <Machine key={machine.id} machine={machine}/>)}
+            </ul>
+            <ul className="machineList">
+                {production.machines.filter(machine => machine.productionType === 'refinary' || machine.productionType === 'chemicalPlant').map(machine => <Machine key={machine.id} machine={machine}/>)}
             </ul>
         </div>
     }

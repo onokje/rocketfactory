@@ -65,10 +65,10 @@ const productionSlice = createSlice({
             machine.progressTicks = 0;
         },
         openMachineDialog(state, action) {
-            state = {...state, machineDialogOpen: true, machineDialogMachineId: action.payload.id, machineDialogSelectorOpen: false};
+            return {...state, machineDialogOpen: true, machineDialogMachineId: action.payload.id, machineDialogSelectorOpen: false};
         },
         closeMachineDialog(state) {
-            state = {...state, machineDialogOpen: false, machineDialogSelectorOpen: false};
+            return {...state, machineDialogOpen: false, machineDialogSelectorOpen: false};
         },
         openMachineDialogSelector(state) {
             state.machineDialogSelectorOpen = true;

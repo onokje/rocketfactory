@@ -25,7 +25,7 @@ class Mine extends Component {
 
     sellMine() {
         const {mine, sellMine} = this.props;
-        sellMine({id: mine.id});
+        sellMine({id: mine.id, techType: mine.techType});
     }
 
     renderMineState() {

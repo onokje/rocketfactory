@@ -49,7 +49,7 @@ const rocketSiloSlice = createSlice({
         }
     },
     extraReducers: {
-        [loadPlayer]: (state, action) => action.payload.playerData.science,
+        [loadPlayer]: (state, action) => action.payload.playerData.rocketSilo,
         [productionTick]: (state) => {
             if (state.buildingNow) {
                 if (state.siloBuildProgressTicks >= state.siloBuildProgressTotal) {
