@@ -3,19 +3,48 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {icons} from "../ItemIcon/icons";
 import {selectCell} from "../../slices/resourceMapSlice";
+import MachineStateV2 from "../MachineState/MachineStateV2";
+import ProgressBar from "../ProgressBar/ProgressBar";
 
 
 const mapStateToProps = state => ({
     mining: state.mining,
-    resourcemap: state.resourcemap
+    resourceMap: state.resourcemap
 });
 
 const mapDispatchToProps = {selectCell};
 
 class Grid extends Component {
 
+
+    renderMininigActivityOnCell (cell) {
+        const {mining} = this.props;
+
+        const mineOnCell = mining.mines.find(mine => mine.x === cell.x && mine.y === cell.y);
+        if (mineOnCell) {
+            let stateClass
+            if (mineOnCell.off) {
+                stateClass = 'off';
+            } else {
+                if (mineOnCell.powered ) {
+                    stateClass = 'running';
+                } else {
+                    stateClass = 'nopower';
+                }
+            }
+
+            const completedPercentage = mineOnCell.on ? (mineOnCell.progressTicks * 100 / mineOnCell.ticksCost) : 0;
+
+            return <div className={`gridCellMine`}>
+                <MachineStateV2 stateClass={stateClass} />
+                <ProgressBar completedPercentage={completedPercentage} extraClasses={'progressbar_mini'}/>
+            </div>;
+        }
+        return null;
+    }
+
     renderCell(cell) {
-        const {selectCell, resourcemap} = this.props;
+        const {selectCell, resourceMap} = this.props;
 
         const styles = {};
 
@@ -28,11 +57,11 @@ class Grid extends Component {
             const resource = cell.resource === 'oil' ? 'crudeOil' : cell.resource;
             styles.backgroundImage = `url(${icons[resource]})`;
         }
-        if (resourcemap.exploring && resourcemap.exploringCoords.x === cell.x && resourcemap.exploringCoords.y === cell.y) {
+        if (resourceMap.exploring && resourceMap.exploringCoords.x === cell.x && resourceMap.exploringCoords.y === cell.y) {
             cellClasses = 'exploring';
         }
 
-        if (resourcemap.mapSelected && resourcemap.mapSelected.x === cell.x && resourcemap.mapSelected.y === cell.y) {
+        if (resourceMap.mapSelected && resourceMap.mapSelected.x === cell.x && resourceMap.mapSelected.y === cell.y) {
             cellClasses = cellClasses + ' selected';
         }
 
@@ -41,14 +70,14 @@ class Grid extends Component {
             key={cell.x + "-" + cell.y}
             style={styles}
             onClick={() => selectCell({x:cell.x, y:cell.y})}
-        />;
+        >{this.renderMininigActivityOnCell(cell)}</div>;
     }
 
     render() {
-        const {resourcemap} = this.props;
+        const {resourceMap} = this.props;
 
         return <div className="resourceMapGrid">
-            {resourcemap.map.map(cell => this.renderCell(cell))}
+            {resourceMap.map.map(cell => this.renderCell(cell))}
         </div>;
 
     }
@@ -56,7 +85,7 @@ class Grid extends Component {
 
 Grid.propTypes = {
     mining: PropTypes.object.isRequired,
-    resourcemap: PropTypes.object.isRequired,
+    resourceMap: PropTypes.object.isRequired,
     selectCell: PropTypes.func.isRequired
 };
 

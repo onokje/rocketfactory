@@ -6,12 +6,7 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import MachineState from "../MachineState/MachineState";
 import {sellMine, toggleMine} from "../../slices/miningSlice";
 
-
 const mapStateToProps = state => ({
-    // player: state.player,
-    // inventory: state.inventory,
-    // power: state.power,
-    // smelting: state.smelting
 });
 
 const mapDispatchToProps = {sellMine, toggleMine};
