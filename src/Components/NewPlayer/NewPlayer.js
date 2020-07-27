@@ -1,21 +1,14 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {loadPlayer, newPlayer} from "../../actions/player";
 import storageAvailable from "../../helpers/detectLocalstorage";
+import {loadPlayer, newPlayer} from "../../slices/playerSlice";
 
 const mapStateToProps = state => ({
     player: state.player
 });
 
-const mapDispatchToProps = dispatch => ({
-    newPlayer: () => {
-        dispatch(newPlayer());
-    },
-    loadPlayer: (playerData) => {
-        dispatch(loadPlayer(playerData));
-    }
-});
+const mapDispatchToProps = {loadPlayer, newPlayer};
 
 class NewPlayer extends Component {
 
@@ -25,7 +18,7 @@ class NewPlayer extends Component {
 
     loadGame = () => {
         const localStoragePlayer = localStorage.getItem('spaceClickerPlayerSession');
-        this.props.loadPlayer(JSON.parse(localStoragePlayer));
+        this.props.loadPlayer({playerData: JSON.parse(localStoragePlayer)});
     };
 
     renderLoadGameButton() {

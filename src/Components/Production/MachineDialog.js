@@ -2,13 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {machines} from "../../gamedata/machines";
-import {
-    closeMachineDialog,
-    closeMachineDialogSelector,
-    openMachineDialogSelector,
-    sellMachine,
-    toggleMachine
-} from "../../actions/production";
 import {itemRecipes} from "../../gamedata/items";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import {playerHasScience} from "../../helpers/ScienceHelper";
@@ -16,6 +9,13 @@ import "./MachineDialog.scss";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import ItemRecipe from "../ItemRecipe/ItemRecipe";
 import {canAfford} from "../../helpers/InventoryHelper";
+import {
+    closeMachineDialog,
+    closeMachineDialogSelector,
+    openMachineDialogSelector,
+    sellMachine,
+    toggleMachine
+} from "../../slices/productionSlice";
 
 const mapStateToProps = state => ({
     production: state.production,
@@ -23,23 +23,13 @@ const mapStateToProps = state => ({
     science: state.science
 });
 
-const mapDispatchToProps = dispatch => ({
-    toggleMachine: (id, on, nextItem) => {
-        dispatch(toggleMachine(id, on, nextItem));
-    },
-    sellMachine: (techType, id) => {
-        dispatch(sellMachine(techType, id));
-    },
-    closeMachineDialog: () => {
-        dispatch(closeMachineDialog());
-    },
-    openMachineDialogSelector: () => {
-        dispatch(openMachineDialogSelector());
-    },
-    closeMachineDialogSelector: () => {
-        dispatch(closeMachineDialogSelector());
-    },
-});
+const mapDispatchToProps = {
+    closeMachineDialog,
+    closeMachineDialogSelector,
+    openMachineDialogSelector,
+    sellMachine,
+    toggleMachine
+};
 
 class MachineDialog extends Component {
 
@@ -75,14 +65,14 @@ class MachineDialog extends Component {
         const {toggleMachine} = this.props;
         const machine = this.getMachine();
         if (machine.nextItem) {
-            toggleMachine(machine.id, !machine.on, machine.nextItem);
+            toggleMachine({id: machine.id, on:!machine.on, nextItem:machine.nextItem});
         }
     };
 
     sellMachine() {
         const {sellMachine} = this.props;
         const machine = this.getMachine();
-        sellMachine(machine.techType, machine.id)
+        sellMachine({id: machine.id, techType: machine.techType});
     }
 
     renderRecipeButton(recipe) {
@@ -95,7 +85,7 @@ class MachineDialog extends Component {
         extraClasses += machine.nextItem === recipe.recipeKey ? ' itemSelected' : '';
 
         if (hasPlayerScience) {
-            onClick = () => toggleMachine(machine.id, machine.on, recipe.recipeKey);
+            onClick = () => toggleMachine({id: machine.id, on: true, nextItem: recipe.recipeKey});
         }
 
         return <ItemIcon

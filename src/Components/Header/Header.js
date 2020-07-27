@@ -2,17 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import "./Header.scss";
-import {switchTab} from "../../actions/player";
+import {switchTab} from "../../slices/playerSlice";
+
 
 const mapStateToProps = state => ({
     player: state.player
 });
 
-const mapDispatchToProps = dispatch => ({
-    switchTab: (tab) => {
-        dispatch(switchTab(tab));
-    },
-});
+const mapDispatchToProps = {switchTab};
 
 class Header extends Component {
     render() {

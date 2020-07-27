@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {selectCell} from "../../actions/resourcemap";
 import {icons} from "../ItemIcon/icons";
+import {selectCell} from "../../slices/resourceMapSlice";
 
 
 const mapStateToProps = state => ({
@@ -10,11 +10,7 @@ const mapStateToProps = state => ({
     resourcemap: state.resourcemap
 });
 
-const mapDispatchToProps = dispatch => ({
-    selectCell: (x, y) => {
-        dispatch(selectCell(x, y))
-    },
-});
+const mapDispatchToProps = {selectCell};
 
 class Grid extends Component {
 
@@ -44,7 +40,7 @@ class Grid extends Component {
             className={cellClasses}
             key={cell.x + "-" + cell.y}
             style={styles}
-            onClick={() => selectCell(cell.x, cell.y)}
+            onClick={() => selectCell({x:cell.x, y:cell.y})}
         />;
     }
 

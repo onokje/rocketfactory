@@ -3,9 +3,6 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {findMineByCoords, findSectorByCoords} from "../../helpers/ResourceMapHelpers";
 import ProgressBar from "../ProgressBar/ProgressBar";
-import {exploreStart} from "../../actions/resourcemap";
-import {handminingStart} from "../../actions/player";
-import {buildMine} from "../../actions/mining";
 import Mine from "../Mine/Mine";
 import {minePrices} from "../../gamedata/machines";
 import {canAfford} from "../../helpers/InventoryHelper";
@@ -13,7 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
 import {playerHasScience} from "../../helpers/ScienceHelper";
 import {icons} from "../ItemIcon/icons";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
-
+import {exploreStart} from "../../slices/resourceMapSlice";
+import {handminingStart} from "../../slices/manualProductionSlice";
+import {buildMine} from "../../slices/miningSlice";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -24,17 +23,7 @@ const mapStateToProps = state => ({
     resourcemap: state.resourcemap
 });
 
-const mapDispatchToProps = dispatch => ({
-    exploreStart: (x, y) => {
-        dispatch(exploreStart(x, y))
-    },
-    handminingStart: (resourceType) => {
-        dispatch(handminingStart(resourceType));
-    },
-    buildMine: (resourceType, techType, id, x, y) => {
-        dispatch(buildMine(resourceType, techType, id, x, y));
-    },
-});
+const mapDispatchToProps = {exploreStart, handminingStart, buildMine};
 
 class MapSelectionPanel extends Component {
 
@@ -61,7 +50,7 @@ class MapSelectionPanel extends Component {
                     }
                 }
 
-                return <button onClick={() => exploreStart(selectedCell.x, selectedCell.y)}>Explore!</button>
+                return <button onClick={() => exploreStart({x:selectedCell.x, y:selectedCell.y})}>Explore!</button>
             }
         }
         return null;
@@ -73,7 +62,7 @@ class MapSelectionPanel extends Component {
         const itemCost = minePrices[techType].cost.slice(0);
         if (canAfford(inventory, itemCost)) {
             const uuid = uuidv4();
-            buildMine(selectedCell.resource, techType, uuid, selectedCell.x, selectedCell.y);
+            buildMine({id:uuid, resourceType:selectedCell.resource, techType, x:selectedCell.x, y:selectedCell.y});
         } else {
             console.log('you cannot afford this mine!');
         }
@@ -92,7 +81,7 @@ class MapSelectionPanel extends Component {
 
         return <div className="simpleDivider">
             <h2>Mine by hand</h2>
-            <button disabled={buttonDisabled} onClick={() => handminingStart(resource)} >Mine {resource}</button>
+            <button disabled={buttonDisabled} onClick={() => handminingStart({resource})} >Mine {resource}</button>
         </div>;
     }
 

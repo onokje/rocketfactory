@@ -1,20 +1,22 @@
 import {combineReducers} from 'redux';
-import player from "./player";
-import inventory from "./inventory";
-import power from "./power";
-import mining from "./mining";
-import resourcemap from "./resourcemap";
-import science from "./science";
-import production from "./production";
-import rocketSilo from "./rocketSilo";
+import playerReducer from './../slices/playerSlice';
+import manualProductionReducer from './../slices/manualProductionSlice';
+import inventoryReducer from './../slices/inventorySlice';
+import powerReducer from './../slices/powerSlice';
+import miningReducer from './../slices/miningSlice';
+import resourceMapReducer from './../slices/resourceMapSlice';
+import scienceReducer from './../slices/scienceSlice';
+import productionReducer from './../slices/productionSlice';
+import rocketSiloReducer from './../slices/rocketSiloSlice';
 
 export default combineReducers({
-    player,
-    inventory,
-    power,
-    mining,
-    resourcemap,
-    science,
-    production,
-    rocketSilo
+    player: playerReducer,
+    inventory: inventoryReducer,
+    power: powerReducer,
+    mining: miningReducer,
+    resourcemap: resourceMapReducer,
+    science: scienceReducer,
+    production: productionReducer,
+    rocketSilo: rocketSiloReducer,
+    manualProduction: manualProductionReducer
 });

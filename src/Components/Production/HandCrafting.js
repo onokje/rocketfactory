@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {itemRecipes} from "../../gamedata/items";
 import {canAfford} from "../../helpers/InventoryHelper";
-import {handCraftingStart} from "../../actions/player";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import {playerHasScience} from "../../helpers/ScienceHelper";
+import {handCraftingStart} from "../../slices/manualProductionSlice";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -13,14 +13,9 @@ const mapStateToProps = state => ({
     inventory: state.inventory
 });
 
-const mapDispatchToProps = dispatch => ({
-    handCraftingStart: (item, itemCost) => {
-        dispatch(handCraftingStart(item, itemCost));
-    }
-});
+const mapDispatchToProps = {handCraftingStart};
 
 class HandCrafting extends Component {
-
 
     renderHandCraftingButton(entry) {
         if (entry[1].handcrafting) {
@@ -35,7 +30,7 @@ class HandCrafting extends Component {
                 && !player.handcrafting
                 && canAfford(inventory, entry[1].cost)
                 && hasPlayerScience) {
-                onClick = () => handCraftingStart(itemKey, entry[1].cost);
+                onClick = () => handCraftingStart({item: itemKey, itemCost:entry[1].cost});
             }
 
             return <ItemIcon

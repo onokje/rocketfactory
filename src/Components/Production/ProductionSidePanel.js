@@ -4,10 +4,10 @@ import connect from "react-redux/es/connect/connect";
 import {machines} from "../../gamedata/machines";
 import {playerHasScience} from "../../helpers/ScienceHelper";
 import {canAfford} from "../../helpers/InventoryHelper";
-import {buildMachine} from "../../actions/production";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
 import HandCrafting from "./HandCrafting";
 import { v4 as uuidv4 } from 'uuid';
+import {buildMachine} from "../../slices/productionSlice";
 
 
 const mapStateToProps = state => ({
@@ -16,12 +16,7 @@ const mapStateToProps = state => ({
     inventory: state.inventory,
 });
 
-const mapDispatchToProps = dispatch => ({
-    buildMachine: (productionType, techType, id) => {
-        dispatch(buildMachine(productionType, techType, id));
-    },
-
-});
+const mapDispatchToProps = {buildMachine};
 
 class ProductionSidePanel extends Component {
 
@@ -48,7 +43,8 @@ class ProductionSidePanel extends Component {
         if (buildOption.hasScience && buildOption.canAfford) {
             const uuid = uuidv4();
 
-            buildMachine(buildOption.machineData.type, buildOption.machineKey, uuid);
+            // TODO: production type and tech type keys may be switched, check this
+            buildMachine({productionType: buildOption.machineData.type, techType:buildOption.machineKey, id: uuid});
         } else {
             console.log('Cannot build this machine...');
         }

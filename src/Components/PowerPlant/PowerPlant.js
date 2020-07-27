@@ -1,27 +1,21 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import {togglePowerplant} from "../../actions/power";
 import MachineState from "../MachineState/MachineState";
+import {togglePowerplant} from "../../slices/powerSlice";
 
 
 const mapStateToProps = state => ({
 
 });
 
-const mapDispatchToProps = dispatch => ({
-    togglePowerplant: (id, on) => {
-        dispatch(togglePowerplant(id, on));
-    },
-
-});
+const mapDispatchToProps = {togglePowerplant};
 
 class PowerPlant extends Component {
 
     togglePowerplant = () => {
         const {powerplant, togglePowerplant} = this.props;
-        togglePowerplant(powerplant.id, !powerplant.on);
-
+        togglePowerplant({powerPlantId: powerplant.id, on: !powerplant.on});
     };
 
     renderPowerplantState() {

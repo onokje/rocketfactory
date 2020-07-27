@@ -5,11 +5,13 @@ import {
     removeItemsFromInventory
 } from "./InventoryHelper";
 import {itemRecipes} from "../gamedata/items";
-import {machineProductionFinish, machineProductionStart, productionTick} from "../actions/production";
-import {miningProductionFinish, miningProductionStart} from "../actions/mining";
-import {handCraftingFinish, handminingFinish} from "../actions/player";
-import {finishScience} from "../actions/science";
 import {machines, minePrices} from "../gamedata/machines";
+
+import {machineProductionFinish, machineProductionStart, productionTick} from "../slices/productionSlice";
+import {miningProductionFinish, miningProductionStart} from "../slices/miningSlice";
+import {handCraftingFinish, handminingFinish} from "../slices/manualProductionSlice";
+import {finishScience} from "../slices/scienceSlice";
+import store from '../helpers/store';
 
 
 function runPowerPlants(inventory, power) {
@@ -20,7 +22,7 @@ function runPowerPlants(inventory, power) {
     const totalItemsUsed = [];
     let buffer = power.bufferCurrent;
 
-    for (let powerPlant of power.powerPlants){
+    for (let powerPlant of power.powerPlants) {
         if (powerPlant.on) {
 
             switch (powerPlant.techType) {
@@ -60,7 +62,13 @@ function runPowerPlants(inventory, power) {
         }
     }
 
-    return {inventory: inventory, totalPowerProduced: totalPowerProduced, totalItemsUsed: totalItemsUsed, poweredPowerplants: poweredPowerplants, newBufferSize: buffer};
+    return {
+        inventory: inventory,
+        totalPowerProduced: totalPowerProduced,
+        totalItemsUsed: totalItemsUsed,
+        poweredPowerplants: poweredPowerplants,
+        newBufferSize: buffer
+    };
 
 }
 
@@ -91,7 +99,7 @@ function runProduction(inventory, production, dispatch, powerBuffer) {
                     itemsProduced.push({name: machine.currentItem, amount: recipe.resultAmount});
                     itemsProduced = multiplyItemsInItemsArray(itemsProduced, machineData.resultMultiplier);
 
-                    dispatch(machineProductionFinish(machine.id, itemsProduced));
+                    dispatch(machineProductionFinish({id: machine.id, itemsProduced}));
                 }
 
                 if (machine.progressTicks === 0) {
@@ -107,7 +115,7 @@ function runProduction(inventory, production, dispatch, powerBuffer) {
 
 
                     if (canAfford(inventory, itemCost)) {
-                        dispatch(machineProductionStart(machine.id, machine.nextItem, itemCost));
+                        dispatch(machineProductionStart({id: machine.id, currentItem: machine.nextItem, itemCost}));
 
                         inventory = removeItemsFromInventory(inventory, itemCost);
                     }
@@ -126,7 +134,7 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
         if (mine.on) {
             let powered = false;
             let machineData = minePrices[mine.techType];
-            let powerUsage = machineData.powerUsage;;
+            let powerUsage = machineData.powerUsage;
 
             // check if enough power is available
             if (!powerUsage || powerBuffer >= powerUsage) {
@@ -143,7 +151,7 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
                     const itemsProduced = [];
                     itemsProduced.push({name: mine.resourceType, amount: 5});
 
-                    dispatch(miningProductionFinish(mine.id, itemsProduced));
+                    dispatch(miningProductionFinish({mineId: mine.id, itemsProduced}));
                 }
 
                 if (mine.progressTicks === 0) {
@@ -154,7 +162,7 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
                     Array.prototype.push.apply(itemCost, machineData.fuelCost);
 
                     if (canAfford(inventory, itemCost)) {
-                        dispatch(miningProductionStart(mine.id, itemCost));
+                        dispatch(miningProductionStart({mineId: mine.id, itemCost}));
                         inventory = removeItemsFromInventory(inventory, itemCost);
                     }
                 }
@@ -165,52 +173,57 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
     return {inventory: inventory, powerBuffer: powerBuffer, poweredMineIds: poweredMineIds};
 }
 
-function handmining(dispatch, player){
-    if (player.handmining && player.handminingProgressTicks === player.handminingTicksCost) {
+function handmining(dispatch, manualProduction) {
+    if (manualProduction.handmining && manualProduction.handminingProgressTicks === manualProduction.handminingTicksCost) {
         const itemsProduced = [];
-        itemsProduced.push({name: player.handminingResource, amount: 3});
-        dispatch(handminingFinish(itemsProduced));
+        itemsProduced.push({name: manualProduction.handminingResource, amount: 3});
+        dispatch(handminingFinish({itemsProduced}));
     }
 }
 
-function handcrafting(dispatch, player){
-    if (player.handcrafting && player.handcraftingProgressTicks === player.handcraftingTicksCost) {
+function handcrafting(dispatch, manualProduction) {
+    if (manualProduction.handcrafting && manualProduction.handcraftingProgressTicks === manualProduction.handcraftingTicksCost) {
         const itemsProduced = [];
-        itemsProduced.push({name: player.handcraftingItem, amount: itemRecipes[player.handcraftingItem].resultAmount});
-        dispatch(handCraftingFinish(itemsProduced));
+        itemsProduced.push({name: manualProduction.handcraftingItem, amount: itemRecipes[manualProduction.handcraftingItem].resultAmount});
+        dispatch(handCraftingFinish({itemsProduced}));
     }
 }
 
-function scienceTick(dispatch, science){
+function scienceTick(dispatch, science) {
     if (science.researching && science.researchingProgressTicks === science.researchingTicksCost) {
         dispatch(finishScience());
     }
 }
 
-export default function mainGameTick(dispatch, player, inventory, power, production, mining, science) {
+export default function mainGameTick(dispatch) {
 
+    const {player, inventory, power, production, mining, science, manualProduction} = store.getState();
+    if (!player.initialized) {
+        return;
+    }
     const ppResult = runPowerPlants(inventory, power);
-    inventory = ppResult.inventory;
+    let newInventory = ppResult.inventory;
     let powerBuffer = ppResult.newBufferSize;
 
-    const minesResult = runMines(inventory, mining, dispatch, powerBuffer);
-    inventory = minesResult.inventory;
+    const minesResult = runMines(newInventory, mining, dispatch, powerBuffer);
+    newInventory = minesResult.inventory;
     powerBuffer = minesResult.powerBuffer;
     const poweredMineIds = minesResult.poweredMineIds;
 
-    const productionResult = runProduction(inventory, production, dispatch, powerBuffer);
-    inventory = productionResult.inventory;
+    const productionResult = runProduction(newInventory, production, dispatch, powerBuffer);
+    newInventory = productionResult.inventory;
     powerBuffer = productionResult.powerBuffer;
 
-    handmining(dispatch, player);
-    handcrafting(dispatch, player);
+    handmining(dispatch, manualProduction);
+    handcrafting(dispatch, manualProduction);
     scienceTick(dispatch, science);
 
-    dispatch(productionTick(
+    dispatch(productionTick({
         poweredMineIds,
-        ppResult.totalPowerProduced,
-        ppResult.totalItemsUsed,
-        ppResult.poweredPowerplants,
-        productionResult.poweredMachineIds,
-        powerBuffer));
+        totalPowerProduced:ppResult.totalPowerProduced,
+        itemsUsed: ppResult.totalItemsUsed,
+        poweredPowerplants: ppResult.poweredPowerplants,
+        poweredMachineIds: productionResult.poweredMachineIds,
+        newBufferSize:powerBuffer
+    }));
 }

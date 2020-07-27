@@ -9,9 +9,9 @@ import ProgressBar from "../ProgressBar/ProgressBar";
 import ItemList from "../ItemList/ItemList";
 import {rocketSiloData, launchPad, car} from "../../gamedata/rocketSilo";
 import {canAfford} from "../../helpers/InventoryHelper";
-import {buildStepSilo} from "../../actions/rocketSilo";
 import "./rocketsilo.scss";
 import RocketSiloFuel from "./RocketSiloFuel";
+import {buildStepSilo} from "../../slices/rocketSiloSlice";
 
 
 const mapStateToProps = state => ({
@@ -21,28 +21,23 @@ const mapStateToProps = state => ({
     rocketSilo: state.rocketSilo
 });
 
-const mapDispatchToProps = dispatch => ({
-    buildStepSilo: (step) => {
-        dispatch(buildStepSilo(step));
-    },
-
-});
+const mapDispatchToProps = {buildStepSilo};
 
 class RocketSilo extends Component {
 
     handleBuildSiloClick(){
         const {buildStepSilo} = this.props;
-        buildStepSilo('silo');
+        buildStepSilo({step:'silo'});
     }
 
     handleBuildLaunchpadClick(){
         const {buildStepSilo} = this.props;
-        buildStepSilo('launchpad');
+        buildStepSilo({step:'launchpad'});
     }
 
     handleBuildCarClick(){
         const {buildStepSilo} = this.props;
-        buildStepSilo('car');
+        buildStepSilo({step:'car'});
     }
 
     renderOpsCar() {

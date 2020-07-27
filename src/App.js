@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useEffect} from 'react';
 import './App.css';
 import Header from "./Components/Header/Header";
 import PropTypes from "prop-types";
@@ -15,71 +15,43 @@ import RocketSilo from "./Components/RocketSilo/RocketSilo";
 
 const mapStateToProps = state => ({
     player: state.player,
-    inventory: state.inventory,
-    power: state.power,
-    production: state.production,
-    mining: state.mining,
-    science: state.science
 });
 
+const App = ({dispatch, player}) => {
 
-class App extends Component {
+    useEffect(() => {
+        const interval = setInterval(() => {
+            mainGameTick(dispatch);
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [dispatch]);
 
-    constructor(props){
-        super(props);
-        this.state = {
-            localStorageLoaded: false
-        };
-    }
+    if (!player.initialized) {
+        return (
+            <div className="App">
+                <NewPlayer/>
+            </div>
+        );
+    } else {
+        return (
+            <div className="App">
+                <Header/>
+                <SideBar/>
+                <NewPlayer/>
+                <ResourceMap/>
+                <PowerProduction/>
+                <Production/>
+                <Science/>
+                <MachineDialog/>
+                <RocketSilo/>
 
-    componentDidMount(){
-        this.startTimer();
-    }
-
-    mainTick = () => {
-        const {dispatch, player, inventory, power, production, mining, science} = this.props;
-        mainGameTick(dispatch, player, inventory, power, production, mining, science);
-    };
-
-    startTimer() {
-        this.mainTimer = setInterval(this.mainTick, 1000);
-    }
-
-    render() {
-
-        if (!this.props.player.initialized) {
-            return (
-                <div className="App">
-                    <NewPlayer/>
-                </div>
-            );
-        } else {
-            return (
-                <div className="App">
-                    <Header/>
-                    <SideBar/>
-                    <NewPlayer/>
-                    <ResourceMap/>
-                    <PowerProduction/>
-                    <Production/>
-                    <Science/>
-                    <MachineDialog/>
-                    <RocketSilo/>
-
-                </div>
-            );
-        }
-
+            </div>
+        );
     }
 }
 
 App.propTypes = {
     player: PropTypes.object.isRequired,
-    inventory: PropTypes.array.isRequired,
-    power: PropTypes.object.isRequired,
-    production: PropTypes.object.isRequired,
-    mining:PropTypes.object.isRequired,
-    science: PropTypes.object.isRequired
 };
 
 export default connect(
