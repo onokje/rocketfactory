@@ -6,6 +6,7 @@ import SideBarPower from "./SideBarPower";
 import PlayerCraftingBar from "../PlayerCraftingBar/PlayerCraftingBar";
 import "./Sidebar.scss";
 import SideBarResearch from "./SideBarResearch";
+import SideBarExploration from "./SideBarExploration";
 
 const mapStateToProps = state => ({
 
@@ -22,6 +23,7 @@ class SideBar extends Component {
                 <Inventory/>
                 <SideBarPower/>
                 <SideBarResearch/>
+                <SideBarExploration/>
                 <PlayerCraftingBar/>
             </div>
         );
