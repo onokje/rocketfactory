@@ -3,40 +3,40 @@ import {loadPlayer} from "./playerSlice";
 import {productionTick} from "./productionSlice";
 
 
-const scienceSlice = createSlice({
-    name: 'science',
+const researchSlice = createSlice({
+    name: 'research',
     initialState: {
-        sciences: [],
+        researchComplete: [],
         researching: false,
-        researchingScienceId: null,
+        researchingResearchId: null,
         researchingProgressTicks: null,
         researchingTicksCost: 0,
-        selectedScience: null,
+        selectedResearch: null,
     },
     reducers: {
-        startScience(state, action) {
+        startResearch(state, action) {
             return {
                 ...state,
                 researching: true,
-                researchingScienceId: action.payload.scienceId,
+                researchingResearchId: action.payload.researchId,
                 researchingProgressTicks: 0,
                 researchingTicksCost: action.payload.ticksCost
             };
         },
-        finishScience(state) {
-            state.sciences.push(state.researchingScienceId)
+        finishResearch(state) {
+            state.researchComplete.push(state.researchingResearchId)
             state.researching = false;
-            state.researchingScienceId = null;
+            state.researchingResearchId = null;
             state.researchingProgressTicks = 0;
             state.researchingTicksCost = 0;
 
         },
-        selectScience(state, action) {
-            state.selectedScience =  action.payload.scienceId;
+        selectResearch(state, action) {
+            state.selectedResearch =  action.payload.researchId;
         }
     },
     extraReducers: {
-        [loadPlayer]: (state, action) => action.payload.playerData.science,
+        [loadPlayer]: (state, action) => action.payload.playerData.research,
         [productionTick]: (state) => {
             if (state.researching) {
                 state.researchingProgressTicks = state.researchingProgressTicks >= state.researchingTicksCost ?
@@ -46,6 +46,6 @@ const scienceSlice = createSlice({
     }
 });
 
-export const { startScience, finishScience, selectScience } = scienceSlice.actions;
+export const { startResearch, finishResearch, selectResearch } = researchSlice.actions;
 
-export default scienceSlice.reducer;
+export default researchSlice.reducer;

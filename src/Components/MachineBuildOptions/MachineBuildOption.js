@@ -17,10 +17,10 @@ class MachineBuildOption extends Component {
     render() {
         const {buildOption, machineType, onClick} = this.props;
 
-        const canBuild = buildOption.hasScience && buildOption.canAfford;
+        const canBuild = buildOption.hasResearch && buildOption.canAfford;
         const styles = canBuild ? {cursor: 'pointer'} : {};
         styles.backgroundImage = `url(${machineIcons[buildOption.machineKey]})`;
-        let extraClasses = buildOption.hasScience ? '' : ' missingScience';
+        let extraClasses = buildOption.hasResearch ? '' : ' missingResearch';
         return <Tooltip content={<MachineBuildOptionToolTip
                 buildOption={buildOption}
                 machineType={machineType}

@@ -12,7 +12,6 @@ import {getMachineState} from "../../helpers/machineStateHelper";
 import {openMachineDialog} from "../../slices/productionSlice";
 
 const mapStateToProps = state => ({
-    science: state.science,
     inventory: state.inventory
 });
 
@@ -55,7 +54,6 @@ class Machine extends Component {
 }
 
 Machine.propTypes = {
-    science: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     machine: PropTypes.object.isRequired,
     openMachineDialog: PropTypes.func.isRequired,

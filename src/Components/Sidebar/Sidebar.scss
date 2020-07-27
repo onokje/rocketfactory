@@ -5,4 +5,20 @@ div.sidebar{
     left: 0;
     height: calc(100% - 70px);
     background-color: #333;
+    box-sizing: border-box;
+}
+
+div.sidebarItem {
+    padding: 10px;
+    margin: 10px;
+    background-color: #444;
+    box-sizing: border-box;
+}
+
+div.sidebarResearch {
+
+
+    div.progressbar{
+        margin-top: 5px;
+    }
 }

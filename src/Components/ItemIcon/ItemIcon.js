@@ -29,6 +29,9 @@ class ItemIcon extends Component {
         }
         const displayAmount = amount > 1000 ? Math.floor(amount / 1000)+'k' : amount;
         const style = {backgroundImage: `url(${icons[item]})`};
+        if (onClick) {
+            classes += ' itemIconClickable';
+        }
 
         return <div
             onClick={onClick}
@@ -40,11 +43,11 @@ class ItemIcon extends Component {
     }
 
     render() {
-        const {item, toolTip, showScienceRequired} = this.props;
+        const {item, toolTip, showResearchRequired} = this.props;
 
         if (toolTip) {
             return (
-                <Tooltip content={<ItemToolTip item={item} showScienceRequired={showScienceRequired}/>}>
+                <Tooltip content={<ItemToolTip item={item} showResearchRequired={showResearchRequired}/>}>
                     {this.renderIcon()}
                 </Tooltip>
             );
@@ -58,7 +61,7 @@ class ItemIcon extends Component {
 ItemIcon.defaultProps = {
     toolTip: true,
     showAvailable: false,
-    showScienceRequired: false
+    showResearchRequired: false
 };
 
 ItemIcon.propTypes = {
@@ -68,7 +71,7 @@ ItemIcon.propTypes = {
     showAvailable: PropTypes.bool,
     onClick: PropTypes.func,
     toolTip: PropTypes.bool,
-    showScienceRequired: PropTypes.bool,
+    showResearchRequired: PropTypes.bool,
     extraClasses: PropTypes.string,
 };
 

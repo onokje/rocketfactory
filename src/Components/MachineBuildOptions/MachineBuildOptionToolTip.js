@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 import ItemList from "../ItemList/ItemList";
 import "./MachineBuildOptions.scss";
 import NameAndImageHeader from "../NameAndImageHeader/NameAndImageHeader";
-import ScienceItem from "../Science/ScienceItem";
-import {playerHasScience} from "../../helpers/ScienceHelper";
+import ResearchItem from "../Research/ResearchItem";
+import {playerHasResearch} from "../../helpers/ResearchHelper";
 import connect from "react-redux/es/connect/connect";
 import {machineIcons} from "../Production/machineIcons";
 
 const mapStateToProps = state => ({
-    science: state.science
+    research: state.research
 });
 
 class MachineBuildOptionToolTip extends Component {
@@ -51,21 +51,21 @@ class MachineBuildOptionToolTip extends Component {
         }
     }
 
-    renderRequiredScience(scienceRequired) {
-        if (!scienceRequired) {
+    renderRequiredResearch(researchRequired) {
+        if (!researchRequired) {
             return null
         }
-        const {science} = this.props;
+        const { research} = this.props;
 
-        if (playerHasScience(science.sciences, scienceRequired)) {
+        if (playerHasResearch(research.researchComplete, researchRequired)) {
             return null;
         }
 
-        return <div className="requiredScienceMissing">
-            <div>Required Science missing:</div>
-            <ScienceItem
-                scienceId={scienceRequired}
-                extraClass={'scienceItemRed'}
+        return <div className="requiredResearchMissing">
+            <div>Required Research missing:</div>
+            <ResearchItem
+                researchId={researchRequired}
+                extraClass={'researchItemRed'}
             />
         </div>;
     }
@@ -78,7 +78,7 @@ class MachineBuildOptionToolTip extends Component {
                 <p>{buildOption.machineData.text}</p>
                 {this.renderSpecs()}
                 <ItemList items={buildOption.machineData.cost} label="Cost to build:" />
-            {this.renderRequiredScience(buildOption.machineData.scienceRequired)}
+            {this.renderRequiredResearch(buildOption.machineData.researchRequired)}
             </div>
 
     }
@@ -87,7 +87,7 @@ class MachineBuildOptionToolTip extends Component {
 MachineBuildOptionToolTip.propTypes = {
     buildOption: PropTypes.object.isRequired,
     machineType: PropTypes.string.isRequired,
-    science: PropTypes.object.isRequired
+    research: PropTypes.object.isRequired
 };
 
 export default connect(

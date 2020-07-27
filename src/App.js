@@ -8,7 +8,7 @@ import SideBar from "./Components/Sidebar/Sidebar";
 import PowerProduction from "./Components/PowerProduction/PowerProduction";
 import mainGameTick from "./helpers/GameTicker";
 import ResourceMap from "./Components/ResourceMap/ResourceMap";
-import Science from "./Components/Science/Science";
+import Research from "./Components/Research/Research";
 import Production from "./Components/Production/Production";
 import MachineDialog from "./Components/Production/MachineDialog";
 import RocketSilo from "./Components/RocketSilo/RocketSilo";
@@ -41,7 +41,7 @@ const App = ({dispatch, player}) => {
                 <ResourceMap/>
                 <PowerProduction/>
                 <Production/>
-                <Science/>
+                <Research/>
                 <MachineDialog/>
                 <RocketSilo/>
 

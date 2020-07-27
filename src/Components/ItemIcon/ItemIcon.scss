@@ -36,6 +36,10 @@ div.notCraftable{
     opacity: 0.4;
 }
 
+div.itemIconClickable {
+    cursor: pointer;
+}
+
 div.itemSelected{
     background-color: #0a7fb5;
 }

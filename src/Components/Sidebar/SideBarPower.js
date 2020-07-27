@@ -11,7 +11,7 @@ class SideBarPower extends Component {
         const {power} = this.props;
 
         return (
-            <div className="SideBarPower">
+            <div className="SideBarPower sidebarItem">
 
                 <h2>Power overview:</h2>
                 Produced last tick: <b>{power.powerProducedLastTick}</b> kW<br/>

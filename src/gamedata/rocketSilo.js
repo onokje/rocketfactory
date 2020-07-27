@@ -23,7 +23,7 @@ export const rocketSiloData = {
         }
 
     ],
-    scienceRequired: 'rocketScience'
+    researchRequired: 'rocketScience'
 };
 
 export const launchPad = {
@@ -42,7 +42,7 @@ export const launchPad = {
             amount: 500
         }
     ],
-    scienceRequired: 'rocketScience'
+    researchRequired: 'rocketScience'
 };
 
 export const rocketFuel = {
@@ -55,7 +55,7 @@ export const rocketFuel = {
             amount: 10
         }
     ],
-    scienceRequired: 'rocketScience'
+    researchRequired: 'rocketScience'
 };
 
 export const rocketPart = {
@@ -76,7 +76,7 @@ export const rocketPart = {
             amount: 1,
         }
     ],
-    scienceRequired: 'rocketScience'
+    researchRequired: 'rocketScience'
 };
 
 export const car = {
@@ -101,5 +101,5 @@ export const car = {
             amount: 10
         },
     ],
-    scienceRequired: 'rocketScience'
+    researchRequired: 'rocketScience'
 };

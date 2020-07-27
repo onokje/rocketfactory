@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 
-import {playerHasScience} from "../../helpers/ScienceHelper";
+import {playerHasResearch} from "../../helpers/ResearchHelper";
 import RocketSiloRocket from "./RocketSiloRocket";
 import RocketSiloCheckList from "./RocketSiloCheckList";
 import ProgressBar from "../ProgressBar/ProgressBar";
@@ -16,7 +16,7 @@ import {buildStepSilo} from "../../slices/rocketSiloSlice";
 
 const mapStateToProps = state => ({
     player: state.player,
-    science: state.science,
+    research: state.research,
     inventory: state.inventory,
     rocketSilo: state.rocketSilo
 });
@@ -114,7 +114,7 @@ class RocketSilo extends Component {
 
 
     render() {
-        const {player, science, inventory, rocketSilo} = this.props;
+        const {player, research, inventory, rocketSilo} = this.props;
 
 
         if (player.initialized && player.tab === 'silo') {
@@ -147,8 +147,8 @@ class RocketSilo extends Component {
                     );
                 } else {
                     // silo is not yet under construction
-                    const hasScience = playerHasScience(science.sciences, rocketSiloData.scienceRequired);
-                    const canBuild = hasScience && canAfford(inventory, rocketSiloData.cost);
+                    const hasResearch = playerHasResearch(research.researchComplete, rocketSiloData.researchRequired);
+                    const canBuild = hasResearch && canAfford(inventory, rocketSiloData.cost);
 
                     return (
                         <div className="defaultContainer rocketSiloContainer">
@@ -173,7 +173,7 @@ class RocketSilo extends Component {
 
 RocketSilo.propTypes = {
     player: PropTypes.object.isRequired,
-    science: PropTypes.object.isRequired,
+    research: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     rocketSilo: PropTypes.object.isRequired,
     buildStepSilo: PropTypes.func.isRequired

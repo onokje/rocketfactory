@@ -28,7 +28,7 @@ class Header extends Component {
                     <div className={player.tab === 'production' ? 'active' : ''}  onClick={() => switchTab('production')}>
                         Production
                     </div>
-                    <div className={player.tab === 'science' ? 'active' : ''}  onClick={() => switchTab('science')}>
+                    <div className={player.tab === 'research' ? 'active' : ''}  onClick={() => switchTab('research')}>
                         Research
                     </div>
                     <div className={player.tab === 'silo' ? 'active' : ''}  onClick={() => switchTab('silo')}>

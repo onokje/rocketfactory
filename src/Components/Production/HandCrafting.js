@@ -4,12 +4,12 @@ import connect from "react-redux/es/connect/connect";
 import {itemRecipes} from "../../gamedata/items";
 import {canAfford} from "../../helpers/InventoryHelper";
 import ItemIcon from "../ItemIcon/ItemIcon";
-import {playerHasScience} from "../../helpers/ScienceHelper";
+import {playerHasResearch} from "../../helpers/ResearchHelper";
 import {handCraftingStart} from "../../slices/manualProductionSlice";
 
 const mapStateToProps = state => ({
-    player: state.player,
-    science: state.science,
+    manualProduction: state.manualProduction,
+    research: state.research,
     inventory: state.inventory
 });
 
@@ -20,16 +20,16 @@ class HandCrafting extends Component {
     renderHandCraftingButton(entry) {
         if (entry[1].handcrafting) {
             const itemKey =  entry[0];
-            const {player, handCraftingStart, inventory, science} = this.props;
+            const {manualProduction, handCraftingStart, inventory, research} = this.props;
             let onClick = null;
-            const hasPlayerScience = playerHasScience(science.sciences, entry[1].scienceRequired);
-            const extraClasses = !hasPlayerScience ? 'notCraftable' : '';
+            const hasResearch = playerHasResearch(research.researchComplete, entry[1].researchRequired);
+            const extraClasses = !hasResearch ? 'notCraftable' : '';
 
             if (
-                !player.handmining
-                && !player.handcrafting
+                !manualProduction.handmining
+                && !manualProduction.handcrafting
                 && canAfford(inventory, entry[1].cost)
-                && hasPlayerScience) {
+                && hasResearch) {
                 onClick = () => handCraftingStart({item: itemKey, itemCost:entry[1].cost});
             }
 
@@ -38,7 +38,7 @@ class HandCrafting extends Component {
                 item={itemKey}
                 amount={entry[1].resultAmount}
                 onClick={onClick}
-                showScienceRequired={!hasPlayerScience}
+                showResearchRequired={!hasResearch}
                 extraClasses={extraClasses}
             />
 
@@ -59,8 +59,8 @@ class HandCrafting extends Component {
 }
 
 HandCrafting.propTypes = {
-    player: PropTypes.object.isRequired,
-    science: PropTypes.object.isRequired,
+    manualProduction: PropTypes.object.isRequired,
+    research: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     handCraftingStart: PropTypes.func.isRequired
 };

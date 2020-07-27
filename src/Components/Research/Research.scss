@@ -1,11 +1,11 @@
-div.scienceContainer{
+div.researchContainer{
     display: flex;
 }
 
-div.scienceListContainer{
+div.researchListContainer{
     width: 500px;
 
-    ul.scienceList{
+    ul.researchList{
         list-style: none;
         margin: 0;
         padding: 0;
@@ -18,7 +18,7 @@ div.scienceListContainer{
             align-items: center;
             cursor: pointer;
 
-            div.scienceName {
+            div.researchName {
                 font-weight: bold;
                 padding: 3px 10px;
 
@@ -40,12 +40,12 @@ div.scienceListContainer{
     }
 }
 
-div.scienceSelectionPanel{
+div.researchSelectionPanel{
     margin-left: 10px;
     width: 400px;
     background-color: #333;
 
-    div.scienceUnlocksContainer, div.unlocksItemsContainer, div.scienceRequiredContainer {
+    div.researchUnlocksContainer, div.unlocksItemsContainer, div.researchRequiredContainer {
         margin-top: 10px;
     }
 

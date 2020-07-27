@@ -5,14 +5,14 @@ import {canAfford} from "../../helpers/InventoryHelper";
 import {powerPlants} from "../../gamedata/machines";
 import { v4 as uuidv4 } from 'uuid';
 import PowerPlant from "../PowerPlant/PowerPlant";
-import {playerHasScience} from "../../helpers/ScienceHelper";
+import {playerHasResearch} from "../../helpers/ResearchHelper";
 import "./PowerProduction.scss";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
 import {buildPowerPlant} from "../../slices/powerSlice";
 
 const mapStateToProps = state => ({
     player: state.player,
-    science: state.science,
+    research: state.research,
     inventory: state.inventory,
     power: state.power
 });
@@ -24,7 +24,7 @@ class PowerProduction extends Component {
     handleBuildPowerPlantClick(buildOption) {
         const {buildPowerPlant} = this.props;
 
-        if (buildOption.hasScience && buildOption.canAfford) {
+        if (buildOption.hasResearch && buildOption.canAfford) {
             const uuid = uuidv4();
 
             buildPowerPlant({techType: buildOption.machineKey, id:uuid});
@@ -35,7 +35,7 @@ class PowerProduction extends Component {
     };
 
     getBuildOptions() {
-        const {science, inventory} = this.props;
+        const {research, inventory} = this.props;
         const options = [];
 
         for (let plant in powerPlants) {
@@ -43,7 +43,7 @@ class PowerProduction extends Component {
                 options.push({
                     machineKey: plant,
                     machineData: powerPlants[plant],
-                    hasScience: playerHasScience(science.sciences, powerPlants[plant].scienceRequired),
+                    hasResearch: playerHasResearch(research.researchComplete, powerPlants[plant].researchRequired),
                     canAfford: canAfford(inventory, powerPlants[plant].cost)
                 });
             }
@@ -89,7 +89,7 @@ class PowerProduction extends Component {
 
 PowerProduction.propTypes = {
     player: PropTypes.object.isRequired,
-    science: PropTypes.object.isRequired,
+    research: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
     buildPowerPlant: PropTypes.func.isRequired

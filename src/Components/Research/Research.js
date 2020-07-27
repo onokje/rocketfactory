@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
-import "./Science.scss";
-import ScienceList from "./ScienceList";
-import ScienceSelectionPanel from "./ScienceSelectionPanel";
+import "./Research.scss";
+import ResearchList from "./ResearchList";
+import ResearchSelectionPanel from "./ResearchSelectionPanel";
 
 const mapStateToProps = state => ({
     player: state.player,
@@ -12,18 +12,18 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 });
 
-class Science extends Component {
+class Research extends Component {
 
     render() {
         const {player} = this.props;
 
-        if (player.initialized && player.tab === 'science') {
+        if (player.initialized && player.tab === 'research') {
             return (
                 <div className="defaultContainer">
                     <h1>Research</h1>
-                    <div className="scienceContainer">
-                        <ScienceList/>
-                        <ScienceSelectionPanel/>
+                    <div className="researchContainer">
+                        <ResearchList/>
+                        <ResearchSelectionPanel/>
                     </div>
                 </div>
             );
@@ -34,11 +34,11 @@ class Science extends Component {
     }
 }
 
-Science.propTypes = {
+Research.propTypes = {
     player: PropTypes.object.isRequired,
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(Science)
+)(Research)

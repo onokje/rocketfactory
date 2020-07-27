@@ -5,7 +5,7 @@ import inventoryReducer from './../slices/inventorySlice';
 import powerReducer from './../slices/powerSlice';
 import miningReducer from './../slices/miningSlice';
 import resourceMapReducer from './../slices/resourceMapSlice';
-import scienceReducer from './../slices/scienceSlice';
+import researchReducer from '../slices/researchSlice';
 import productionReducer from './../slices/productionSlice';
 import rocketSiloReducer from './../slices/rocketSiloSlice';
 
@@ -15,7 +15,7 @@ export default combineReducers({
     power: powerReducer,
     mining: miningReducer,
     resourcemap: resourceMapReducer,
-    science: scienceReducer,
+    research: researchReducer,
     production: productionReducer,
     rocketSilo: rocketSiloReducer,
     manualProduction: manualProductionReducer

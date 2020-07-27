@@ -10,7 +10,7 @@ import {machines, minePrices} from "../gamedata/machines";
 import {machineProductionFinish, machineProductionStart, productionTick} from "../slices/productionSlice";
 import {miningProductionFinish, miningProductionStart} from "../slices/miningSlice";
 import {handCraftingFinish, handminingFinish} from "../slices/manualProductionSlice";
-import {finishScience} from "../slices/scienceSlice";
+import {finishResearch} from "../slices/researchSlice";
 import store from '../helpers/store';
 
 
@@ -189,15 +189,15 @@ function handcrafting(dispatch, manualProduction) {
     }
 }
 
-function scienceTick(dispatch, science) {
-    if (science.researching && science.researchingProgressTicks === science.researchingTicksCost) {
-        dispatch(finishScience());
+function researchTick(dispatch, research) {
+    if (research.researching && research.researchingProgressTicks === research.researchingTicksCost) {
+        dispatch(finishResearch());
     }
 }
 
 export default function mainGameTick(dispatch) {
 
-    const {player, inventory, power, production, mining, science, manualProduction} = store.getState();
+    const {player, inventory, power, production, mining, research, manualProduction} = store.getState();
     if (!player.initialized) {
         return;
     }
@@ -216,7 +216,7 @@ export default function mainGameTick(dispatch) {
 
     handmining(dispatch, manualProduction);
     handcrafting(dispatch, manualProduction);
-    scienceTick(dispatch, science);
+    researchTick(dispatch, research);
 
     dispatch(productionTick({
         poweredMineIds,

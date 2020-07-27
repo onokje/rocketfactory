@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from "prop-types";
 import connect from "react-redux/es/connect/connect";
 import {machines} from "../../gamedata/machines";
-import {playerHasScience} from "../../helpers/ScienceHelper";
+import {playerHasResearch} from "../../helpers/ResearchHelper";
 import {canAfford} from "../../helpers/InventoryHelper";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
 import HandCrafting from "./HandCrafting";
@@ -12,7 +12,7 @@ import {buildMachine} from "../../slices/productionSlice";
 
 const mapStateToProps = state => ({
     production: state.production,
-    science: state.science,
+    research: state.research,
     inventory: state.inventory,
 });
 
@@ -21,7 +21,7 @@ const mapDispatchToProps = {buildMachine};
 class ProductionSidePanel extends Component {
 
     getBuildOptions() {
-        const {science, inventory} = this.props;
+        const { research, inventory} = this.props;
         const options = [];
 
         for (let machine in machines) {
@@ -29,7 +29,7 @@ class ProductionSidePanel extends Component {
                 options.push({
                     machineKey: machine,
                     machineData: machines[machine],
-                    hasScience: playerHasScience(science.sciences, machines[machine].scienceRequired),
+                    hasResearch: playerHasResearch(research.researchComplete, machines[machine].researchRequired),
                     canAfford: canAfford(inventory, machines[machine].cost)
                 });
             }
@@ -40,10 +40,9 @@ class ProductionSidePanel extends Component {
     handleBuildMachineClick(buildOption){
         const {buildMachine} = this.props;
 
-        if (buildOption.hasScience && buildOption.canAfford) {
+        if (buildOption.hasResearch && buildOption.canAfford) {
             const uuid = uuidv4();
 
-            // TODO: production type and tech type keys may be switched, check this
             buildMachine({productionType: buildOption.machineData.type, techType:buildOption.machineKey, id: uuid});
         } else {
             console.log('Cannot build this machine...');
@@ -72,7 +71,7 @@ class ProductionSidePanel extends Component {
 
 ProductionSidePanel.propTypes = {
     production: PropTypes.object.isRequired,
-    science: PropTypes.object.isRequired,
+    research: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     buildMachine: PropTypes.func.isRequired,
 };

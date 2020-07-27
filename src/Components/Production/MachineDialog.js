@@ -4,7 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import {machines} from "../../gamedata/machines";
 import {itemRecipes} from "../../gamedata/items";
 import ProgressBar from "../ProgressBar/ProgressBar";
-import {playerHasScience} from "../../helpers/ScienceHelper";
+import {playerHasResearch} from "../../helpers/ResearchHelper";
 import "./MachineDialog.scss";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import ItemRecipe from "../ItemRecipe/ItemRecipe";
@@ -20,7 +20,7 @@ import {
 const mapStateToProps = state => ({
     production: state.production,
     inventory: state.inventory,
-    science: state.science
+    research: state.research
 });
 
 const mapDispatchToProps = {
@@ -43,7 +43,7 @@ class MachineDialog extends Component {
     }
 
     getRecipes() {
-        const { science} = this.props;
+        const { research} = this.props;
         const machine = this.getMachine();
         const machineData = machines[machine.techType];
 
@@ -53,7 +53,7 @@ class MachineDialog extends Component {
                 recipes.push({
                     recipeKey,
                     recipe: itemRecipes[recipeKey],
-                    hasScience: playerHasScience(science.sciences, itemRecipes[recipeKey].scienceRequired)
+                    hasResearch: playerHasResearch(research.researchComplete, itemRecipes[recipeKey].researchRequired)
                 });
             }
         }
@@ -77,14 +77,14 @@ class MachineDialog extends Component {
 
     renderRecipeButton(recipe) {
         const machine = this.getMachine();
-        const {science, toggleMachine} = this.props;
+        const {research, toggleMachine} = this.props;
 
         let onClick = null;
-        const hasPlayerScience = playerHasScience(science.sciences, recipe.recipe.scienceRequired);
-        let extraClasses = !hasPlayerScience ? 'notCraftable' : '';
+        const hasResearch = playerHasResearch(research.researchComplete, recipe.recipe.researchRequired);
+        let extraClasses = !hasResearch ? 'notCraftable' : '';
         extraClasses += machine.nextItem === recipe.recipeKey ? ' itemSelected' : '';
 
-        if (hasPlayerScience) {
+        if (hasResearch) {
             onClick = () => toggleMachine({id: machine.id, on: true, nextItem: recipe.recipeKey});
         }
 
@@ -93,7 +93,7 @@ class MachineDialog extends Component {
             item={recipe.recipeKey}
             amount={recipe.recipe.resultAmount}
             onClick={onClick}
-            showScienceRequired={!hasPlayerScience}
+            showResearchRequired={!hasResearch}
             extraClasses={extraClasses}
         />
 
@@ -227,7 +227,7 @@ class MachineDialog extends Component {
 MachineDialog.propTypes = {
     production: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
-    science: PropTypes.object.isRequired,
+    research: PropTypes.object.isRequired,
     toggleMachine: PropTypes.func.isRequired,
     sellMachine: PropTypes.func.isRequired,
     closeMachineDialog: PropTypes.func.isRequired,

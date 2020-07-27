@@ -19,7 +19,7 @@ export const powerPlants = {
             },
         ],
         fuelCost: [{name: 'coal', amount: 1}],
-        scienceRequired: null
+        researchRequired: 'electricity'
     },
     oilPower: {
         text: 'Generates electricity using oil as fuel',
@@ -45,7 +45,7 @@ export const powerPlants = {
             },
         ],
         fuelCost: [{name: 'oil', amount: 1}],
-        scienceRequired: 'oil'
+        researchRequired: 'oil'
     }
 
 };
@@ -68,7 +68,7 @@ export const machines = {
             },
         ],
         fuelCost: [{name: 'coal', amount: 1}],
-        scienceRequired: null
+        researchRequired: null
     },
     steelFurnace: {
         type: 'smelting',
@@ -91,7 +91,7 @@ export const machines = {
             },
         ],
         fuelCost: [{name: 'coal', amount: 1}],
-        scienceRequired: 'steel'
+        researchRequired: 'steel'
     },
     electricFurnace: {
         type: 'smelting',
@@ -118,7 +118,7 @@ export const machines = {
             }
         ],
         fuelCost: [],
-        scienceRequired: 'advancedMaterials'
+        researchRequired: 'advancedMaterials'
     },
     assembler1: {
         type: 'crafting',
@@ -145,7 +145,7 @@ export const machines = {
             }
         ],
         fuelCost: [],
-        scienceRequired: 'automation1'
+        researchRequired: 'electricity'
     },
     assembler2: {
         type: 'crafting',
@@ -176,7 +176,7 @@ export const machines = {
             }
         ],
         fuelCost: [],
-        scienceRequired: 'advancedElectronics'
+        researchRequired: 'advancedElectronics'
     },
     assembler3: {
         type: 'crafting',
@@ -208,7 +208,7 @@ export const machines = {
 
         ],
         fuelCost: [],
-        scienceRequired: 'modules'
+        researchRequired: 'modules'
     },
     refinary: {
         type: 'refinary',
@@ -231,7 +231,7 @@ export const machines = {
             }
         ],
         fuelCost: [],
-        scienceRequired: 'oil'
+        researchRequired: 'oil'
     },
     chemicalPlant: {
         type: 'chemicalPlant',
@@ -258,7 +258,7 @@ export const machines = {
             }
         ],
         fuelCost: [],
-        scienceRequired: 'oil'
+        researchRequired: 'oil'
     }
 };
 
@@ -283,7 +283,7 @@ export const minePrices = {
             }
         ],
         fuelCost: [{name: 'coal', amount: 1}],
-        scienceRequired: 'automation1'
+        researchRequired: 'automation1'
     },
     electricMine: {
         type: 'mine',
@@ -309,7 +309,7 @@ export const minePrices = {
             }
         ],
         fuelCost: [],
-        scienceRequired: 'automation1'
+        researchRequired: 'electricity'
     },
     pump: {
         type: 'pump',
@@ -335,7 +335,7 @@ export const minePrices = {
             }
         ],
         fuelCost: [],
-        scienceRequired: 'oil'
+        researchRequired: 'oil'
     }
 };
 

@@ -3,12 +3,12 @@
  *
  */
 
-export const scienceTicksMuliplier = 60;
+export const researchTicksMultiplier = 60;
 
-export const sciences = {
+export const researches = {
     steel: {
         name: 'Steel Processing',
-        requiredScience: [],
+        requiredResearch: [],
         time: 3,
         cost: [
             {
@@ -19,8 +19,8 @@ export const sciences = {
     },
     electronics: {
         name: 'Electronics',
-        requiredScience: [],
-        time: 2,
+        requiredResearch: [],
+        time: 3,
         cost: [
             {
                 name: 'redScience',
@@ -30,7 +30,18 @@ export const sciences = {
     },
     automation1: {
         name: 'Automation 1',
-        requiredScience: ['electronics'],
+        requiredResearch: [],
+        time: 2,
+        cost: [
+            {
+                name: 'redScience',
+                amount: 5
+            }
+        ]
+    },
+    electricity: {
+        name: 'Power Generation',
+        requiredResearch: ['electronics', 'automation1'],
         time: 3,
         cost: [
             {
@@ -41,7 +52,7 @@ export const sciences = {
     },
     oil: {
         name: 'Oil drilling',
-        requiredScience: ['electronics'],
+        requiredResearch: ['electronics', 'electricity'],
         time: 4,
         cost: [
             {
@@ -56,7 +67,7 @@ export const sciences = {
     },
     advancedOil: {
         name: 'Oil processing',
-        requiredScience: ['oil'],
+        requiredResearch: ['oil'],
         time: 4,
         cost: [
             {
@@ -71,7 +82,7 @@ export const sciences = {
     },
     plastics: {
         name: 'Plastics',
-        requiredScience: ['advancedOil'],
+        requiredResearch: ['advancedOil'],
         time: 5,
         cost: [
             {
@@ -86,7 +97,7 @@ export const sciences = {
     },
     concrete: {
         name: 'Concrete',
-        requiredScience: ['steel'],
+        requiredResearch: ['steel'],
         time: 5,
         cost: [
             {
@@ -105,7 +116,7 @@ export const sciences = {
     },
     battery: {
         name: 'Battery Equipment',
-        requiredScience: ['electronics','advancedOil'],
+        requiredResearch: ['electronics','advancedOil'],
         time: 6,
         cost: [
             {
@@ -120,7 +131,7 @@ export const sciences = {
     },
     engine: {
         name: 'Engine',
-        requiredScience: ['steel'],
+        requiredResearch: ['steel'],
         time: 6,
         cost: [
             {
@@ -135,7 +146,7 @@ export const sciences = {
     },
     electricEngine: {
         name: 'Electric drivetrain technology',
-        requiredScience: ['electronics','engine'],
+        requiredResearch: ['electronics','engine'],
         time: 6,
         cost: [
             {
@@ -154,7 +165,7 @@ export const sciences = {
     },
     advancedElectronics: {
         name: 'Advanced Electronics',
-        requiredScience: ['automation1', 'plastics'],
+        requiredResearch: ['automation1', 'plastics'],
         time: 10,
         cost: [
             {
@@ -169,7 +180,7 @@ export const sciences = {
     },
     advancedMaterials: {
         name: 'Advanced Material Processing',
-        requiredScience: ['automation1', 'steel'],
+        requiredResearch: ['automation1', 'steel'],
         time: 10,
         cost: [
             {
@@ -187,8 +198,8 @@ export const sciences = {
         ]
     },
     rocketScience: {
-        name: 'Rocket Science',
-        requiredScience: ['advancedElectronics', 'advancedMaterials', 'concrete'],
+        name: 'Rocket Research',
+        requiredResearch: ['advancedElectronics', 'advancedMaterials', 'concrete'],
         time: 15,
         cost: [
             {
@@ -211,7 +222,7 @@ export const sciences = {
     },
     modules: {
         name: 'Modules',
-        requiredScience: ['advancedElectronics'],
+        requiredResearch: ['advancedElectronics'],
         time: 8,
         cost: [
             {

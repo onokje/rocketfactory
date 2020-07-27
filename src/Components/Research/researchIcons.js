@@ -22,7 +22,7 @@ import advancedOil from "../../images/research/32px-Advanced_oil_processing_(res
 import rocketScience from "../../images/research/32px-Rocketry_(research).png"
 import modules from "../../images/research/32px-Modules_(research).png"
 
-export const scienceIcons = {
+export const researchIcons = {
     advancedElectronics,
     advancedElectronics2,
     advancedMaterials,

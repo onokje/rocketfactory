@@ -1,8 +1,19 @@
 div.playerCraftingBar{
-    background-color: #111;
     position: fixed;
     bottom: 0;
     left: 0;
-    width: 300px;
+    width: 280px;
     height: 100px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #222;
+    box-sizing: border-box;
+
+    div.playerCraftingBarInner{
+        display: flex;
+    }
+
+    div.progressbar {
+        margin-top: 5px;
+    }
 }

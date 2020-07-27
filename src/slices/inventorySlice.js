@@ -4,11 +4,11 @@ import {
     multiplyItemsInItemsArray,
     removeItemsFromInventory
 } from "../helpers/InventoryHelper";
-import {sciences} from "../gamedata/science";
+import {researches} from "../gamedata/research";
 import {machines, minePrices, powerPlants} from "../gamedata/machines";
 import {loadPlayer} from "./playerSlice";
 import {handCraftingFinish, handCraftingStart, handminingFinish} from "./manualProductionSlice";
-import {startScience} from "./scienceSlice";
+import {startResearch} from "./researchSlice";
 import {buildPowerPlant, sellPowerPlant} from "./powerSlice";
 import {
     buildMachine,
@@ -25,8 +25,8 @@ const inventorySlice = createSlice({
     reducers: {},
     extraReducers: {
         [loadPlayer]: (state, action) => action.payload.playerData.inventory,
-        [startScience]: (state, action) => {
-            const itemCost = sciences[action.payload.scienceId].cost.slice(0);
+        [startResearch]: (state, action) => {
+            const itemCost = researches[action.payload.researchId].cost.slice(0);
             return removeItemsFromInventory(state, itemCost);
         },
         [buildPowerPlant]: (state, action) => {

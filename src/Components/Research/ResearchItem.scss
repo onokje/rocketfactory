@@ -1,4 +1,4 @@
-div.scienceItem{
+div.researchItem{
     display: flex;
     flex-wrap: nowrap;
     justify-content: flex-start;
@@ -11,10 +11,10 @@ div.scienceItem{
     background-color: #555;
 }
 
-div.scienceItemGreen {
+div.researchItemGreen {
     background-color: #050;
 }
 
-div.scienceItemRed {
+div.researchItemRed {
     background-color: #500;
 }

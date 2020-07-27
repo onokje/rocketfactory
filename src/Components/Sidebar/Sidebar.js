@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 
 import connect from "react-redux/es/connect/connect";
 import Inventory from "../Inventory/Inventory";
-import SideBarPower from "../SideBarPower/SideBarPower";
+import SideBarPower from "./SideBarPower";
 import PlayerCraftingBar from "../PlayerCraftingBar/PlayerCraftingBar";
 import "./Sidebar.scss";
-import SideBarScience from "./SideBarScience";
+import SideBarResearch from "./SideBarResearch";
 
 const mapStateToProps = state => ({
 
@@ -19,11 +19,9 @@ class SideBar extends Component {
 
         return (
             <div className="sidebar">
-                <h2>Sidebar!</h2>
-
                 <Inventory/>
                 <SideBarPower/>
-                <SideBarScience/>
+                <SideBarResearch/>
                 <PlayerCraftingBar/>
             </div>
         );

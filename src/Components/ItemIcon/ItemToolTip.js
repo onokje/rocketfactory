@@ -5,7 +5,7 @@ import {icons} from "./icons";
 import "./ItemIcon.scss";
 import {getItemAmountByName} from "../../helpers/InventoryHelper";
 import {itemRecipes} from "../../gamedata/items";
-import ScienceItem from "../Science/ScienceItem";
+import ResearchItem from "../Research/ResearchItem";
 import ItemRecipe from "../ItemRecipe/ItemRecipe";
 import NameAndImageHeader from "../NameAndImageHeader/NameAndImageHeader";
 
@@ -32,14 +32,14 @@ class ItemToolTip extends Component {
         return null;
     }
 
-    renderScienceRequired() {
-        const {item, showScienceRequired} = this.props;
-        if (showScienceRequired) {
-            return <div className="requiredScienceMissing">
-                <div>Required Science missing:</div>
-                <ScienceItem
-                    scienceId={itemRecipes[item].scienceRequired}
-                    extraClass={'scienceItemRed'}
+    renderResearchRequired() {
+        const {item, showResearchRequired} = this.props;
+        if (showResearchRequired) {
+            return <div className="requiredResearchMissing">
+                <div>Required Research missing:</div>
+                <ResearchItem
+                    researchId={itemRecipes[item].researchRequired}
+                    extraClass={'researchItemRed'}
                 />
             </div>
         }
@@ -55,7 +55,7 @@ class ItemToolTip extends Component {
             <p>You have: <b>{getItemAmountByName(inventory, item)}</b></p>
 
             {this.renderCraftingRecipe()}
-            {this.renderScienceRequired()}
+            {this.renderResearchRequired()}
 
         </div>
     }
@@ -65,7 +65,7 @@ ItemToolTip.propTypes = {
     inventory: PropTypes.array.isRequired,
     item: PropTypes.string.isRequired,
     amount: PropTypes.number,
-    showScienceRequired: PropTypes.bool,
+    showResearchRequired: PropTypes.bool,
 };
 
 export default connect(

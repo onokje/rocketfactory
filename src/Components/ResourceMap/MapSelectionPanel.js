@@ -7,16 +7,17 @@ import Mine from "../Mine/Mine";
 import {minePrices} from "../../gamedata/machines";
 import {canAfford} from "../../helpers/InventoryHelper";
 import { v4 as uuidv4 } from 'uuid';
-import {playerHasScience} from "../../helpers/ScienceHelper";
+import {playerHasResearch} from "../../helpers/ResearchHelper";
 import {icons} from "../ItemIcon/icons";
 import MachineBuildOption from "../MachineBuildOptions/MachineBuildOption";
 import {exploreStart} from "../../slices/resourceMapSlice";
 import {handminingStart} from "../../slices/manualProductionSlice";
 import {buildMine} from "../../slices/miningSlice";
+import './miningOptions.scss';
 
 const mapStateToProps = state => ({
-    player: state.player,
-    science: state.science,
+    manualProduction: state.manualProduction,
+    research: state.research,
     inventory: state.inventory,
     power: state.power,
     mining: state.mining,
@@ -73,20 +74,20 @@ class MapSelectionPanel extends Component {
             return null;
         }
 
-        const {player, handminingStart} = this.props;
+        const {manualProduction, handminingStart} = this.props;
         let buttonDisabled = false;
-        if (player.handmining || player.handcrafting) {
+        if (manualProduction.handmining || manualProduction.handcrafting) {
             buttonDisabled = true;
         }
 
         return <div className="simpleDivider">
             <h2>Mine by hand</h2>
-            <button disabled={buttonDisabled} onClick={() => handminingStart({resource})} >Mine {resource}</button>
+            <div className={`handMiningButton ${buttonDisabled ? ' handMiningButton_disabled' : ''}`} onClick={!buttonDisabled ? (() => handminingStart({resource})) : undefined} >Mine {resource}</div>
         </div>;
     }
 
     getBuildOptions(selectedCell) {
-        const {science, inventory} = this.props;
+        const { research, inventory} = this.props;
         const options = [];
 
         for (let mine in minePrices) {
@@ -96,7 +97,7 @@ class MapSelectionPanel extends Component {
                     options.push({
                         machineKey: mine,
                         machineData: minePrices[mine],
-                        hasScience: playerHasScience(science.sciences, minePrices[mine].scienceRequired),
+                        hasResearch: playerHasResearch(research.researchComplete, minePrices[mine].researchRequired),
                         canAfford: canAfford(inventory, minePrices[mine].cost)
                     });
                 }
@@ -201,8 +202,8 @@ class MapSelectionPanel extends Component {
 }
 
 MapSelectionPanel.propTypes = {
-    player: PropTypes.object.isRequired,
-    science: PropTypes.object.isRequired,
+    manualProduction: PropTypes.object.isRequired,
+    research: PropTypes.object.isRequired,
     inventory: PropTypes.array.isRequired,
     power: PropTypes.object.isRequired,
     mining: PropTypes.object.isRequired,
