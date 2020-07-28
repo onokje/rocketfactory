@@ -7,11 +7,14 @@ import RocketSiloRocket from "./RocketSiloRocket";
 import RocketSiloCheckList from "./RocketSiloCheckList";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import ItemList from "../ItemList/ItemList";
-import {rocketSiloData, launchPad, car} from "../../gamedata/rocketSilo";
+import {rocketSiloData} from "../../gamedata/rocketSilo";
 import {canAfford} from "../../helpers/InventoryHelper";
 import "./rocketsilo.scss";
 import RocketSiloFuel from "./RocketSiloFuel";
-import {buildStepSilo} from "../../slices/rocketSiloSlice";
+import {buildStepSilo, launchRocket} from "../../slices/rocketSiloSlice";
+import RocketSiloOps from "./RocketSiloOps";
+import ResearchItem from "../Research/ResearchItem";
+import RocketLaunch from "./RocketLaunch";
 
 
 const mapStateToProps = state => ({
@@ -21,110 +24,40 @@ const mapStateToProps = state => ({
     rocketSilo: state.rocketSilo
 });
 
-const mapDispatchToProps = {buildStepSilo};
+const mapDispatchToProps = {buildStepSilo, launchRocket};
 
 class RocketSilo extends Component {
 
-    handleBuildSiloClick(){
+    handleBuildSiloClick() {
         const {buildStepSilo} = this.props;
         buildStepSilo({step:'silo'});
     }
 
-    handleBuildLaunchpadClick(){
-        const {buildStepSilo} = this.props;
-        buildStepSilo({step:'launchpad'});
-    }
-
-    handleBuildCarClick(){
-        const {buildStepSilo} = this.props;
-        buildStepSilo({step:'car'});
-    }
-
-    renderOpsCar() {
-        const {inventory, rocketSilo} = this.props;
-
-        if (!rocketSilo.checklist.payload) {
-            if (rocketSilo.buildingNow === 'car') {
-                // launchpad is building now, show progress
-                const completedPercentage = rocketSilo.siloBuildProgressTicks * 100 / rocketSilo.siloBuildProgressTotal;
-                return (
-                    <div>
-                        <p>Payload is building. progress:</p>
-                        <ProgressBar completedPercentage={completedPercentage} />
-                    </div>
-                );
-
-            } else {
-                const canBuild = canAfford(inventory, car.cost);
-
-                return (
-                    <div>
-                        <p>Build cherry-red electric sportscar (payload):</p>
-
-                        <ItemList items={car.cost} label="cost to build:"/>
-
-                        <button disabled={!canBuild} onClick={() => this.handleBuildCarClick()}>Build car</button>
-
-                    </div>
-                );
-            }
-        }
-    }
-
-    renderOpsLaunchPad() {
-        const {inventory, rocketSilo} = this.props;
-
-        if (!rocketSilo.checklist.launchpad) {
-            if (rocketSilo.buildingNow === 'launchpad') {
-                // launchpad is building now, show progress
-                const completedPercentage = rocketSilo.siloBuildProgressTicks * 100 / rocketSilo.siloBuildProgressTotal;
-                return (
-                    <>
-                        <p>Launchpad is building. progress:</p>
-                        <ProgressBar completedPercentage={completedPercentage} />
-                    </>
-                );
-
-            } else {
-                const canBuild = canAfford(inventory, launchPad.cost);
-
-                return (
-                    <>
-                        <p>Build launchpad:</p>
-
-                        <ItemList items={launchPad.cost} label="cost to build:"/>
-
-                        <button disabled={!canBuild} onClick={() => this.handleBuildLaunchpadClick()}>Build launchpad</button>
-
-                    </>
-                );
-            }
-        }
-    }
-
-    renderOps() {
-        return (
-            <div className="rocketSiloOps">
-                <h2>Rocket silo operations</h2>
-                {this.renderOpsLaunchPad()}
-                {this.renderOpsCar()}
-            </div>
-        );
-    }
-
-
     render() {
-        const {player, research, inventory, rocketSilo} = this.props;
-
+        const {player, research, inventory, rocketSilo, launchRocket} = this.props;
 
         if (player.initialized && player.tab === 'silo') {
 
             if (rocketSilo.checklist.silo) {
                 // silo building is done
+
+                const {silo, rocket, launchpad, fuel, payload} = rocketSilo.checklist;
+
+                if (silo && rocket && launchpad && fuel && payload) {
+                    return (
+                        <div className="defaultContainer rocketSiloContainer">
+                            <RocketSiloOps />
+                            <RocketSiloCheckList checklist={rocketSilo.checklist}/>
+                            <RocketLaunch launchRocket={launchRocket} rocketSilo={rocketSilo} />
+
+                        </div>
+                    );
+                }
+
                 return (
                     <div className="defaultContainer rocketSiloContainer">
-                        {this.renderOps()}
-                        <RocketSiloCheckList rocketSilo={rocketSilo}/>
+                        <RocketSiloOps />
+                        <RocketSiloCheckList checklist={rocketSilo.checklist}/>
 
                         <RocketSiloRocket rocketSilo={rocketSilo}/>
                         <RocketSiloFuel rocketSilo={rocketSilo} />
@@ -152,11 +85,27 @@ class RocketSilo extends Component {
 
                     return (
                         <div className="defaultContainer rocketSiloContainer">
-                            <p>Build silo:</p>
+                            <div className="rocketSiloBuildSilo">
+                                <div>
+                                    <p>This is the rocket silo screen. You need to build your rocket silo first before you can start building your rocket.</p>
 
-                            <ItemList items={rocketSiloData.cost} label="cost to build:"/>
+                                    <ItemList items={rocketSiloData.cost} label="cost to build:"/>
 
-                            <button disabled={!canBuild} onClick={() => this.handleBuildSiloClick()}>Build silo</button>
+                                    <button disabled={!canBuild} onClick={() => this.handleBuildSiloClick()}>Build silo</button>
+
+                                    {hasResearch ? '' : <>
+                                        <p>Missing research:</p>
+                                        <ResearchItem
+                                            key={rocketSiloData.researchRequired}
+                                            researchId={rocketSiloData.researchRequired}
+                                            extraClass={playerHasResearch(research.researchComplete, rocketSiloData.researchRequired) ? 'researchItemGreen' : 'researchItemRed'}
+                                        />
+                                        </>
+                                    }
+                                </div>
+
+                            </div>
+
 
                         </div>
                     );

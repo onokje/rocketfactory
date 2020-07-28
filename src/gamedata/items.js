@@ -166,7 +166,7 @@ export const itemRecipes = {
             },
             {
                 name: 'copperWire',
-                amount: 6
+                amount: 4
             }
         ]
     },
@@ -351,27 +351,6 @@ export const itemRecipes = {
             }
         ]
     },
-    furnaceParts: {
-        name: 'Smelting equipment',
-        type: 'crafting',
-        researchRequired: 'advancedElectronics',
-        handcrafting: true,
-        resultAmount: 1,
-        cost: [
-            {
-                name: 'redChip',
-                amount: 5
-            },
-            {
-                name: 'steelPlate',
-                amount: 10
-            },
-            {
-                name: 'brick',
-                amount: 10
-            }
-        ]
-    },
     speedModule: {
         name: 'Speed module',
         type: 'crafting',
@@ -492,7 +471,7 @@ export const itemRecipes = {
         cost: [
             {
                 name: 'redChip',
-                amount: 5
+                amount: 4
             },
             {
                 name: 'speedModule',
@@ -504,7 +483,7 @@ export const itemRecipes = {
             },
             {
                 name: 'copperWire',
-                amount: 5
+                amount: 4
             }
         ]
     },

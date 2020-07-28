@@ -18,6 +18,7 @@ import {
     sellMachine
 } from "./productionSlice";
 import {buildMine, miningProductionFinish, miningProductionStart, sellMine} from "./miningSlice";
+import {fuelPartStart, rocketPartStart} from "./rocketSiloSlice";
 
 const inventorySlice = createSlice({
     name: 'inventory',
@@ -63,6 +64,8 @@ const inventorySlice = createSlice({
         [miningProductionFinish]: (state, action) => addItemsToInventory(state, action.payload.itemsProduced),
         [handminingFinish]: (state, action) => addItemsToInventory(state, action.payload.itemsProduced),
         [handCraftingFinish]: (state, action) => addItemsToInventory(state, action.payload.itemsProduced),
+        [rocketPartStart]: (state, action) => removeItemsFromInventory(state, action.payload.itemCost),
+        [fuelPartStart]: (state, action) => removeItemsFromInventory(state, action.payload.itemCost),
     }
 });
 

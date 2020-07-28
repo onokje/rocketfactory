@@ -12,6 +12,8 @@ import {miningProductionFinish, miningProductionStart} from "../slices/miningSli
 import {handCraftingFinish, handminingFinish} from "../slices/manualProductionSlice";
 import {finishResearch} from "../slices/researchSlice";
 import store from '../helpers/store';
+import {rocketFuel, rocketPart, rocketSiloData} from "../gamedata/rocketSilo";
+import {fuelPartFinish, fuelPartStart, rocketPartFinish, rocketPartStart} from "../slices/rocketSiloSlice";
 
 
 function runPowerPlants(inventory, power) {
@@ -195,12 +197,67 @@ function researchTick(dispatch, research) {
     }
 }
 
-export default function mainGameTick(dispatch) {
+function runRocketSilo(inventory, rocketSilo, dispatch, powerBuffer) {
+    const silo = { powered: false };
 
-    const {player, inventory, power, production, mining, research, manualProduction} = store.getState();
+    // check if silo is build
+    if (rocketSilo.checklist.silo) {
+        if (powerBuffer >= rocketSiloData.powerUsage) {
+
+            powerBuffer = powerBuffer - rocketSiloData.powerUsage;
+            silo.powered = true;
+
+            // check rocket parts
+            if (rocketSilo.rocketParts < 100) {
+
+                if (rocketSilo.rocketPartProgressTicks >= rocketPart.ticksCost) {
+                    // rocket is ready with this batch, dispatch action to add result
+                    dispatch(rocketPartFinish());
+                }
+
+                if (!rocketSilo.rocketPartProgressTicks) {
+                    // silo is ready to start a new batch, dispatch action to subtract the item cost from the inventory
+                    // get cost
+                    const itemCost = rocketPart.cost.slice(0);
+
+                    if (canAfford(inventory, itemCost)) {
+                        dispatch(rocketPartStart({itemCost}));
+
+                        inventory = removeItemsFromInventory(inventory, itemCost);
+                    }
+                }
+            } else {
+                // rocket is done, check fuel loading
+                if (rocketSilo.fuelProgressTicks >= rocketFuel.ticksCost) {
+                    // fuel loading is ready with this batch, dispatch action to add result
+                    dispatch(fuelPartFinish());
+                }
+
+                if (!rocketSilo.fuelProgressTicks) {
+                    // silo is ready to start a new batch, dispatch action to subtract the item cost from the inventory
+                    const itemCost = rocketFuel.cost.slice(0);
+
+                    if (canAfford(inventory, itemCost)) {
+                        dispatch(fuelPartStart({itemCost}));
+
+                        inventory = removeItemsFromInventory(inventory, itemCost);
+                    }
+                }
+            }
+
+        }
+    }
+
+    return {inventory, powerBuffer, silo}
+}
+
+export default function mainGameTick(dispatch) {
+    const {player, inventory, power, production, mining, research, manualProduction, rocketSilo} = store.getState();
+
     if (!player.initialized) {
         return;
     }
+
     const ppResult = runPowerPlants(inventory, power);
     let newInventory = ppResult.inventory;
     let powerBuffer = ppResult.newBufferSize;
@@ -214,6 +271,10 @@ export default function mainGameTick(dispatch) {
     newInventory = productionResult.inventory;
     powerBuffer = productionResult.powerBuffer;
 
+    const siloResult = runRocketSilo(newInventory, rocketSilo, dispatch, powerBuffer);
+    const silo = siloResult.silo;
+    powerBuffer = siloResult.powerBuffer;
+
     handmining(dispatch, manualProduction);
     handcrafting(dispatch, manualProduction);
     researchTick(dispatch, research);
@@ -224,6 +285,7 @@ export default function mainGameTick(dispatch) {
         itemsUsed: ppResult.totalItemsUsed,
         poweredPowerplants: ppResult.poweredPowerplants,
         poweredMachineIds: productionResult.poweredMachineIds,
-        newBufferSize:powerBuffer
+        newBufferSize:powerBuffer,
+        silo
     }));
 }

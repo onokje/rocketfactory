@@ -182,7 +182,7 @@ export const machines = {
         type: 'crafting',
         text: 'Faster then assembler 2',
         name: 'Assembler 3',
-        powerUsage: 80,
+        powerUsage: 75,
         resultMultiplier: 4,
         cost: [
             {

@@ -28,7 +28,7 @@ class SideBarExploration extends Component {
         const coords = resourceMap.exploringCoords;
         return (
             <div className="sidebarExploration sidebarItem">
-                <div>Exploration progress: cell {resourceMap.exploring ? `${coords.x},${coords.y}` : ''}</div>
+                <div>{resourceMap.exploring ? `Exploration progress: cell ${coords.x},${coords.y}` : ''}</div>
                 {this.renderProgress()}
             </div>
         );

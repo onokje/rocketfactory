@@ -2,7 +2,7 @@ export const rocketSiloData = {
     text: 'This is the rocket silo. It allows the construction of your rocket.',
     type: 'rocket',
     name: 'Rocket Silo',
-    powerUsage: 1500,
+    powerUsage: 100,
     ticksCost: 30,
     cost: [
         {
@@ -30,7 +30,6 @@ export const launchPad = {
     text: 'The launchpad is required to actually launch your rocket.',
     type: 'rocket',
     name: 'Launchpad',
-    powerUsage: 500,
     ticksCost: 30,
     cost: [
         {

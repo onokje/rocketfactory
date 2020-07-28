@@ -6,13 +6,15 @@ import {car, launchPad, rocketSiloData} from "../gamedata/rocketSilo";
 const rocketSiloSlice = createSlice({
     name: 'rocketSilo',
     initialState: {
-        running: false,
+        powered: false,
         siloBuildProgressTicks: null, // ticks for silo itself, launchpad or car
         siloBuildProgressTotal: null,
         fuelProgressTicks: null, // fuel runs automatically if there are parts
         rocketPartProgressTicks: null, // rocket parts runs automatically if there are parts
         rocketParts: 0, // max 100
         fuelParts: 0, // max 100
+        rocketPartsRunning: false,
+        fuelPartsRunning: false,
         checklist: {
             silo: false,
             rocket: false,
@@ -21,6 +23,8 @@ const rocketSiloSlice = createSlice({
             payload: false
         },
         buildingNow: null, // string, either 'silo', 'launchpad', or 'car'
+        launched: false,
+        launchedTicks: 0
     },
     reducers: {
         buildStepSilo(state, action) {
@@ -46,11 +50,38 @@ const rocketSiloSlice = createSlice({
                 siloBuildProgressTotal: ticksCost,
                 buildingNow: step
             };
+        },
+        rocketPartFinish(state) {
+            state.rocketParts += 1;
+            state.rocketPartProgressTicks = 0;
+            state.rocketPartsRunning = false;
+            if (state.rocketParts >= 100) {
+                state.checklist.rocket = true;
+            }
+        },
+        rocketPartStart(state, action) {
+            state.rocketPartProgressTicks = 0;
+            state.rocketPartsRunning = true;
+        },
+        fuelPartFinish(state) {
+            state.fuelParts += 1;
+            state.fuelProgressTicks = 0;
+            state.fuelPartsRunning = false;
+            if (state.fuelParts >= 100) {
+                state.checklist.fuel = true;
+            }
+        },
+        fuelPartStart(state, action) {
+            state.fuelProgressTicks = 0;
+            state.fuelPartsRunning = true;
+        },
+        launchRocket(state) {
+            state.launched = true;
         }
     },
     extraReducers: {
         [loadPlayer]: (state, action) => action.payload.playerData.rocketSilo,
-        [productionTick]: (state) => {
+        [productionTick]: (state, action) => {
             if (state.buildingNow) {
                 if (state.siloBuildProgressTicks >= state.siloBuildProgressTotal) {
                     switch (state.buildingNow){
@@ -67,13 +98,25 @@ const rocketSiloSlice = createSlice({
                             throw Error('Invalid rocketsilo buildingnow state');
                     }
                     state.buildingNow = null;
+                } else {
+                    state.siloBuildProgressTicks +=1 ;
                 }
-                state.siloBuildProgressTicks +=1 ;
             }
+            state.powered = action.payload.silo.powered;
+            if (action.payload.silo.powered) {
+                // rocket parts
+                if (state.rocketPartsRunning) {
+                    state.rocketPartProgressTicks += 1;
+                }
+                if (state.fuelPartsRunning) {
+                    state.fuelProgressTicks += 1;
+                }
+            }
+
         }
     }
 });
 
-export const { buildStepSilo } = rocketSiloSlice.actions;
+export const { buildStepSilo, rocketPartFinish, rocketPartStart, fuelPartFinish, fuelPartStart, launchRocket } = rocketSiloSlice.actions;
 
 export default rocketSiloSlice.reducer;
