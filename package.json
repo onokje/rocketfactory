@@ -11,7 +11,6 @@
     "react-redux": "^6.0.0",
     "react-scripts": "^3.4.1",
     "react-tooltip-lite": "^1.8.0",
-    "redux-devtools": "^3.5.0",
     "uuid": "^8.0"
   },
   "scripts": {

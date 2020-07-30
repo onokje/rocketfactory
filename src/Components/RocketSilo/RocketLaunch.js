@@ -6,9 +6,9 @@ export default function RocketLaunch({ rocketSilo, launchRocket }) {
     if (rocketSilo.launched) {
         return (
             <div className="rocketLaunch">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/wbSwFU6tY1c?start=1308"
-                        frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen></iframe>
+                <iframe title="launchVideo" width="560" height="315" src="https://www.youtube.com/embed/wbSwFU6tY1c?start=1308"
+    frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen/>
 
             </div>
         );
