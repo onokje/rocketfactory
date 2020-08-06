@@ -1,8 +1,9 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {loadPlayer} from "./playerSlice";
 import {productionTick} from "./productionSlice";
+import {PowerState} from "../CommonTypes/state";
 
-const findPowerPlantIdInPoweredPowerPlantsArray = (poweredPowerplants, powerPlantId) => {
+const findPowerPlantIdInPoweredPowerPlantsArray = (poweredPowerplants: string[], powerPlantId: string) => {
     return !!poweredPowerplants.find(item => item === powerPlantId);
 };
 
@@ -15,9 +16,9 @@ const powerSlice = createSlice({
         powerLeft: 0,
         bufferMax: 0,
         bufferCurrent: 0
-    },
+    } as PowerState,
     reducers: {
-        buildPowerPlant(state, action) {
+        buildPowerPlant(state, action: PayloadAction<{techType: string, id: string}>) {
             const {techType, id} = action.payload;
             let newBuffer;
             switch (techType) {
@@ -35,27 +36,32 @@ const powerSlice = createSlice({
             state.bufferMax = newBuffer;
 
         },
-        sellPowerPlant(state, action) {
+        sellPowerPlant(state, action: PayloadAction<{id: string, techType: string}>) {
             return {...state, powerPlants: state.powerPlants.filter(plant => plant.id !== action.payload.id)};
         },
-        togglePowerplant(state, action) {
+        togglePowerplant(state, action: PayloadAction<{powerPlantId: string, on: boolean}>) {
             const {powerPlantId, on} = action.payload;
             const powerPlant = state.powerPlants.find(powerplant => powerplant.id === powerPlantId);
+            if (!powerPlant) {
+                throw Error('Trying to toggle a powerplant that does not exist');
+            }
             powerPlant.on = on;
         },
     },
-    extraReducers: {
-        [loadPlayer]: (state, action) => action.payload.playerData.power,
-        [productionTick]: (state, action) => {
-            const {poweredPowerplants, newBufferSize, totalPowerProduced} = action.payload;
-            state.powerPlants.forEach(powerplant => {
-                powerplant.powered = findPowerPlantIdInPoweredPowerPlantsArray(poweredPowerplants, powerplant.id);
+    extraReducers: builder => {
+        builder
+            .addCase(loadPlayer, (state, action) => action.payload.playerData.power)
+            .addCase(productionTick, (state: PowerState, action) => {
+                const {poweredPowerplants, newBufferSize, totalPowerProduced} = action.payload;
+                state.powerPlants.forEach(powerplant => {
+                    powerplant.powered = findPowerPlantIdInPoweredPowerPlantsArray(poweredPowerplants, powerplant.id);
+                });
+                state.powerProducedLastTick = totalPowerProduced;
+                state.powerUsedLastTick = state.bufferCurrent - newBufferSize + totalPowerProduced;
+                state.bufferCurrent = newBufferSize;
             });
-            state.powerProducedLastTick = totalPowerProduced;
-            state.powerUsedLastTick = state.bufferCurrent - newBufferSize + totalPowerProduced;
-            state.bufferCurrent = newBufferSize;
-        }
     }
+
 });
 
 export const { buildPowerPlant, sellPowerPlant, togglePowerplant } = powerSlice.actions;

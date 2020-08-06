@@ -1,5 +1,5 @@
 import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
-import rootReducer from "../reducers";
+import rootReducer from "../slices/rootReducer";
 import localStorageSync from "../middleware/localStorageSync";
 
 const store = configureStore({
@@ -7,4 +7,5 @@ const store = configureStore({
     middleware: getDefaultMiddleware().concat(localStorageSync)
 })
 
+export type AppDispatch = typeof store.dispatch;
 export default store;

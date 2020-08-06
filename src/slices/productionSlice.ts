@@ -1,9 +1,23 @@
-import {createSlice} from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {loadPlayer} from "./playerSlice";
+import {ProductionState} from "../CommonTypes/state";
+import {Item} from "../CommonTypes/Item";
 
-const idExistsInArray = (arr, id) => {
+const idExistsInArray = (arr: string[], id: string): boolean => {
     return !!arr.find(item => item === id);
 };
+
+interface ProductionTickAction {
+    poweredMineIds: string[],
+    poweredMachineIds: string[],
+    totalPowerProduced: number,
+    itemsUsed: Item[],
+    poweredPowerplants: string[],
+    newBufferSize: number,
+    silo: {
+        powered: boolean
+    }
+}
 
 const productionSlice = createSlice({
     name: 'production',
@@ -12,9 +26,9 @@ const productionSlice = createSlice({
         machineDialogOpen: false,
         machineDialogMachineId: null,
         machineDialogSelectorOpen: false
-    },
+    } as ProductionState,
     reducers: {
-        productionTick(state, action) {
+        productionTick(state, action: PayloadAction<ProductionTickAction>) {
             const {poweredMachineIds} = action.payload;
             state.machines.forEach(machine => {
                 if (machine.on) {
@@ -26,7 +40,7 @@ const productionSlice = createSlice({
                 }
             });
         },
-        buildMachine(state, action) {
+        buildMachine(state, action: PayloadAction<{id: string, productionType: string, techType: string}>) {
             const {id, productionType, techType} = action.payload;
             state.machines.push({
                 id,
@@ -41,25 +55,34 @@ const productionSlice = createSlice({
                 techType
             });
         },
-        sellMachine(state, action) {
+        sellMachine(state, action: PayloadAction<{id: string, techType: string}>) {
             state.machines = state.machines.filter(machine => machine.id !== action.payload.id);
         },
-        toggleMachine(state, action) {
+        toggleMachine(state, action: PayloadAction<{id: string, on: boolean, nextItem: string}>) {
             const {id, on, nextItem} = action.payload;
             const machine = state.machines.find(machine => id === machine.id);
+            if (!machine) {
+                throw Error('trying to toggle a machine that doesnt exist');
+            }
             machine.on = on;
             machine.nextItem = nextItem;
             machine.progressTicks = on ? machine.progressTicks : 0;
         },
-        machineProductionStart(state, action) {
+        machineProductionStart(state, action: PayloadAction<{id: string, currentItem: string, itemCost: Item[]}>) {
             const {id, currentItem} = action.payload;
             const machine = state.machines.find(machine => id === machine.id);
+            if (!machine) {
+                throw Error('production start on a machine that doesnt exist');
+            }
             machine.currentItem = currentItem;
             machine.running = true;
         },
-        machineProductionFinish(state, action) {
+        machineProductionFinish(state, action: PayloadAction<{id: string, itemsProduced: Item[]}>) {
             const {id} = action.payload;
             const machine = state.machines.find(machine => id === machine.id);
+            if (!machine) {
+                throw Error('production finish on a machine that doesnt exist');
+            }
             machine.running = false;
             machine.currentItem = null;
             machine.progressTicks = 0;
@@ -77,8 +100,9 @@ const productionSlice = createSlice({
             state.machineDialogSelectorOpen = false;
         },
     },
-    extraReducers: {
-        [loadPlayer]: (state, action) => action.payload.playerData.production
+    extraReducers: builder => {
+        builder
+            .addCase(loadPlayer, (state, action) => action.payload.playerData.production)
     }
 });
 

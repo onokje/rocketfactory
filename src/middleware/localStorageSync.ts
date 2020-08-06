@@ -1,4 +1,4 @@
-const localStorageSync = store => next => action => {
+const localStorageSync = (store: any) => (next: any) => (action: any) => {
     let result = next(action);
 
     if (store.getState().player.initialized && action.type === 'production/productionTick') {

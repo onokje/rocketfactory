@@ -4,16 +4,15 @@ import {
     removeItemFromInventory,
     removeItemsFromInventory
 } from "./InventoryHelper";
-import {itemRecipes} from "../gamedata/items";
-import {machines, minePrices} from "../gamedata/machines";
 
 import {machineProductionFinish, machineProductionStart, productionTick} from "../slices/productionSlice";
 import {miningProductionFinish, miningProductionStart} from "../slices/miningSlice";
 import {handCraftingFinish, handminingFinish} from "../slices/manualProductionSlice";
 import {finishResearch} from "../slices/researchSlice";
-import store from '../helpers/store';
+import store from './store';
 import {rocketFuel, rocketPart, rocketSiloData} from "../gamedata/rocketSilo";
 import {fuelPartFinish, fuelPartStart, rocketPartFinish, rocketPartStart} from "../slices/rocketSiloSlice";
+import {getItemRecipe, getMachineRecipe, getMineRecipe} from "../gamedata";
 
 
 function runPowerPlants(inventory, power) {
@@ -79,7 +78,7 @@ function runProduction(inventory, production, dispatch, powerBuffer) {
 
     for (let machine of production.machines) {
         if (machine.on) {
-            const machineData = machines[machine.techType];
+            const machineData = getMachineRecipe(machine.techType);
             const powerUsage = machineData.powerUsage;
             let powered = false;
 
@@ -96,7 +95,7 @@ function runProduction(inventory, production, dispatch, powerBuffer) {
                     // machine is ready with this recipe, dispatch action to add the result to the inventory
 
                     //get recipe:
-                    const recipe = itemRecipes[machine.currentItem];
+                    const recipe = getItemRecipe(machine.currentItem);
                     let itemsProduced = [];
                     itemsProduced.push({name: machine.currentItem, amount: recipe.resultAmount});
                     itemsProduced = multiplyItemsInItemsArray(itemsProduced, machineData.resultMultiplier);
@@ -108,7 +107,7 @@ function runProduction(inventory, production, dispatch, powerBuffer) {
                     // machine is starting with a new recipe, dispatch action to subtract the item cost from the inventory
 
                     //get recipe:
-                    const recipe = itemRecipes[machine.nextItem];
+                    const recipe = getItemRecipe(machine.nextItem);
                     let itemCost = recipe.cost.slice(0);
                     itemCost = multiplyItemsInItemsArray(itemCost, machineData.resultMultiplier);
 
@@ -135,7 +134,7 @@ function runMines(inventory, mining, dispatch, powerBuffer) {
     for (let mine of mining.mines) {
         if (mine.on) {
             let powered = false;
-            let machineData = minePrices[mine.techType];
+            let machineData = getMineRecipe(mine.techType);
             let powerUsage = machineData.powerUsage;
 
             // check if enough power is available
@@ -186,7 +185,7 @@ function handmining(dispatch, manualProduction) {
 function handcrafting(dispatch, manualProduction) {
     if (manualProduction.handcrafting && manualProduction.handcraftingProgressTicks === manualProduction.handcraftingTicksCost) {
         const itemsProduced = [];
-        itemsProduced.push({name: manualProduction.handcraftingItem, amount: itemRecipes[manualProduction.handcraftingItem].resultAmount});
+        itemsProduced.push({name: manualProduction.handcraftingItem, amount: getItemRecipe(manualProduction.handcraftingItem).resultAmount});
         dispatch(handCraftingFinish({itemsProduced}));
     }
 }

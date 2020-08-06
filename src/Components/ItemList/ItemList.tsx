@@ -1,12 +1,21 @@
 import React from 'react';
-import PropTypes from "prop-types";
 import "./ItemList.scss";
 import ItemIcon from "../ItemIcon/ItemIcon";
 import TimeIcon from "../TimeIcon/TimeIcon";
+import {Item} from "../../CommonTypes/Item";
 
-export default function ItemList(props) {
+type ItemListProps = {
+    items: Item[],
+    label: string,
+    showToolTips?: boolean,
+    time?: string,
+    showAvailable?: boolean,
+    smallIcons?: boolean
+}
 
-    const {items, label, showToolTips, time, showAvailable, smallIcons} = props;
+export default function ItemList(props: ItemListProps) {
+
+    const {items, label, showToolTips = true, time, showAvailable = true, smallIcons = false} = props;
 
     return (
         <>
@@ -24,18 +33,3 @@ export default function ItemList(props) {
         </>
     );
 }
-
-ItemList.propTypes = {
-    items: PropTypes.array.isRequired,
-    label: PropTypes.string,
-    showToolTips: PropTypes.bool,
-    time: PropTypes.string,
-    showAvailable: PropTypes.bool,
-    smallIcons: PropTypes.bool
-};
-
-ItemList.defaultProps = {
-    showToolTips: true,
-    showAvailable: true,
-    smallIcons: false
-};
