@@ -14,7 +14,7 @@
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-redux": "^6.0.0",
-    "react-scripts": "^3.4.1",
+    "react-scripts": "^5.0.1",
     "react-tooltip-lite": "^1.8.0",
     "typescript": "^3.9.7",
     "uuid": "^8.0"
@@ -41,7 +41,7 @@
     "@storybook/addon-actions": "^5.0",
     "@storybook/addon-links": "^5.0",
     "@storybook/addons": "^5.0",
-    "@storybook/react": "^5.0",
+    "@storybook/react": "^9.0",
     "babel-loader": "^8.1.0"
   }
 }
